@@ -56,20 +56,20 @@ public void mergeSortedListsTest() {
 @Test
 public void sortListTest() {
 	
-//	assertNull(RecursiveSorting.sortList(null));
-//
+	assertNull(RecursiveSorting.sortList(null));
+
 	List<Integer> a = Arrays.asList(3, 2, 1);
 	List<Integer> c = Arrays.asList(1, 2, 3);
-//	assertEquals(c, RecursiveSorting.sortList(a));
-//
-//	a = Arrays.asList(1, 2, 3);
-//	c = Arrays.asList(1, 2, 3);
-//	assertEquals(c, RecursiveSorting.sortList(a));
-//
-//	a = Arrays.asList(3, 2, 1, 4, 6, 5);
-//	c = Arrays.asList(1, 2, 3, 4, 5, 6);
-//	assertEquals(c, RecursiveSorting.sortList(a));
-//	
+	assertEquals(c, RecursiveSorting.sortList(a));
+
+	a = Arrays.asList(1, 2, 3);
+	c = Arrays.asList(1, 2, 3);
+	assertEquals(c, RecursiveSorting.sortList(a));
+
+	a = Arrays.asList(3, 2, 1, 4, 6, 5);
+	c = Arrays.asList(1, 2, 3, 4, 5, 6);
+	assertEquals(c, RecursiveSorting.sortList(a));
+	
 	a = Arrays.asList(1, 1, 10, 2, 2, 11);
 	c = Arrays.asList(1, 1, 2, 2, 10, 11);
 	assertEquals(c, RecursiveSorting.sortList(a));
