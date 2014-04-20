@@ -32,17 +32,24 @@ public void calcTestNull() {
 	PolishCalculator.calc(null);
 }
 
+
 @Test(expected = ArithmeticException.class)
 public void calcTestDivideByZero() {
+	
 	List<String> exp = Arrays.asList("2", "0", "/");
 	assertEquals((long)3, PolishCalculator.calc(exp));
+
 }
+
 
 @Test(expected = NumberFormatException.class)
 public void calcTestGarbageNumber() {
+
 	List<String> exp = Arrays.asList("1", "a", "+");
 	assertEquals((long)3, PolishCalculator.calc(exp));
+
 }
+
 
 @Test
 public void calcTest() {

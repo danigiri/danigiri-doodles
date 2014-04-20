@@ -95,9 +95,12 @@ private static long calcOnStack(Stack<Long> stack, List<String>exp) {
 	
 	// by induction call recursive function on smaller input
 	return PolishCalculator.calcOnStack(stack, exp);
+	
 }
 
+
 private static void checkStackForOperands(Stack<Long> stack, int operands, String message) {
+
 	if (stack.size()<operands) {
 		throw new IndexOutOfBoundsException(message);
 	}

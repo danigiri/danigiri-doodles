@@ -18,9 +18,9 @@ package cat.calidos.doodles;
 
 public class Palindrome {
 
-public static String longest(String s) {
+public static String longest(final String s) {
 	
-	String pal = "";
+	String pal;
 	if (s==null) {
 		throw new NullPointerException("Null doesn't have palindromes");
 	}
@@ -29,25 +29,25 @@ public static String longest(String s) {
 	int size = s.length();
 	if (size <= 1) {
 		pal = s;
-	} else if (size <=3) {	// little optimisation to save trivial calls
-		if (s.charAt(0)==s.charAt(size-1)) {
-			pal = s;
-		} else {
-			pal = s.substring(0, 1);
-		}
 	} else {
 		
-		// recursive case (size>=4)
+		// size>=2
 		char first = s.charAt(0);
 		char last = s.charAt(size-1);
 		String rest = s.substring(1, size-1);
-		String candidate = Palindrome.longest(rest); // induction
-		if (first==last  && candidate.length()+2==size) {
-				pal = s;	// x + palindrome + x == palindrome
+
+		// recursive cases
+		if (first==last) {
+			String candidate = Palindrome.longest(rest); // induction
+			if (candidate.length()+2==size) {
+				pal = s;	// x + palindrome + x == palindrome)
+			} else {
+				pal = first+"";	// left by convention
+			}
 		} else {
 			String palLeft = Palindrome.longest(s.substring(0, size-1));	// induction again
 			String palRight = Palindrome.longest(s.substring(1, size));
-			if (palLeft.length()>=palRight.length()) {
+			if (palLeft.length()>=palRight.length()) {	// if equal, left by convention
 				pal = palLeft;
 			} else {
 				pal = palRight;

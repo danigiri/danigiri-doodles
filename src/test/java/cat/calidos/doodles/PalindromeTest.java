@@ -27,8 +27,10 @@ public void longestTestNull() {
 	Palindrome.longest(null);	
 }
 
+
 @Test
 public void longestTest() {
+	
 	assertEquals("", Palindrome.longest(""));
 	assertEquals("a", Palindrome.longest("a"));
 	assertEquals("a", Palindrome.longest("ab"));
@@ -39,6 +41,7 @@ public void longestTest() {
 	assertEquals("aaaa", Palindrome.longest("aaaa"));
 	assertEquals("aba", Palindrome.longest("abazz"));
 	assertEquals("abba", Palindrome.longest("rwwwabbazz"));
+	assertEquals("xyx", Palindrome.longest("xyxbab"));
 	
 }
 
