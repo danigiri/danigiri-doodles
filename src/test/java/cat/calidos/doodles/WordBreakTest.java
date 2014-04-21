@@ -17,7 +17,6 @@ package cat.calidos.doodles;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -66,12 +65,12 @@ public void WordBreakBasicTest() {
 @Test
 public void buildKeyTreeTest() {
 	
-	List<String> keys = WordBreakTest.testList();
+	List<String> keys = ListFrom.strings();
 	Tree<String> t = WordBreak.buildKeyTree("", keys);
 	assertEquals("", t.value);
 	assertEquals(0, t.children.size());
 	
-	keys = WordBreakTest.testList("a", "b", "c");
+	keys = ListFrom.strings("a", "b", "c");
 	t = WordBreak.buildKeyTree("", keys);
 	assertEquals("", t.value);
 	assertEquals(3, t.children.size());
@@ -79,7 +78,7 @@ public void buildKeyTreeTest() {
 	assertTrue(t.hasChild("b"));
 	assertTrue(t.hasChild("c"));
 
-	keys = WordBreakTest.testList("a", "ab", "c");
+	keys = ListFrom.strings("a", "ab", "c");
 	t = WordBreak.buildKeyTree("", keys);
 	assertEquals("", t.value);
 	assertEquals(2, t.children.size());
@@ -87,7 +86,7 @@ public void buildKeyTreeTest() {
 	assertTrue(t.getChild("a").hasChild("b"));
 	assertTrue(t.hasChild("c"));
 
-	keys = WordBreakTest.testList("a", "abc", "abd","e");
+	keys = ListFrom.strings("a", "abc", "abd","e");
 	t = WordBreak.buildKeyTree("", keys);
 	assertEquals("", t.value);
 	assertEquals(2, t.children.size());
@@ -97,7 +96,7 @@ public void buildKeyTreeTest() {
 	assertTrue(t.getChild("a").getChild("b").hasChild("d"));
 	assertTrue(t.hasChild("e"));
 	
-	keys = WordBreakTest.testList(	"a", "ab", "ad", 
+	keys = ListFrom.strings(	"a", "ab", "ad", 
 									"c", "cde", "cdf",
 									"xy",
 									"zz");
@@ -121,33 +120,33 @@ public void testMmatch() {
 	
 	assertNull(WordBreak.mmatch(null));
 	
-	List<String> l = WordBreakTest.testList("a");
-	List<String> r = WordBreakTest.testList("a");
+	List<String> l = ListFrom.strings("a");
+	List<String> r = ListFrom.strings("a");
 	assertEquals(r, WordBreak.mmatch(l));
 
 	
-	l = WordBreakTest.testList("a", "c");
-	r = WordBreakTest.testList("a");
+	l = ListFrom.strings("a", "c");
+	r = ListFrom.strings("a");
 	assertEquals(r, WordBreak.mmatch(l));
 
-	l = WordBreakTest.testList("a", "ab");
-	r = WordBreakTest.testList("a", "b");
+	l = ListFrom.strings("a", "ab");
+	r = ListFrom.strings("a", "b");
 	assertEquals(r, WordBreak.mmatch(l));
 
-	l = WordBreakTest.testList("ab", "ac");
-	r = WordBreakTest.testList("a", "b", "c");
+	l = ListFrom.strings("ab", "ac");
+	r = ListFrom.strings("a", "b", "c");
 	assertEquals(r, WordBreak.mmatch(l));	
 	
-	l = WordBreakTest.testList("a", "ab", "ac");
-	r = WordBreakTest.testList("a", "b", "c");
+	l = ListFrom.strings("a", "ab", "ac");
+	r = ListFrom.strings("a", "b", "c");
 	assertEquals(r, WordBreak.mmatch(l));
 
-	l = WordBreakTest.testList("a", "ab", "xc");
-	r = WordBreakTest.testList("a", "b");
+	l = ListFrom.strings("a", "ab", "xc");
+	r = ListFrom.strings("a", "b");
 	assertEquals(r, WordBreak.mmatch(l));
 
-	l = WordBreakTest.testList("ab", "abc", "abd");
-	r = WordBreakTest.testList("ab", "c", "d");
+	l = ListFrom.strings("ab", "abc", "abd");
+	r = ListFrom.strings("ab", "c", "d");
 	assertEquals(r, WordBreak.mmatch(l));	
 
 }
@@ -173,17 +172,6 @@ public void testCommonPrefix() {
 
 	assertEquals("", WordBreak.commonPrefix("ab", "xy"));
 	assertEquals("", WordBreak.commonPrefix("ab", "xab"));
-	
-}
-
-
-private static List<String> testList(String... v) {
-	
-	List<String> a = new ArrayList<String>();
-	for (String i : v) {
-		a.add(i);
-	}
-	return a;
 	
 }
 

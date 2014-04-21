@@ -10,6 +10,8 @@ public class Tree<S> {
 
 	public S	value;
 	public Map<String, Tree<S>>	children;
+	public Tree<S> left;
+	public Tree<S> right;
 	public int	maxKeyLength;
 
 	public Tree(S data) {
@@ -29,7 +31,7 @@ public class Tree<S> {
 		}
 		
 	}
-
+	
 	
 	public boolean hasChild(String k) {
 		return getChild(k)!=null;
@@ -54,21 +56,31 @@ public class Tree<S> {
 		s.append("[");
 		s.append(value);
 		
-		if (children!=null && !children.isEmpty()) {
-			s.append(",\n");
-			for (Iterator<String> keys = children.keySet().iterator(); keys.hasNext();) {
-				String k = keys.next();
-				Tree<S> t = children.get(k);
-				if (t!=null) { 
-					s.append(t.toString(new StringBuffer(), new StringBuffer(tab)));
-				} else {
-					s.append(tab);
-					s.append(tab);
-					s.append("[");
-					s.append(k);
-					s.append("]");
-					s.append(",\n");
+		if (left==null && right==null) {
+			if (children!=null && !children.isEmpty()) {
+				s.append(",\n");
+				for (Iterator<String> keys = children.keySet().iterator(); keys.hasNext();) {
+					String k = keys.next();
+					Tree<S> t = children.get(k);
+					if (t!=null) { 
+						s.append(t.toString(new StringBuffer(), new StringBuffer(tab)));
+					} else {
+						s.append(tab);
+						s.append(tab);
+						s.append("[");
+						s.append(k);
+						s.append("]");
+						s.append(",\n");
+					}
 				}
+			}
+		} else {
+			s.append(",\n");
+			if (left!=null) {
+				s.append("l:"+left.toString(new StringBuffer(), new StringBuffer(tab)));
+			}
+			if (right!=null) {
+				s.append("r:"+right.toString(new StringBuffer(), new StringBuffer(tab)));
 			}
 		}
 		

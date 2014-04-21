@@ -56,6 +56,7 @@ public static String longest(final String s) {
 		
 	}
 	return pal;
+
 }
 
 }
