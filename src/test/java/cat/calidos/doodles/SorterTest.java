@@ -145,12 +145,8 @@ public void sortListTest() {
 						271, 427, 845, 851, 786, 463, 531, 148, 379, 22, 740, 
 						82, 948, 287, 136, 976, 931, 696, 852, 433, 479, 260, 
 						114, 151, 771, 73, 878, 74, 264, 432, 28);	
-	long t = System.currentTimeMillis();
-	System.err.println("----------------------------------");
 	Sorter.sortList(a);
-	System.err.println("t="+(System.currentTimeMillis()-t));
-	System.err.println("----------------------------------");
-
+	// if printing the number of calls it shows 4070 aprox 4482=500xlog2(500)
 }
 
 

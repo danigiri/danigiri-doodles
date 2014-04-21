@@ -33,33 +33,31 @@ public class Sorter {
 	
 	private static <T extends Comparable<? super T>> List<T> _mergeSortedLists(String t, List<T> a, List<T> b) {
 
-		System.err.println(t.length());//+t+"a:"+a+" b:"+b);
-		// base cases
+		//System.err.println(t.length());//+t+"a:"+a+" b:"+b);
+		// base case
 		if (a.size()==0) {
 			return b;
 		} else if (b.size()==0) {
 			return a;
 		}
-		int lastFromAIndex = a.size()-1;
-		T lastFromA  = a.get(lastFromAIndex);
-		T firstFromB = b.get(0);
-		if (lastFromA.compareTo(firstFromB)<=0) {
-			a.addAll(b);
-			return a;
-		}
 		
-		// recursive case, only remove one and not two and you save one call!
-		List<T> sorted = new ArrayList<T>();
+		// recursive case
 		T firstFromA = a.get(0);
+		T firstFromB = b.get(0);
+		List<T> sorted = new ArrayList<T>();
 		if (firstFromA.compareTo(firstFromB)<=0) {
 			sorted.add(firstFromA);
 			a.remove(0);
 		} else {
 			sorted.add(firstFromB);					
 			b.remove(0);
-		}	
-		
-		sorted.addAll(_mergeSortedLists(t+"\t", a, b));
+		}
+		// a or b are smaller so we can call recursively
+		// moreover, the trivially sorted array contains one element that is smaller
+		// than any element in the two remaining arrays so if we concatenate
+		// the result of the induction call we trivially have a sorted array
+		sorted.addAll(_mergeSortedLists(t+"\t", a, b));	// induction
+
 		return sorted;
 		
 	}
