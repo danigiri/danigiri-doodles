@@ -26,12 +26,13 @@ public class Sorter {
 		if ((a==null || b==null)) {
 			throw new NullPointerException("Not sorting null lists");
 		}
-		return Sorter._mergeSortedLists2("", new ArrayList<T>(a), new ArrayList<T>(b));
+		return Sorter._mergeSortedLists("", new ArrayList<T>(a), new ArrayList<T>(b));
 		
 	}
 
+	
+	private static <T extends Comparable<? super T>> List<T> _mergeSortedLists(String t, List<T> a, List<T> b) {
 
-	private static <T extends Comparable<? super T>> List<T> _mergeSortedLists2(String t, List<T> a, List<T> b) {
 		System.err.println(t.length());//+t+"a:"+a+" b:"+b);
 		// base cases
 		if (a.size()==0) {
@@ -47,23 +48,22 @@ public class Sorter {
 			return a;
 		}
 		
-		// recursive case
+		// recursive case, only remove one and not two and you save one call!
 		List<T> sorted = new ArrayList<T>();
 		T firstFromA = a.get(0);
-		a.remove(0);
-		b.remove(0);
 		if (firstFromA.compareTo(firstFromB)<=0) {
 			sorted.add(firstFromA);
-			sorted.add(firstFromB);			
+			a.remove(0);
 		} else {
 			sorted.add(firstFromB);					
-			sorted.add(firstFromA);
+			b.remove(0);
 		}	
 		
-		return _mergeSortedLists2(t+"\t", sorted, _mergeSortedLists2(t+"\t", a, b));
+		sorted.addAll(_mergeSortedLists(t+"\t", a, b));
+		return sorted;
 		
 	}
-	
+
 	
 	public static <T extends Comparable<? super T>> List<T> sortList(final List<T>a) {
 		
@@ -82,7 +82,7 @@ public class Sorter {
 		List<T> left = Sorter.sortList(new ArrayList<T>(a.subList(0, halfSize)));
 		List<T> right = Sorter.sortList(new ArrayList<T>(a.subList(halfSize, size)));
 		
-		return Sorter._mergeSortedLists2("", left, right);
+		return Sorter._mergeSortedLists("", left, right);
 		
 	}
 	
