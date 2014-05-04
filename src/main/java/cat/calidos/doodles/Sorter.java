@@ -26,14 +26,13 @@ public class Sorter {
 		if ((a==null || b==null)) {
 			throw new NullPointerException("Not sorting null lists");
 		}
-		return Sorter._mergeSortedLists("", new ArrayList<T>(a), new ArrayList<T>(b));
+		return Sorter._mergeSortedLists(new ArrayList<T>(a), new ArrayList<T>(b));
 		
 	}
 
 	
-	private static <T extends Comparable<? super T>> List<T> _mergeSortedLists(String t, List<T> a, List<T> b) {
+	private static <T extends Comparable<? super T>> List<T> _mergeSortedLists(List<T> a, List<T> b) {
 
-		//System.err.println(t.length());//+t+"a:"+a+" b:"+b);
 		// base case
 		if (a.size()==0) {
 			return b;
@@ -56,7 +55,7 @@ public class Sorter {
 		// moreover, the trivially sorted array contains one element that is smaller
 		// than any element in the two remaining arrays so if we concatenate
 		// the result of the induction call we trivially have a sorted array
-		sorted.addAll(_mergeSortedLists(t+"\t", a, b));	// induction
+		sorted.addAll(_mergeSortedLists(a, b));	// induction
 
 		return sorted;
 		
@@ -80,7 +79,7 @@ public class Sorter {
 		List<T> left = Sorter.sortList(new ArrayList<T>(a.subList(0, halfSize)));
 		List<T> right = Sorter.sortList(new ArrayList<T>(a.subList(halfSize, size)));
 		
-		return Sorter._mergeSortedLists("", left, right);
+		return Sorter._mergeSortedLists(left, right);
 		
 	}
 	

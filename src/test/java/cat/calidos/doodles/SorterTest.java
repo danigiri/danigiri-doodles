@@ -146,7 +146,7 @@ public void sortListTest() {
 						82, 948, 287, 136, 976, 931, 696, 852, 433, 479, 260, 
 						114, 151, 771, 73, 878, 74, 264, 432, 28);	
 	Sorter.sortList(a);
-	// if printing the number of calls it shows 4070 aprox 4482=500xlog2(500)
+	// printing the number of calls it shows 4070 aprox 4482=500xlog2(500)
 }
 
 
