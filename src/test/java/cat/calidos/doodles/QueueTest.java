@@ -58,6 +58,7 @@ public void queueTest() {
 	assertEquals(3, q.length());
 	assertEquals("x", q.head());
 	assertEquals("c", q.tail());
+	
 }
 
 }

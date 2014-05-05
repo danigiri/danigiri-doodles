@@ -67,12 +67,12 @@ public void buildKeyTreeTest() {
 	
 	List<String> keys = ListFrom.strings();
 	Tree<String> t = WordBreak.buildKeyTree("", keys);
-	assertEquals("", t.value);
+	assertEquals("", t.data);
 	assertEquals(0, t.children.size());
 	
 	keys = ListFrom.strings("a", "b", "c");
 	t = WordBreak.buildKeyTree("", keys);
-	assertEquals("", t.value);
+	assertEquals("", t.data);
 	assertEquals(3, t.children.size());
 	assertTrue(t.hasChild("a"));
 	assertTrue(t.hasChild("b"));
@@ -80,7 +80,7 @@ public void buildKeyTreeTest() {
 
 	keys = ListFrom.strings("a", "ab", "c");
 	t = WordBreak.buildKeyTree("", keys);
-	assertEquals("", t.value);
+	assertEquals("", t.data);
 	assertEquals(2, t.children.size());
 	assertTrue(t.hasChild("a"));
 	assertTrue(t.getChild("a").hasChild("b"));
@@ -88,7 +88,7 @@ public void buildKeyTreeTest() {
 
 	keys = ListFrom.strings("a", "abc", "abd","e");
 	t = WordBreak.buildKeyTree("", keys);
-	assertEquals("", t.value);
+	assertEquals("", t.data);
 	assertEquals(2, t.children.size());
 	assertTrue(t.hasChild("a"));
 	assertTrue(t.getChild("a").hasChild("b"));

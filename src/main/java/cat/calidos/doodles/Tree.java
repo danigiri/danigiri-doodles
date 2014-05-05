@@ -17,28 +17,30 @@ package cat.calidos.doodles;
 
 import java.util.HashMap;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 
-public class Tree<S> {
+public class Tree<T> {
 
-	public S	value;
-	public Map<String, Tree<S>>	children;
-	public Tree<S> left;
-	public Tree<S> right;
+	public T	data;
+	public Map<String, Tree<T>>	children;
+	public Tree<T> left;
+	public Tree<T> right;
 	public int	maxKeyLength;
 
-	public Tree(S data) {
+	public Tree(T d) {
 		
-		value = data;
-		children = new HashMap<String, Tree<S>>();
+		data = d;
+		children = new HashMap<String, Tree<T>>();
 		maxKeyLength = 0;
 		
 	}
 
 	
-	public void addChild(String k, Tree<S> c) {
+	public void addChild(String k, Tree<T> c) {
 		
 		children.put(k, c);
 		if (k.length()>maxKeyLength) {
@@ -53,10 +55,88 @@ public class Tree<S> {
 	}
 	
 	
-	public Tree<S> getChild(String k){
+	public Tree<T> getChild(String k){
 		return children.get(k);
 	}
 
+	
+	public List<T> preorder() {
+		return preorder_(new ArrayList<T>());
+	}
+
+	private List<T> preorder_(List<T> l) {
+		l.add(data);
+		if (left!=null) {
+			l = left.preorder_(l);
+		}
+		if (right!=null) {
+			l = right.preorder_(l);
+		}
+		return l;
+	} 
+
+	public List<T> inorder() {
+		return inorder_(new ArrayList<T>());
+	}
+
+	private List<T> inorder_(List<T> l) {
+		if (left!=null) {
+			l = left.inorder_(l);
+		}
+		l.add(data);
+		if (right!=null) {
+			l = right.inorder_(l);
+		}
+		return l;
+	} 
+
+	public List<T> postorder() {
+		return postorder_(new ArrayList<T>());
+	}
+
+	
+	private List<T> postorder_(List<T> l) {
+		if (left!=null) {
+			l = left.postorder_(l);
+		}
+		if (right!=null) {
+			l = right.postorder_(l);
+		}
+		l.add(data);
+		return l;
+	} 
+	
+	
+	public boolean insertSorted(T d) {	// O(logN)
+
+		if (data==null) {
+			data = d;
+			return true;
+		}
+		int compare = ((Comparable)d).compareTo(data);
+		// base case
+		if (compare==0) {
+			return false;
+		}
+		if (compare<0) {
+			if (left==null) {
+				// base case
+				left = new Tree(d);
+				return true;
+			} else {
+				return left.insertSorted(d);	// induction, left tree is smaller
+			}
+		} else {
+			if (right==null) {
+				right = new Tree(d);
+				return true;
+			} else {
+				return right.insertSorted(d);	// induction, right tree is smaller
+			}
+		}
+		
+	}
+	
 	
 	@Override
 	public String toString() {
@@ -69,14 +149,14 @@ public class Tree<S> {
 		tab.append(" ");
 		s.append(tab);
 		s.append("[");
-		s.append(value);
+		s.append(data);
 		
 		if (left==null && right==null) {
 			if (children!=null && !children.isEmpty()) {
 				s.append(",\n");
 				for (Iterator<String> keys = children.keySet().iterator(); keys.hasNext();) {
 					String k = keys.next();
-					Tree<S> t = children.get(k);
+					Tree<T> t = children.get(k);
 					if (t!=null) { 
 						s.append(t.toString(new StringBuffer(), new StringBuffer(tab)));
 					} else {

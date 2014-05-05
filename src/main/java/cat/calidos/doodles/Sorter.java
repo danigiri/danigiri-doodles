@@ -107,7 +107,7 @@ public class Sorter {
 		l.remove(0);
 		
 		// recursive case
-		if (((Comparable<Comparable<?>>)v).compareTo((Comparable<?>)t.value)<=0) {	// sorry
+		if (((Comparable<Comparable<?>>)v).compareTo((Comparable<?>)t.data)<=0) {	// sorry
 			// left
 			if (t.left==null) {
 				t.left = new Tree<X>(v);

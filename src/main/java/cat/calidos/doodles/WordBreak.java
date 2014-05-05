@@ -62,9 +62,9 @@ public static String seg(final String s, final Tree<String>t) {
 	if (sLength==0) {
 		return matched;
 	}
-	if (s.startsWith(t.value)) {
-		matched = s.substring(0, t.value.length());
-		remaining = s.substring(t.value.length());
+	if (s.startsWith(t.data)) {
+		matched = s.substring(0, t.data.length());
+		remaining = s.substring(t.data.length());
 	} else {
 		return matched;
 	}
