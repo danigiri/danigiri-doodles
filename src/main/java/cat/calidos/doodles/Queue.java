@@ -15,6 +15,8 @@
 */
 package cat.calidos.doodles;
 
+import java.util.List;
+
 
 public class Queue<T> {
 
@@ -77,14 +79,16 @@ public T tail() {
 	return last.data;
 }
 
-public void dequeue() {
+public T dequeue() {
 	if (isEmpty()) {
 		throw new IndexOutOfBoundsException("Can’t dequeue empty list");
 	}
+	T h = head();
 	first = first.next;
 	if (first==null) {
 		last = null;
 	}
+	return h;
 }
 
 public void removeTail() {
@@ -97,6 +101,77 @@ public void removeTail() {
 	}
 	last = nextToLast;
 	last.next = null;
+}
+
+public static <T> void reverse(Queue<T> q) {
+	if (q.isEmpty()) {
+	} else {
+		T e = q.dequeue();
+		Queue.reverse(q);
+		q.enqueue(e); 
+	}
+}
+
+
+@Override
+public boolean equals(Object obj) {		// O(N)
+
+    if (obj == null) {
+        return false;
+    }
+    if (obj == this) {
+        return true;
+    }
+    if (!(obj instanceof Queue)) {
+        return false;
+    }
+    
+    @SuppressWarnings("unchecked")
+    Queue<T> q = (Queue<T>)obj;
+    
+    if (q.length()!=length()) {
+    	return false;
+    }
+    
+    Queue<T> backup = new Queue<T>();
+    boolean equals = true;
+	LinkedList<T> p = first;
+	while (p!=null && equals) {			// O(N)
+		T e = q.dequeue();
+		backup.enqueue(e);
+		if (p.data==null) {
+			equals = e==null;			
+		} else {
+			equals = p.data.equals(e);
+		}
+		p = p.next;
+	}
+	
+	// if we insert the backup in reverse order, we restore the queue to its
+	// original state
+	Queue.reverse(backup);
+	while (!backup.isEmpty()) {			// O(N)
+		q.insert(backup.dequeue());
+	}
+	
+	return equals;
+}
+
+
+@Override
+public String toString(){
+	StringBuffer s = new StringBuffer();
+	s.append("[");
+	LinkedList<T> p = first;
+	while (p!=null) {
+		s.append(p.data);
+		p = p.next;
+		if (p!=null) {
+			s.append(", ");
+		}
+	}
+	s.append("]");
+	return s.toString();
 }
 
 }

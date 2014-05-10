@@ -61,4 +61,60 @@ public void queueTest() {
 	
 }
 
+@Test
+public void reverseTest() {
+	
+	Queue<String> q = new Queue<String>();
+	Queue.reverse(q);
+	assertTrue(q.isEmpty());
+	
+	
+	q = new Queue<String>();
+	q.enqueue("a");
+
+	Queue.reverse(q);
+	assertEquals(1, q.length());
+	assertEquals("a", q.head());
+	assertEquals("a", q.tail());
+
+	q.enqueue("b");
+	Queue.reverse(q);
+	assertEquals(2, q.length());
+	assertEquals("b", q.head());
+	assertEquals("a", q.tail());
+
+	q.insert("c");
+	Queue.reverse(q);
+	assertEquals(3, q.length());
+	assertEquals("a", q.head());
+	assertEquals("c", q.tail());
+
+}
+//if equals was destructive of b, we would notice// if equals was destructive of b, we would notice
+@Test
+public void equalsTest() {
+	
+	Queue<String> a = new Queue<String>();
+	Queue<String> b = new Queue<String>();
+	assertTrue(a.equals(b));
+	
+	a.enqueue("a");
+	assertFalse(a.equals(b));
+
+	b.enqueue("a");
+	assertTrue(a.equals(b));
+	b = new Queue<String>("b");
+	assertFalse(a.equals(b));
+
+	b = new Queue<String>("a");
+	a.enqueue("b");
+	a.enqueue("c");
+	b.enqueue("b");
+	b.enqueue("c");
+	assertTrue(a.equals(b));
+	assertEquals(3, b.length());	// if equals was destructive of b...
+	assertTrue(a.equals(b));	
+	
+}
+
 }
