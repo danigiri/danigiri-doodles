@@ -17,7 +17,9 @@ package cat.calidos.doodles;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class GraphTest {
@@ -27,8 +29,8 @@ private static Graph<String>	expectedX;
 private static Graph<String>	expectedY;
 
 
-@BeforeClass
-public static void setup() {
+@Before
+public void setup() {
 	
 	expectedX = new Graph<String>("a");
 	expectedX.addEdge("a", "b");
@@ -107,6 +109,7 @@ public void depthFirstSearchTest() {
 	assertTrue(s.equals(expectedX) || s.equals(expectedY));
 }
 
+
 @Test
 public void breadthFirstFindTest() {
 	
@@ -150,8 +153,57 @@ public void breadthFirstFindTest() {
 			g.addEdge("c", "h");	// route 2 (breadth-first)
 	p = QueueFrom.strings("a", "c", "h");
 	assertEquals(p, g.breadthFirstFind("a", "h"));
+
 }
 
+
+@Test
+public void breadthFirstSearchTest() {
+	
+	Graph<String> g = new Graph<String>("a");
+	Graph<String> s = g.breadthFirstSearch();
+	assertEquals(g, s);
+
+	g.addEdge("a", "b");
+	s = g.breadthFirstSearch();
+	assertEquals(g, s);
+
+	g.addEdge("a", "c");
+	s = g.breadthFirstSearch();
+	assertEquals(g, s);
+
+	g.addEdge("c", "d");
+	s = g.breadthFirstSearch();
+	assertEquals(g, s);
+
+	g.addEdge("a", "d");
+	// g:
+	//		a ->b
+	//		| ->c -\
+	//		|       => d
+	//		\ -----/
+	
+	s = g.breadthFirstSearch();
+	assertEquals(expectedY, s);
+	
+	g.addEdge("b", "e");
+	expectedY.addEdge("b", "e");
+	s = g.breadthFirstSearch();
+	assertEquals(expectedY, s);
+
+	g.addEdge("d", "f");
+	g.addEdge("a", "f");
+	expectedY.addEdge("a", "f");
+	s = g.breadthFirstSearch();
+	assertEquals(expectedY, s);
+
+	g.addEdge("a", "x");
+	g.addEdge("x", "d");
+	expectedY.addEdge("a", "x");
+	s = g.breadthFirstSearch();
+	assertEquals(expectedY, s);
+
+}
 
 //@Test
 //public void asListTest() {

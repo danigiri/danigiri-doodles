@@ -107,12 +107,18 @@ public int vertexCount() {
 	return vertices.keySet().size();
 }
 
+public boolean isEmpty() {
+	return vertexCount()==0;
+}
+
+
 public Queue<T> depthFirstFind(T s, T d) {
 	if (!hasVertex(s) || !hasVertex(d)) {
 		return null;
 	}
 	return depthFirstFind_(new HashSet<T>(), s, d);
 }
+
 
 protected Queue<T> depthFirstFind_(Set<T> p, T s, T d) {
 	
@@ -242,6 +248,52 @@ public Queue<T> breadthFirstFind_(Set<T> v, Queue<T> p, T d) {
 	
 }
 
+
+public Graph<T> breadthFirstSearch() {
+
+	Graph<T> g = new Graph<T>();
+	if (isEmpty()) {
+		return g;
+	}
+	
+	Set<T> v = new HashSet<T>(getVertices());
+	Map<T,T> parents = new HashMap<T,T>(v.size());
+		
+	while (!v.isEmpty()) {
+		T c = v.iterator().next();
+		v.remove(c);
+		g.addVertex(c);	
+		Set<T> edges = getEdges(c);
+		for (T e : edges) {
+
+			if (!parents.containsKey(e)) {
+				parents.put(e, c);
+			} else {
+				// nontrivial, if one of c's 'children' was a 'middleman'
+				// of one of our children and we encountered it before then we
+				// overwrite it. If, on the other hand, come to the middleman later
+				// we do not want to overwrite the already minimal parent
+				//	a ——> b
+				//	 \——> x —- => d
+				// 	  \———————/
+				// c = a, edges = [b, d, x], e = d, parents = [ d:x ]
+				// we overwrite [ d:x ] with [ d:a ]
+				// otherwise
+				// c = x, edges = [d], e = d, parents [ x:a, b:a, d:a ]
+				// we do not overwrite
+				if (edges.contains(parents.get(e))) {
+					parents.put(e, c);
+				}
+			}
+			
+		}
+	}
+	for (T t : parents.keySet()) {
+		g.addEdge(parents.get(t), t);
+	}	
+
+	return g;
+}
 
 
 @Override
