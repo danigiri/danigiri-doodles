@@ -17,12 +17,44 @@ package cat.calidos.doodles;
 
 import static org.junit.Assert.*;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class GraphTest {
 
+
+private static Graph<String>	expectedX;
+private static Graph<String>	expectedY;
+
+
+@BeforeClass
+public static void setup() {
+	
+	expectedX = new Graph<String>("a");
+	expectedX.addEdge("a", "b");
+	expectedX.addEdge("a", "c");
+	expectedX.addEdge("c", "d");
+	// expectedX:
+	//		a ->b
+	//		  ->c -\
+	//		        -> d
+	
+	expectedY = new Graph<String>("a");
+	expectedY.addEdge("a", "b");
+	expectedY.addEdge("a", "c");
+	expectedY.addEdge("a", "d");
+	// expectedY:
+	//		a ->b
+	//		| ->c
+	//		|       -> d
+	//		\ -----/
+	
+}
+
+
 @Test
 public void depthFirstFindTest() {
+	
 	Graph<String> g = new Graph<String>("a");
 	Queue<String> p = QueueFrom.strings("a");
 	assertEquals(p, g.depthFirstFind("a", "a"));
@@ -44,8 +76,10 @@ public void depthFirstFindTest() {
 	
 }
 
+
 @Test
 public void depthFirstSearchTest() {
+	
 	Graph<String> g = new Graph<String>("a");
 	Graph<String> s = g.depthFirstSearch();
 	assertEquals(g, s);
@@ -69,28 +103,55 @@ public void depthFirstSearchTest() {
 	//		|       => d
 	//		\ -----/
 	
-	Graph<String> expectedX = new Graph<String>("a");
-	expectedX.addEdge("a", "b");
-	expectedX.addEdge("a", "c");
-	expectedX.addEdge("c", "d");
-	// expectedX:
-	//		a ->b
-	//		  ->c -\
-	//		        -> d
-	
-	Graph<String> expectedY = new Graph<String>("a");
-	expectedY.addEdge("a", "b");
-	expectedY.addEdge("a", "c");
-	expectedY.addEdge("a", "d");
-	// expectedY:
-	//		a ->b
-	//		| ->c
-	//		|       -> d
-	//		\ -----/
-	
 	s = g.depthFirstSearch();
 	assertTrue(s.equals(expectedX) || s.equals(expectedY));
 }
+
+@Test
+public void breadthFirstFindTest() {
+	
+	Graph<String> g = new Graph<String>("a");
+	Queue<String> p = QueueFrom.strings("a");
+	assertEquals(p, g.breadthFirstFind("a", "a"));
+
+	g.addEdge("a", "b");
+	p = QueueFrom.strings("a", "b");
+	assertEquals(p, g.breadthFirstFind("a", "b"));
+
+	g.addEdge("a", "c");
+	assertEquals(p, g.breadthFirstFind("a", "b"));
+
+	g.addEdge("c", "d");
+	p = QueueFrom.strings("a", "c", "d");
+	assertEquals(p, g.breadthFirstFind("a", "d"));
+
+	// now we do two variants and regardless of path taken we always find 
+	// breadth-first route
+	g = new Graph<String>("a");
+	g.addEdge("a", "b");
+		g.addEdge("b", "d");
+		g.addEdge("b", "e");
+		g.addEdge("b", "h");		// route 1 (breadth-first)
+	g.addEdge("a", "c");
+		g.addEdge("c", "f");
+		g.addEdge("c", "g");
+			g.addEdge("g", "h");	// route 2
+	p = QueueFrom.strings("a", "b", "h");
+	assertEquals(p, g.breadthFirstFind("a", "h"));
+
+	g = new Graph<String>("a");
+	g.addEdge("a", "b");
+		g.addEdge("b", "d");
+		g.addEdge("b", "e");
+			g.addEdge("e", "h");	// route 1
+	g.addEdge("a", "c");
+		g.addEdge("c", "f");
+		g.addEdge("c", "g");
+			g.addEdge("c", "h");	// route 2 (breadth-first)
+	p = QueueFrom.strings("a", "c", "h");
+	assertEquals(p, g.breadthFirstFind("a", "h"));
+}
+
 
 //@Test
 //public void asListTest() {

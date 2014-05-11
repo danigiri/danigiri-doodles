@@ -116,34 +116,35 @@ public Queue<T> depthFirstFind(T s, T d) {
 
 protected Queue<T> depthFirstFind_(Set<T> p, T s, T d) {
 	
+	Queue<T> q = null;	// if we don't find it we will return null
+	
 	// base cases
 	if (s.equals(d)) {
-		Queue<T> q = new Queue<T>();
-		q.enqueue(s);
-		return q;
-	}
-	if (areConnected(s, d)) {
-		Queue<T> l = new Queue<T>();
-		l.enqueue(s);
-		l.enqueue(d);
-		return l;
-	}
+		q = new Queue<T>(s);
+	} else if (areConnected(s, d)) {
+		q = new Queue<T>(s);
+		q.enqueue(d);
+	} else {
 
-	// recursive cases
-	p.add(s);
-	Set<T> edges = getEdges(s);
-	for (T e : edges) {
-		if (!p.contains(e)) {
-			Queue<T> ePath = depthFirstFind_(p, e, d);
-			if (ePath.length()>0 && ePath.tail().equals(d)) {
-				ePath.insert(s);
-				return ePath;
+		// recursive cases
+		p.add(s);
+		boolean found = false;
+		Iterator<T> edges = getEdges(s).iterator();		
+		while (edges.hasNext() && !found) {
+			T e = edges.next();
+			if (!p.contains(e)) {
+				q = depthFirstFind_(p, e, d);
+				if (q!=null && q.length()>0 && q.tail().equals(d)) {
+					q.insert(s);
+					found = true;
+				}
 			}
-		}
+		}	// while
+		
 	}
-	return null;
+	
+	return q;
 }
-
 
 
 protected Graph<T> depthFirstSearch() {
@@ -151,6 +152,13 @@ protected Graph<T> depthFirstSearch() {
 }
 
 
+/**
+ * @param g minimal depth first graph
+ * @param orphans processed edges that aren't connected yet
+ * @param v edges to be visited
+ * @param c current edge
+ * @return
+ */
 protected Graph<T> depthFirstSearch_(Graph<T> g, Set<T> orphans, Set<T> v, T c) {
 	
 	// base case
@@ -176,8 +184,62 @@ protected Graph<T> depthFirstSearch_(Graph<T> g, Set<T> orphans, Set<T> v, T c) 
 			}
 		}
 	}
+	
 	// there might still be unprocessed nodes
 	return depthFirstSearch_(g, orphans, v, null);	// induction: v has decreased
+	
+}
+
+
+public Queue<T> breadthFirstFind(T s, T d) {
+
+	if (!hasVertex(s) || !hasVertex(d)) {
+		return null;
+	}
+	return breadthFirstFind_(new HashSet<T>(getVertices()), new Queue<T>(s), d);
+}
+
+
+/**
+ * @param v vertices to be visited
+ * @param p processing queue (head of queue is current location)
+ * @param d destination
+ * @return
+ */
+public Queue<T> breadthFirstFind_(Set<T> v, Queue<T> p, T d) {
+
+	Queue<T> q = null;
+	
+	// base cases
+	T c = p.dequeue();	// funnily enough, queue is guaranteed to be nonempty
+	if (c.equals(d)) {
+		q = new Queue<T>(c);
+	} else if (areConnected(c, d)) {
+		q = new Queue<T>(c);
+		q.enqueue(d);
+	} else {
+
+		// recursive cases
+		v.remove(c);
+		Set<T> edges = getEdges(c);
+		if (edges.size()==0) {
+			q = breadthFirstFind_(v, p, d);	// induction, v is smaller
+		} else {
+			for (T e : edges) {
+				if (v.contains(e)) {
+					p.enqueue(e);
+				}
+			}
+			q = breadthFirstFind_(v, p, d);	// induction, v is smaller
+			if (areConnected(c, q.head())) {	// if head of queue includes this path
+				q.insert(c);
+			}
+		}
+		
+	}
+	
+	return q;
+	
 }
 
 
