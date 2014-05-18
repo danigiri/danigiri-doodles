@@ -12,31 +12,20 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
-*/
+ */
 package cat.calidos.doodles;
 
 
+public class HeapFrom {
 
-public class QueueFrom {
-
-public static Queue<String> strings(String... v) {
+public static Heap<Integer> ints(int... v) {
 	
-	Queue<String> a = new Queue<String>();
-	for (String i : v) {
-		a.enqueue(i);
+	Heap<Integer> a = new Heap<Integer>();
+	for (int i : v) {
+		a.addMax(Integer.valueOf(i));
 	}
 	return a;
-	
-}
 
-public static Queue<Integer> ints(Integer... v) {
-	
-	Queue<Integer> a = new Queue<Integer>();
-	for (Integer i : v) {
-		a.enqueue(i);
-	}
-	return a;
-	
 }
 
 }
