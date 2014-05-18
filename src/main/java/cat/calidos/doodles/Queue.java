@@ -15,6 +15,7 @@
 */
 package cat.calidos.doodles;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -157,6 +158,16 @@ public boolean equals(Object obj) {		// O(N)
 	return equals;
 }
 
+
+public List<T> toList() {	
+	ArrayList<T> l = new ArrayList<T>(length());
+	LinkedList<T> p = first;
+	while (p!=null) {	
+		l.add(p.data);
+		p = p.next;
+	}
+	return l;
+}
 
 @Override
 public String toString(){

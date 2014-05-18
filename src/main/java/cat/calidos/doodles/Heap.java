@@ -201,14 +201,17 @@ public class Heap<T> {
 	
 	public static <T> Queue<T> heapSort(List<T> l) {	// O(N logN)
 
-		Queue<T> q = new Queue<T>();
 		Heap<T> h = new Heap<T>();
 		for (T e : l) {
 			h.addMax(e);				// O(logN)
 		}
+		
+		Queue<T> q = new Queue<T>();
 		while (!h.isEmpty()) {
 			q.insert(h.popMax());		// O(log N) 
 		}
+		
 		return q;
+		
 	}
 }

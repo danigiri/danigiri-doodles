@@ -22,6 +22,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import cat.calidos.doodles.builders.QueueFrom;
+
 public class GraphTest {
 
 

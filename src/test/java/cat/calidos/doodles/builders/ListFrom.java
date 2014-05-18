@@ -12,28 +12,31 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
-*/
-package cat.calidos.doodles;
+ */
+package cat.calidos.doodles.builders;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
+public class ListFrom {
 
-public class QueueFrom {
-
-public static Queue<String> strings(String... v) {
+public static List<Integer> ints(int... v) {
 	
-	Queue<String> a = new Queue<String>();
-	for (String i : v) {
-		a.enqueue(i);
+	List<Integer> a = new ArrayList<Integer>();
+	for (int i : v) {
+		a.add(Integer.valueOf(i));
 	}
 	return a;
-	
+
 }
 
-public static Queue<Integer> ints(Integer... v) {
 	
-	Queue<Integer> a = new Queue<Integer>();
-	for (Integer i : v) {
-		a.enqueue(i);
+public static List<String> strings(String... v) {
+	
+	List<String> a = new ArrayList<String>();
+	for (String i : v) {
+		a.add(i);
 	}
 	return a;
 	

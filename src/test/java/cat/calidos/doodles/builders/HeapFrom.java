@@ -13,33 +13,21 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-package cat.calidos.doodles;
+package cat.calidos.doodles.builders;
 
-import java.util.ArrayList;
-import java.util.List;
+import cat.calidos.doodles.Heap;
 
 
-public class ListFrom {
+public class HeapFrom {
 
-public static List<Integer> ints(int... v) {
+public static Heap<Integer> ints(int... v) {
 	
-	List<Integer> a = new ArrayList<Integer>();
+	Heap<Integer> a = new Heap<Integer>();
 	for (int i : v) {
-		a.add(Integer.valueOf(i));
+		a.addMax(Integer.valueOf(i));
 	}
 	return a;
 
-}
-
-	
-public static List<String> strings(String... v) {
-	
-	List<String> a = new ArrayList<String>();
-	for (String i : v) {
-		a.add(i);
-	}
-	return a;
-	
 }
 
 }

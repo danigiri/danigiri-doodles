@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import cat.calidos.doodles.builders.ListFrom;
+
 
 public class TreeTest {
 

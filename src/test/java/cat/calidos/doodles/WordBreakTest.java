@@ -25,6 +25,8 @@ import java.util.Set;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import cat.calidos.doodles.builders.ListFrom;
+
 
 public class WordBreakTest {
 

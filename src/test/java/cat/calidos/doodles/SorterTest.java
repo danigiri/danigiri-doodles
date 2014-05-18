@@ -27,6 +27,8 @@ import javax.sound.midi.SysexMessage;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import cat.calidos.doodles.builders.ListFrom;
+
 public class SorterTest {
 
 @Test(expected = NullPointerException.class)
@@ -145,8 +147,11 @@ public void mergeSortListTest() {
 						271, 427, 845, 851, 786, 463, 531, 148, 379, 22, 740, 
 						82, 948, 287, 136, 976, 931, 696, 852, 433, 479, 260, 
 						114, 151, 771, 73, 878, 74, 264, 432, 28);	
-	Sorter.mergeSort(a);
+	List<Integer> sorted = Sorter.mergeSort(a);
 	// printing the number of calls it shows 4070 aprox 4482=500xlog2(500)
+
+	assertEquals(Heap.heapSort(a).toList(), sorted);
+
 }
 
 @Test
@@ -176,16 +181,17 @@ public void quickSortTest() {
 
 @Test
 public void bTreeTest() {
+	
 	assertNull(Sorter.bTree(null));
 
 	List<String> a = ListFrom.strings("hot", "dot", "dog", "lot", "log");	
-	System.err.println(Sorter.bTree(a));
+	//System.err.println(Sorter.bTree(a));
 
 	List<Integer> b = ListFrom.ints(6,20,3,4,10,12);
-	System.err.println(Sorter.bTree(b));
+	//System.err.println(Sorter.bTree(b));
 
 	a = ListFrom.strings("Zot", "Zog");	
-	System.err.println(Sorter.bTree(a));
+	//System.err.println(Sorter.bTree(a));
 
 }
 
