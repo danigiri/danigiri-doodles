@@ -27,8 +27,25 @@ public void uniqueTest() {
 
 	assertTrue(Strings.unique("a"));
 	assertTrue(Strings.unique("abc"));
-	assertFalse(Strings.unique("abca"));	// FIXME: really!?!?!
+	assertFalse(Strings.unique("abca"));
 
 }
+
+
+@Test
+public void longestSubThreeTest() {
+	
+	assertEquals(null, Strings.longestSubThree(null));
+	assertEquals("", Strings.longestSubThree(""));
+	assertEquals("", Strings.longestSubThree("a"));
+	assertEquals("", Strings.longestSubThree("aaa"));
+	assertEquals("", Strings.longestSubThree("ab"));
+	assertEquals("", Strings.longestSubThree("aabb"));
+	assertEquals("abc", Strings.longestSubThree("abc"));
+	assertEquals("bcdd", Strings.longestSubThree("abcdd"));
+	assertEquals("ddefff", Strings.longestSubThree("abbcddefff"));
+
+}
+
 
 }

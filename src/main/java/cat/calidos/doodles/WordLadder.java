@@ -24,7 +24,7 @@ public class WordLadder {
 public static int climb(String start, String end, List<String> dict) {
 	
 	// sort the dictionary and create a tree of prefixes (N*LOG(N))
-	List<String>sortedDict = Sorter.sortList(new ArrayList<String>(dict));
+	List<String>sortedDict = Sorter.mergeSort(new ArrayList<String>(dict));
 	Tree<String>keyTree = WordBreak.buildKeyTree("", sortedDict);
 
 	// next create a graph of adjacencies

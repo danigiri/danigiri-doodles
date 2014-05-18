@@ -185,6 +185,7 @@ protected Graph<T> depthFirstSearch_(Graph<T> g, Set<T> orphans, Set<T> v, T c) 
 			g.addEdge(c, e);				// orphan is now reconnected to the graph, yay!
 			orphans.remove(e);
 		} else {
+			// FIXME: this looks odd
 			if (v.contains(e)) {			// recursive case, not an orphan & unprocessed
 				g = depthFirstSearch_(g, orphans, v, e);	// induction: v has decreased
 			}

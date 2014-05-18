@@ -80,25 +80,25 @@ public void mergeSortedListsTest() {
 
 
 @Test
-public void sortListTest() {
+public void mergeSortListTest() {
 	
-	assertNull(Sorter.sortList(null));
+	assertNull(Sorter.mergeSort(null));
 
 	List<Integer> a = ListFrom.ints(3, 2, 1);
 	List<Integer> c = ListFrom.ints(1, 2, 3);
-	assertEquals(c, Sorter.sortList(a));
+	assertEquals(c, Sorter.mergeSort(a));
 
 	a = ListFrom.ints(1, 2, 3);
 	c = ListFrom.ints(1, 2, 3);
-	assertEquals(c, Sorter.sortList(a));
+	assertEquals(c, Sorter.mergeSort(a));
 
 	a = ListFrom.ints(3, 2, 1, 4, 6, 5);
 	c = ListFrom.ints(1, 2, 3, 4, 5, 6);
-	assertEquals(c, Sorter.sortList(a));
+	assertEquals(c, Sorter.mergeSort(a));
 	
 	a = ListFrom.ints(1, 1, 10, 2, 2, 11);
 	c = ListFrom.ints(1, 1, 2, 2, 10, 11);
-	assertEquals(c, Sorter.sortList(a));
+	assertEquals(c, Sorter.mergeSort(a));
 	
 	a = ListFrom.ints(	844, 860, 791, 613, 963, 365, 374, 272, 575, 684, 883, 
 						387, 64, 349, 407, 37, 864, 611, 189, 646, 564, 888, 
@@ -145,8 +145,32 @@ public void sortListTest() {
 						271, 427, 845, 851, 786, 463, 531, 148, 379, 22, 740, 
 						82, 948, 287, 136, 976, 931, 696, 852, 433, 479, 260, 
 						114, 151, 771, 73, 878, 74, 264, 432, 28);	
-	Sorter.sortList(a);
+	Sorter.mergeSort(a);
 	// printing the number of calls it shows 4070 aprox 4482=500xlog2(500)
+}
+
+@Test
+public void quickSortTest() {
+	
+	
+	assertNull(Sorter.quickSort(null));
+
+	List<Integer> a = ListFrom.ints(3, 2, 1);
+	List<Integer> c = ListFrom.ints(1, 2, 3);
+	assertEquals(c, Sorter.quickSort(a));
+
+	a = ListFrom.ints(1, 2, 3);
+	c = ListFrom.ints(1, 2, 3);
+	assertEquals(c, Sorter.quickSort(a));
+
+	a = ListFrom.ints(3, 2, 1, 4, 6, 5);
+	c = ListFrom.ints(1, 2, 3, 4, 5, 6);
+	assertEquals(c, Sorter.quickSort(a));
+	
+	a = ListFrom.ints(1, 1, 10, 2, 2, 11);
+	c = ListFrom.ints(1, 1, 2, 2, 10, 11);
+	assertEquals(c, Sorter.quickSort(a));
+	
 }
 
 
@@ -163,7 +187,6 @@ public void bTreeTest() {
 	a = ListFrom.strings("Zot", "Zog");	
 	System.err.println(Sorter.bTree(a));
 
-	
 }
 
 }

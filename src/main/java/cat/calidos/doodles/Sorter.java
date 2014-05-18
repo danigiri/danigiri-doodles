@@ -62,7 +62,7 @@ public class Sorter {
 	}
 
 	
-	public static <T extends Comparable<? super T>> List<T> sortList(final List<T>a) {
+	public static <T extends Comparable<? super T>> List<T> mergeSort(final List<T>a) {
 		
 		// base cases
 		if (a==null) {
@@ -76,12 +76,49 @@ public class Sorter {
 		
 		int halfSize = size/2;
 				
-		List<T> left = Sorter.sortList(new ArrayList<T>(a.subList(0, halfSize)));
-		List<T> right = Sorter.sortList(new ArrayList<T>(a.subList(halfSize, size)));
+		List<T> left = Sorter.mergeSort(a.subList(0, halfSize));
+		List<T> right = Sorter.mergeSort(a.subList(halfSize, size));
 		
 		return Sorter._mergeSortedLists(left, right);
 		
 	}
+	
+	
+	public static <T extends Comparable<? super T>> List<T> quickSort(List<T> l) {
+
+		// base cases
+		if (l==null) {
+			return null;
+		}
+		int size = l.size();
+		if (size<=1) {
+			return l;
+		}
+
+		// recursive cases
+		List<T> left = new ArrayList<T>();
+		List<T> right = new ArrayList<T>();
+		int pivot = size/2;
+		T pivotValue = l.get(pivot);
+	 	for (int i=0; i<size; i++) {
+	 		if (i!=pivot) {
+	 			T v = l.get(i);
+	 			if (v.compareTo(pivotValue)<=0) {
+	 				left.add(v);
+	 			} else {
+	 				right.add(v);
+	 			}
+	 		}
+		}
+		left = Sorter.quickSort(left);		// induction, smaller lists
+		right = Sorter.quickSort(right);
+		left.add(pivotValue);
+		left.addAll(right);
+	
+		return left;	
+
+	}
+	
 	
 	public static <X> Tree<X> bTree(final List<X>l) {
 		if (l==null) {

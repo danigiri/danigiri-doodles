@@ -38,7 +38,7 @@ public static boolean seg(final String s, final Set<String>dict) {
 	}
 
 	// sort the dictionary and create a tree of prefixes (N*LOG(N))
-	List<String>sortedDict = Sorter.sortList(new ArrayList<String>(dict));
+	List<String>sortedDict = Sorter.mergeSort(new ArrayList<String>(dict));
 	Tree<String>keyTree = WordBreak.buildKeyTree("", sortedDict);
 
 	String matched = seg(s, keyTree);
