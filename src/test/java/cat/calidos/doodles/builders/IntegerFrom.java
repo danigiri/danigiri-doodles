@@ -12,34 +12,28 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
-*/
+ */
 package cat.calidos.doodles.builders;
 
-import cat.calidos.doodles.Queue;
+
+public class IntegerFrom {
 
 
-
-public class QueueFrom {
-
-public static Queue<String> strings(String... v) {
+public static int bitString(String b) {
 	
-	Queue<String> a = new Queue<String>();
-	for (String i : v) {
-		a.enqueue(i);
+	int x = 0x0;
+	int one = 0x1;
+	int zero = ~(0x1);
+	int length = b.length();
+	for (int i=0; i<length;i++) {
+		if (b.charAt(length-i-1)=='1') {
+			x |= one;
+		} else {
+			x &= zero;
+		}
+		x = x << 1;
 	}
-	return a;
-	
-}
-
-
-public static Queue<Integer> ints(Integer... v) {
-	
-	Queue<Integer> a = new Queue<Integer>();
-	for (Integer i : v) {
-		a.enqueue(i);
-	}
-	return a;
-	
+	return x;
 }
 
 }

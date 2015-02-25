@@ -43,6 +43,7 @@ public class Heap<T> {
 		return data.size()-1;
 	}
 
+	
 	public T peek() {
 		if (isEmpty()) {
 			throw new IndexOutOfBoundsException();
@@ -50,16 +51,45 @@ public class Heap<T> {
 		return data.get(1);
 	}
 
+	
 	public T popMax() {
 		T v = peek();
 		T tempRootValue = removeLast();
 		if (!isEmpty()) {
 			data.set(1, tempRootValue);
 			// we need to restore the heap property
-			bubbleDown(1); 
-		}
+			bubbleDown(1);
+		}	
+		// if empty, v contains the last value so no need to bubble down
 		return v;
 
+	}
+
+	
+	public void addMax(T v) {
+		int pos = add(v);
+		bubbleUp(pos);
+	}
+
+	public static <T> Queue<T> heapSort(List<T> l) {	// O(N logN)
+	
+		Heap<T> h = new Heap<T>();
+		for (T e : l) {
+			h.addMax(e);				// O(logN)
+		}
+		
+		Queue<T> q = new Queue<T>();
+		while (!h.isEmpty()) {
+			q.insert(h.popMax());		// O(log N) 
+		}
+		
+		return q;
+		
+	}
+
+	List<T> toList() {
+		List<T> l = new ArrayList<T>(data);
+		return l.subList(1, l.size());
 	}
 
 	protected void bubbleDown(int pos) {
@@ -96,14 +126,8 @@ public class Heap<T> {
 						bubbleDown(leftIndexFrom(pos));
 					}
 				}
-
+	
 		}
-	}
-
-
-	public void addMax(T v) {
-		int pos = add(v);
-		bubbleUp(pos);
 	}
 
 	protected void bubbleUp(int pos) {
@@ -128,6 +152,7 @@ public class Heap<T> {
 		return data.size()-1;
 	}
 	
+	
 	protected T removeLast() {
 		if (isEmpty()) {
 			throw new IndexOutOfBoundsException();
@@ -138,6 +163,7 @@ public class Heap<T> {
 		return last;
 	}
 
+	
 	protected T valueAt(int p) {
 		if (p>=data.size()) {
 			throw new IndexOutOfBoundsException();
@@ -145,6 +171,7 @@ public class Heap<T> {
 		return data.get(p);
 	}
 
+	
 	protected int leftIndexFrom(int p) {
 		return p*2;
 	}
@@ -191,27 +218,5 @@ public class Heap<T> {
 
 	protected boolean hasParent(int p) {
 		return (p>1);
-	}
-
-	List<T> toList() {
-		List<T> l = new ArrayList<T>(data);
-		return l.subList(1, l.size());
-	}
-	
-	
-	public static <T> Queue<T> heapSort(List<T> l) {	// O(N logN)
-
-		Heap<T> h = new Heap<T>();
-		for (T e : l) {
-			h.addMax(e);				// O(logN)
-		}
-		
-		Queue<T> q = new Queue<T>();
-		while (!h.isEmpty()) {
-			q.insert(h.popMax());		// O(log N) 
-		}
-		
-		return q;
-		
 	}
 }

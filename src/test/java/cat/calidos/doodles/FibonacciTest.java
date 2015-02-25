@@ -1,5 +1,5 @@
 /**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
+ Copyright 2015 Daniel Giribet <dani - calidos.cat>
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,32 +13,32 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cat.calidos.doodles.builders;
 
-import cat.calidos.doodles.Queue;
+package cat.calidos.doodles;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 
+public class FibonacciTest {
 
-public class QueueFrom {
+@Test
+public void testFibonacci() {
 
-public static Queue<String> strings(String... v) {
+	assertEquals(1, Fibonacci.fib(0));
 	
-	Queue<String> a = new Queue<String>();
-	for (String i : v) {
-		a.enqueue(i);
-	}
-	return a;
+	assertEquals(1, Fibonacci.fib(1));
 	
-}
-
-
-public static Queue<Integer> ints(Integer... v) {
+	assertEquals(2, Fibonacci.fib(2));
 	
-	Queue<Integer> a = new Queue<Integer>();
-	for (Integer i : v) {
-		a.enqueue(i);
-	}
-	return a;
+	assertEquals(3, Fibonacci.fib(3));
+
+	assertEquals(5, Fibonacci.fib(4));
+
+	assertEquals(8, Fibonacci.fib(5));
+	
+	assertEquals(Fibonacci.fib(9)+Fibonacci.fib(10), Fibonacci.fib(11));
 	
 }
 

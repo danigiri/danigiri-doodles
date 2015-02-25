@@ -21,6 +21,28 @@ import java.util.List;
 public class Sorter {
 	
 
+	public static <T extends Comparable<? super T>> List<T> mergeSort(final List<T>a) {
+		
+		// base cases
+		if (a==null) {
+			return null;
+		}
+		int size = a.size();
+		if (size<=1) {
+			return new ArrayList<T>(a);
+		}
+		// proven: size >=2
+		
+		int halfSize = size/2;
+				
+		List<T> left = Sorter.mergeSort(a.subList(0, halfSize));
+		List<T> right = Sorter.mergeSort(a.subList(halfSize, size));
+		
+		return Sorter._mergeSortedLists(left, right);
+		
+	}
+
+
 	public static <T extends Comparable<? super T>> List<T> mergeSortedLists(final List<T> a, final List<T> b) {
 		
 		if ((a==null || b==null)) {
@@ -61,28 +83,6 @@ public class Sorter {
 		
 	}
 
-	
-	public static <T extends Comparable<? super T>> List<T> mergeSort(final List<T>a) {
-		
-		// base cases
-		if (a==null) {
-			return null;
-		}
-		int size = a.size();
-		if (size<=1) {
-			return new ArrayList<T>(a);
-		}
-		// proven: size >=2
-		
-		int halfSize = size/2;
-				
-		List<T> left = Sorter.mergeSort(a.subList(0, halfSize));
-		List<T> right = Sorter.mergeSort(a.subList(halfSize, size));
-		
-		return Sorter._mergeSortedLists(left, right);
-		
-	}
-	
 	
 	public static <T extends Comparable<? super T>> List<T> quickSort(List<T> l) {
 
