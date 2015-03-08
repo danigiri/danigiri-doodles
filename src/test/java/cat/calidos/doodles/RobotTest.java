@@ -30,7 +30,7 @@ public void testPathsInSquareGrid() {
 
 	assertEquals(0, Robot.pathsInSquareGrid(0));
 
-	assertEquals(0, Robot.pathsInSquareGrid(1));
+	assertEquals(0, Robot.pathsInSquareGrid(1));	// FIXME: this should be 1
 
 	assertEquals(4, Robot.pathsInSquareGrid(2));
 
@@ -77,8 +77,32 @@ public void testPathsInSquareGridWithObstacles() {
 	  		  		  {false, false}};	
 	assertEquals(2, Robot.pathsInSquareGridWithObstacles(2, o5));
 
-	
-	
+
+	boolean[][] o6 = {{false, false, false}, 
+	  		  		  {false, false, false},
+	  		  		  {true, false, false}};	
+	assertEquals(15, Robot.pathsInSquareGridWithObstacles(3, o6));
+
 }
+
+
+@Test
+public void testNonStopPathsInSquareGrid() {
+	
+	assertEquals(0, Robot.nonStopPathsInSquareGrid(0));
+
+	assertEquals(1, Robot.nonStopPathsInSquareGrid(1));
+
+	assertEquals(2, Robot.nonStopPathsInSquareGrid(2));
+
+	assertEquals(6, Robot.nonStopPathsInSquareGrid(3));
+	
+	// the six possible paths:
+	// ---	--.	|..	|..	|..	--.
+	// ..|	.|.	|..	---	-|.	.|-
+	// ..x	.-x	--x	..x	.-x	..x
+
+}
+
 
 }

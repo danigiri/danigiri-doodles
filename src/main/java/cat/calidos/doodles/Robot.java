@@ -6,10 +6,11 @@ public class Robot {
 
 /**	Given a grid of nxn, and a robot that can go right and down, compute how many
 *	different paths the robot can take, taking into account the robot can stop at
-*	any time
+*	any time (right and down in absolute coordinates and not from the POV of the
+*	robot, otherwise it's a completely different algorithm)
 * 	@param n size of the grid
 * 	@return number of possible paths
-*////////////////////////////////////////////////////////////////////////////////
+*///////////////////////////////////////////////////////////////////////////////
 public static int pathsInSquareGrid(int n) {
 
 	// base cases
@@ -26,12 +27,7 @@ public static int pathsInSquareGrid(int n) {
 private static int pathsInGrid(int w, int h) {
 	// preconditions: n>=0, m>=0
 	
-	// base case
-	if (w==0 && h==0) {
-		return 0;
-	}
-
-	// recursive cases
+	// recursive cases (base cases are implict in the empty elses)
 	int p = 0;
 	if (w>0) {	// we can go right
 		p = 1+pathsInGrid(w-1, h);
@@ -80,6 +76,44 @@ private static int pathsInGridWithObstacles(int i, int j, int n, boolean[][] obs
 	return p;
 }
 
+/**	Given a grid of nxn, and a robot that can go right and down, compute how many
+*	different paths the robot can take, *the robot only stops when has nowhere 
+*	else to go (is at the bottom)*
+* 	@param n size of the grid
+* 	@return number of possible paths
+*///////////////////////////////////////////////////////////////////////////////
+public static int nonStopPathsInSquareGrid(int n) {
+	// error checking
+	if (n<0) {
+		throw new IndexOutOfBoundsException("Cannot calculate nonstop paths for negative grid ("+n+")");
+	} else if (n==0) {
+		return 0;
+	}
+	return nonStopPathsInSquareGrid(0, 0, n);
+}
+
+
+
+
+private static int nonStopPathsInSquareGrid(int i, int j, int n) {
+	// preconditions: 0<=i<n, 0<=j<n, n>0
+
+	// base case (at the bottom, that’s one trip)
+	// note that once we're at the bottow we can go down any more on this and
+	// any possible paths, which means we go right to the end and count a +1
+	if (j+1==n) {
+		return 1;
+	}
+	
+	int p = 0;
+	
+	// going right on all the row and on each cell we go down
+	for (int iNext = i; iNext<n; iNext++) {
+		p += nonStopPathsInSquareGrid(iNext, j+1, n);
+	} 
+	
+	return p;
+}
 
 
 }
