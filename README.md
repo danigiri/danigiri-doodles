@@ -10,6 +10,7 @@ Attempting to write elegant and reasonably efficient code, exploiting recursivit
 Problems tackled
 ----------------
 
+* Fibonacci: recursive calculation
 * Longest palindrome (still pretty innefficient, sorry)
 * Reverse polish notation calculator
 * Sorting: Merge sort, quick sort, bucket sort and heap sort 
@@ -25,7 +26,7 @@ Problems tackled
 Structures created
 ------------------
 
-* Stack
+* Stack (+a stack that retrieves the minimum value at O(1))
 * Graph
 * Linked List
 * Queue
