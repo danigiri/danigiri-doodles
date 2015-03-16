@@ -24,6 +24,8 @@ import java.util.TreeSet;
 
 import javax.sound.midi.SysexMessage;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -31,78 +33,13 @@ import cat.calidos.doodles.builders.ListFrom;
 
 public class SorterTest {
 
-@Test(expected = NullPointerException.class)
-public void mergeSortedListsTestNull() {
-	Sorter.mergeSortedLists(null, null);
-}
+private static List<Integer>	bigUnsortedList;
 
-
-@Test(expected = NullPointerException.class)
-public void mergeSortedListsTestNull2() {
-
-	List<Integer> a = ListFrom.ints(1);	
-	Sorter.mergeSortedLists(a, null);
-
-}
-
-
-@Test(expected = NullPointerException.class)
-public void mergeSortedListsTestNull3() {
+@BeforeClass
+public static void dataSetup() {
 	
-	List<Integer> a = ListFrom.ints(1);	
-	Sorter.mergeSortedLists(null, a);
-
-}
-
-
-@Test
-public void mergeSortedListsTest() {
-
-	List<Integer> a = ListFrom.ints(1,2,3);
-	List<Integer> b = ListFrom.ints(4,5,6);
-
-	List<Integer> c = ListFrom.ints(1,2,3,4,5,6);
-	assertEquals(c, Sorter.mergeSortedLists(a, b));
- 	assertEquals(c, Sorter.mergeSortedLists(b, a));
-
-	a = ListFrom.ints(1,6);
-	b = ListFrom.ints(2,3,4,5);
-	assertEquals(c, Sorter.mergeSortedLists(a, b));
-
-	a = ListFrom.ints(1,2,3);
-	c = ListFrom.ints(1,1,2,2,3,3);
-	assertEquals(c, Sorter.mergeSortedLists(a, a));
-	
-	a = ListFrom.ints(1, 4, 5, 8, 9);
-	b = ListFrom.ints(2, 4, 5, 6, 7);
-	c = ListFrom.ints(1, 2, 4, 4, 5, 5, 6, 7, 8, 9);
-	assertEquals(c, Sorter.mergeSortedLists(a, b));
-	
-}
-
-
-@Test
-public void mergeSortListTest() {
-	
-	assertNull(Sorter.mergeSort(null));
-
-	List<Integer> a = ListFrom.ints(3, 2, 1);
-	List<Integer> c = ListFrom.ints(1, 2, 3);
-	assertEquals(c, Sorter.mergeSort(a));
-
-	a = ListFrom.ints(1, 2, 3);
-	c = ListFrom.ints(1, 2, 3);
-	assertEquals(c, Sorter.mergeSort(a));
-
-	a = ListFrom.ints(3, 2, 1, 4, 6, 5);
-	c = ListFrom.ints(1, 2, 3, 4, 5, 6);
-	assertEquals(c, Sorter.mergeSort(a));
-	
-	a = ListFrom.ints(1, 1, 10, 2, 2, 11);
-	c = ListFrom.ints(1, 1, 2, 2, 10, 11);
-	assertEquals(c, Sorter.mergeSort(a));
-	
-	a = ListFrom.ints(	844, 860, 791, 613, 963, 365, 374, 272, 575, 684, 883, 
+	bigUnsortedList = ListFrom.ints(	
+						844, 860, 791, 613, 963, 365, 374, 272, 575, 684, 883, 
 						387, 64, 349, 407, 37, 864, 611, 189, 646, 564, 888, 
 						422, 90, 635, 874, 909, 745, 373, 403, 586, 637, 692, 
 						938, 606, 351, 718, 297, 857, 132, 337, 998, 164, 809, 
@@ -147,22 +84,106 @@ public void mergeSortListTest() {
 						271, 427, 845, 851, 786, 463, 531, 148, 379, 22, 740, 
 						82, 948, 287, 136, 976, 931, 696, 852, 433, 479, 260, 
 						114, 151, 771, 73, 878, 74, 264, 432, 28);	
-	List<Integer> sorted = Sorter.mergeSort(a);
-	// printing the number of calls it shows 4070 aprox 4482=500xlog2(500)
+	
+}
 
-	assertEquals(Heap.heapSort(a).toList(), sorted);
+@Test(expected = NullPointerException.class)
+public void mergeSortedListsTestNull() {
+	Sorter.mergeSortedLists(null, null);
+}
+
+
+@Test(expected = NullPointerException.class)
+public void mergeSortedListsTestNull2() {
+
+	List<Integer> a = ListFrom.ints(1);	
+	Sorter.mergeSortedLists(a, null);
+
+}
+
+
+@Test(expected = NullPointerException.class)
+public void mergeSortedListsTestNull3() {
+	
+	List<Integer> a = ListFrom.ints(1);	
+	Sorter.mergeSortedLists(null, a);
+
+}
+
+
+@Test
+public void mergeSortedListsTest() {
+
+	List<Integer> a = ListFrom.ints(1,2,3);
+	List<Integer> b = ListFrom.ints(4,5,6);
+
+	List<Integer> c = ListFrom.ints(1,2,3,4,5,6);
+	assertEquals(c, Sorter.mergeSortedLists(a, b));	
+ 	assertEquals(c, Sorter.mergeSortedLists(b, a));
+
+	a = ListFrom.ints(1,6);
+	b = ListFrom.ints(2,3,4,5);
+	assertEquals(c, Sorter.mergeSortedLists(a, b));
+
+	a = ListFrom.ints(1,2,3);
+	c = ListFrom.ints(1,1,2,2,3,3);
+	assertEquals(c, Sorter.mergeSortedLists(a, a));
+	
+	a = ListFrom.ints(1, 4, 5, 8, 9);
+	b = ListFrom.ints(2, 4, 5, 6, 7);
+	c = ListFrom.ints(1, 2, 4, 4, 5, 5, 6, 7, 8, 9);
+	assertEquals(c, Sorter.mergeSortedLists(a, b));
+	
+}
+
+
+@Test
+public void mergeSortListTest() {
+	
+	assertNull(Sorter.mergeSort(null));
+
+	List<Integer> a = ListFrom.ints(3, 2, 1);
+	List<Integer> c = ListFrom.ints(1, 2, 3);
+	assertEquals(c, Sorter.mergeSort(a));
+	
+	// we test the input was not modified
+	List<Integer> unmodifiedA = ListFrom.ints(3, 2, 1);
+	assertEquals(unmodifiedA, a);
+
+	a = ListFrom.ints(1, 2, 3);
+	c = ListFrom.ints(1, 2, 3);
+	assertEquals(c, Sorter.mergeSort(a));
+
+	a = ListFrom.ints(3, 2, 1, 4, 6, 5);
+	c = ListFrom.ints(1, 2, 3, 4, 5, 6);
+	assertEquals(c, Sorter.mergeSort(a));
+	
+	a = ListFrom.ints(1, 1, 10, 2, 2, 11);
+	c = ListFrom.ints(1, 1, 2, 2, 10, 11);
+	assertEquals(c, Sorter.mergeSort(a));
+	
+	// note that even though methods can mark input parameters as final
+	// we do not see it directly from the method code, it's advisable to clone
+	// the list as input
+	List<Integer> sorted = Sorter.mergeSort(ListFrom.list(bigUnsortedList));
+	// note: printing the number of calls it shows 4070 aprox 4482=500xlog2(500)
+
+	// compare the mergesort with another sort which we assume works as well
+	assertEquals(Heap.heapSort(ListFrom.list(bigUnsortedList)).toList(), sorted);
 
 }
 
 @Test
 public void quickSortTest() {
-	
-	
+
 	assertNull(Sorter.quickSort(null));
 
 	List<Integer> a = ListFrom.ints(3, 2, 1);
 	List<Integer> c = ListFrom.ints(1, 2, 3);
 	assertEquals(c, Sorter.quickSort(a));
+	
+	List<Integer> unmodifiedA = ListFrom.ints(3, 2, 1);
+	assertEquals(unmodifiedA, a);
 
 	a = ListFrom.ints(1, 2, 3);
 	c = ListFrom.ints(1, 2, 3);
@@ -187,12 +208,77 @@ public void bTreeTest() {
 	List<String> a = ListFrom.strings("hot", "dot", "dog", "lot", "log");	
 	//System.err.println(Sorter.bTree(a));
 
-	List<Integer> b = ListFrom.ints(6,20,3,4,10,12);
+	List<Integer> b = ListFrom.ints(6, 20, 3, 4, 10, 12);
 	//System.err.println(Sorter.bTree(b));
 
 	a = ListFrom.strings("Zot", "Zog");	
 	//System.err.println(Sorter.bTree(a));
 
 }
+
+
+@Test
+public void bucketSortTest() {
+	
+	assertNull(Sorter.bucketSort(null));
+
+	List<Integer> a = ListFrom.ints(3, 2, 1);
+	List<Integer> c = ListFrom.ints(1, 2, 3);
+	assertEquals(c, Sorter.bucketSort(a));
+
+	List<Integer> unmodifiedA = ListFrom.ints(3, 2, 1);
+	assertEquals(unmodifiedA, a);
+
+	a = ListFrom.ints(1, 2, 3);
+	c = ListFrom.ints(1, 2, 3);
+	assertEquals(c, Sorter.bucketSort(a));
+
+	a = ListFrom.ints(1, 1, 1);
+	c = ListFrom.ints(1, 1, 1);
+	assertEquals(c, Sorter.bucketSort(a));
+
+	a = ListFrom.ints(1, 1, 10, 2, 2, 11);
+	c = ListFrom.ints(1, 1, 2, 2, 10, 11);
+	assertEquals(c, Sorter.bucketSort(a));
+	
+}
+
+
+@Test
+public void multilevelBucketSortTest() {
+	
+	int mask = 0xf00; //0xf00
+	assertNull(Sorter.bucketSort(null, mask));
+
+	List<Integer> a = ListFrom.ints(333, 222, 111);
+	List<Integer> c = ListFrom.ints(111, 222, 333);
+	assertEquals(c, Sorter.bucketSort(a, mask));
+
+	List<Integer> unmodifiedA = ListFrom.ints(333, 222, 111);
+	assertEquals(unmodifiedA, a);
+
+	// this test case would have the first two calls on the same
+	// bucket and the deepest calls would sort the items properly
+	a = ListFrom.ints(103, 102, 101);
+	c = ListFrom.ints(101, 102, 103);
+	assertEquals(c, Sorter.bucketSort(a, mask));
+	
+	a = ListFrom.ints(111, 222, 333);
+	c = ListFrom.ints(111, 222, 333);
+	assertEquals(c, Sorter.bucketSort(a, mask));
+
+	// we don't have to use mask-friendly numbers, any will do
+	a = ListFrom.ints(1, 1, 1);
+	c = ListFrom.ints(1, 1, 1);
+	assertEquals(c, Sorter.bucketSort(a, mask));
+
+	a = ListFrom.ints(1, 1, 10, 2, 2, 11);
+	c = ListFrom.ints(1, 1, 2, 2, 10, 11);
+	assertEquals(c, Sorter.bucketSort(a, mask));
+	
+	
+	
+}
+
 
 }

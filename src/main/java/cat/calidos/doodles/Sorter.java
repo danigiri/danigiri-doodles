@@ -168,4 +168,142 @@ public class Sorter {
 		return bTree(l, t);
 	}
 	
+	
+	/** One level general bucket sort of numbers (positive integers)
+	* 	@param l list to be sorted
+	* 	@return sorted list
+	*///////////////////////////////////////////////////////////////////////////
+	public static <T extends Number> List<T> bucketSort(final List<T> l) {
+
+		// Number bucket sorting algorithm using a direct access array, optimised for
+		// lists with values that are evenly distributed (age, etc.).
+		// The general idea is that we do a first iteration where we group elements in 
+		// ‘buckets’ that are sorted themselves and once that is done, we sort each 
+		// bucket individually (using whatever method, brute force even), sequentially listing 
+		// sorted buckets results in a sorted list 
+		
+		// Options:
+		// 	- generalised algorithm, were each bucket is recursively sorted using bucketSort
+		//	- different levels, for instance, to sort people in ages, we do bucket sort on the
+		//	  years of age, and then we do a different sort (quicksort or whatever) using month & day 
+		//
+		// We will implement the generalised option, using numbers as elements
+		// (as elements we extend Number so we will check for negative values for sanity)
+		// Direct integer implementation has an issue where as potentially large sparse
+		// structures are created so use with care
+
+		// base cases
+		if (l==null) {
+			return null;
+		}
+		if (l.size()<2) {
+			return l;
+		}
+		
+		// next we partially order into a sorted bucket list of unordered stuff
+		List<List<T>> buckets = new ArrayList<List<T>>();
+		for (T e : l) {
+			
+			int bucketIndex = e.intValue();
+			if (bucketIndex>=0) {
+				List<T> bucket = null;
+				int bucketsSize = buckets.size();
+				if (bucketIndex>=bucketsSize) {	// grow array by index minus size (slow!)
+					bucket = new ArrayList<T>();
+					for (int i=bucketsSize; i<bucketIndex; i++) {
+						buckets.add(null);
+					}
+					buckets.add(bucket);
+				} else {						// bucket existed (empty or not)
+					bucket = buckets.get(bucketIndex);
+					if (bucket==null) {					
+						bucket = new ArrayList<T>();
+						buckets.set(bucketIndex, bucket);
+					}
+				}
+				bucket.add(e);					// add element to bucket
+			} else {
+				throw new IndexOutOfBoundsException("Cannot sort negative values");
+			}
+			
+		}
+		
+		// recursive case (not really)
+		// Bucket list is sorted itself and we would recursively sort the buckets 
+		// themselves, but as we do not have several levels of sorting refinement
+		// (year, month-day) then the buckets have only one element or repeats
+		// We add them sequentially, creating a completely sorted list
+		List<T> sortedList = new ArrayList<T>(l.size());
+		for (List<T> b : buckets) {
+			if (b!=null) {
+				sortedList.addAll(b);
+				// sortedList.addAll(bucketSortByAnotherCriteria(b));
+			}
+		}
+		return sortedList;
+	}
+	
+	// TODO: simulate finer grained
+	public static <T extends Number> List<T> bucketSort(final List<T> l, int mask) {
+
+		// base cases (trivial cases)
+		if (l==null) {
+			return null;
+		}
+		if (l.size()<2) {
+			return l;
+		}
+				
+		// base cases
+		// firstly we partially order into a sorted bucket list of unordered stuff
+		List<List<T>> buckets = new ArrayList<List<T>>();
+		for (T e : l) {
+					
+			int bucketIndex = e.intValue() & mask;
+			if (bucketIndex>=0) {
+				List<T> bucket = null;
+				int bucketsSize = buckets.size();
+				if (bucketIndex>=bucketsSize) {	// grow array by index minus size (slow!)
+					bucket = new ArrayList<T>();
+					for (int i=bucketsSize; i<bucketIndex; i++) {
+						buckets.add(null);
+					}
+					buckets.add(bucket);
+				} else {						// bucket existed (empty or not)
+					bucket = buckets.get(bucketIndex);
+					if (bucket==null) {					
+						bucket = new ArrayList<T>();
+						buckets.set(bucketIndex, bucket);
+					}
+				}
+				bucket.add(e);					// add element to bucket
+			} else {
+					throw new IndexOutOfBoundsException("Cannot sort negative values");
+			}
+						
+		}
+				
+		// recursive case
+		// Bucket list is sorted itself and we would recursively sort the buckets 
+		// (with more precision on each call until we run out of 'precision',
+		// an example would be when we do not have seconds on a date or whatever)
+		// Then we add them sequentially, creating a completely sorted list
+		// NOTE: this could be further optimised with a mask that goes like 0x0ff --> 0x00f
+		//		 in a way that zeroes are not called recursively any further but
+		// 		 we're assuming a mask coherent with the dataset otherwise use some
+		//		 other sorting algorithm =)
+		List<T> sortedList = new ArrayList<T>(l.size());
+		for (List<T> b : buckets) {
+			if (b!=null) {
+				int refinedMask = mask >> 4;	// shift one byte
+				if (refinedMask==0) {			// only recurse if further refinement is possible
+					sortedList.addAll(b);		// otherwise assume sorted
+				} else {
+					sortedList.addAll(bucketSort(b, refinedMask));
+				}
+			}
+		}
+		return sortedList;
+		
+	}
 }

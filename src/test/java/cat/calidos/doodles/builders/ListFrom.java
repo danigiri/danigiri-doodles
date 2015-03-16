@@ -35,11 +35,19 @@ public static List<Integer> ints(int... v) {
 public static List<String> strings(String... v) {
 	
 	List<String> a = new ArrayList<String>();
-	for (String i : v) {
-		a.add(i);
+	for (String e : v) {
+		a.add(e);
 	}
 	return a;
 	
+}
+
+public static <T> List<T> list(List<T> l) {
+	List<T> a = new ArrayList<T>(l.size());
+	for (T e : l) {
+		a.add(e);
+	}
+	return a;
 }
 
 }
