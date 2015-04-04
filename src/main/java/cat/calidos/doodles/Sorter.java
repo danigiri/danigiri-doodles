@@ -243,7 +243,7 @@ public class Sorter {
 		return sortedList;
 	}
 	
-	// TODO: simulate finer grained
+
 	public static <T extends Number> List<T> bucketSort(final List<T> l, int mask) {
 
 		// base cases (trivial cases)
@@ -306,4 +306,111 @@ public class Sorter {
 		return sortedList;
 		
 	}
+	
+	// First we do a merge sort in place and then we copy remaining b at the end
+	// We just copy ‘b’ at the end of ‘a’ at the beginning which complexity-wise wouldn’t 
+	// modify O(N^2), the algorithm is a bit clearer this way
+	// If we could modify ‘b’ we could do the swapping in place at ‘b’ and it’d be faster
+	// The aim of the exercise is that given a memory size of a+b+1 and no stack, sort the two arrays
+	// in place of ‘a’
+	// worst case:
+	// a: 20,21,22,23,24,25,_,_,_,_,_,_
+	// b: 1,2,3,4,5,26
+	// for each element in a we do all b which is N^2, when every element in ‘a’ is bigger than every element in b
+	// obviously if we had a third buffer or a stack we could just merge sort the two in O(N)
+	// Example
+	// while a[i] is lower than b[0], i++ 
+	// 1,3,5,6
+	// 2,4 
+	// we find that a[1]=3 is higher than b[0]=2, we swap them and find out if we have to move it up in b
+	// it seems not, we leave it in its new place in b:
+	// 1,2,5,6
+	// 3,4
+	// now it happens again a[2]=5 is higher than b[0] and then we move it
+	// 1,2,3,6
+	// 4,5
+	//
+	// 1,2,3,4
+	// 5,6
+	//
+	// Another option, start at end of a which is max(a) and at end of b which is max(b)
+	// until you find a b that is higher than a[i] shift and copy everything after that
+	// continue until the whole of b has been processed
+	// 1,3,5,6,_,_,_,_
+	// 2,4,7,8
+	// 
+	// 1,3,5,6,7,8,_,_
+	// 2,4
+	//
+	// 1,3,4,5,6,7,8,_
+	// 2
+	// 
+	// 1,2,3,4,5,6,7,8
+	// 
+	// Third option, start at max(a) and middle(b), if middle(b) is higher than max(a), copy everything
+	// from middle(b) after a, otherwise… (this is becoming too complex…)
+
+	/** (N^2) simple implementation of merging two sorted lists 'a' and 'b' 
+	*	operating always within a (that has space for the two lists)
+	*	with a total space consumption of (a+b)+1+b
+	*	(after all this thinking we have ended up with a crappy bubblesort scheme)
+	* @param a
+	* @param b
+	*///////////////////////////////////////////////////////////////////////////
+	public static <T extends Comparable<? super T>> void bubbleSortIntoFirstList(List<T> a, List<T> b) {
+
+		// error checking
+		if (a==null || b==null) {
+			return;
+		}
+
+		// we assume we can’t really modify b so we make a copy at the end
+		int bStart = a.size();
+		int bEnd = bStart+b.size();
+		for (T e : b) {
+			a.add(e);
+		}
+
+		for (int i = 0; i<bStart; i++) {
+			T currentA = a.get(i);
+			int j = bStart;
+			T currentB = a.get(j);
+			if (currentA.compareTo(currentB)>0) {
+				// a[i] > b[j], swap
+				a.set(i, currentB);
+				currentB = currentA;
+				a.set(j, currentB);
+				j++;
+				while (j<bEnd && currentB.compareTo(a.get(j))>0) {
+					T lower = a.get(j);
+					a.set(j, currentB);
+					a.set(j-1, lower);
+					j++;
+				}
+			}
+		}	// for
+
+	}
+
+	// faster implementation ideas?
+	// 1,5,9
+	// 4,7,8
+	// merge into one and set the pivot ‘p’ to beginning of b
+	// 1,5,9,[4],7,8
+	// go through a and compare with pivot, if lower, swap
+	// 1,4,9,[5],7,8
+	// 1,4,5,[9],7,8
+	// when consumed the whole of a, put pivot in right place by iterating over b
+	// 1,4,5,7,[9],8
+	// 1,4,5,7,8,[9]
+	//
+	// another example, which shows we need to move the pivot and reiterate (N^2)
+	// 1,5,7,[2],3,4,8
+	// 1,2,7,[5],3,4,8
+	// 1,2,5,[7],3,4,8
+	//
+	// otherwise we just quicksort using the middle pivot between a and b
+	
+	
+	
 }

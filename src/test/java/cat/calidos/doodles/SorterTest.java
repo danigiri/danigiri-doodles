@@ -281,4 +281,34 @@ public void multilevelBucketSortTest() {
 }
 
 
+@Test
+public void bubbleSortIntoFirstListTest() {
+
+	List<Integer> a = ListFrom.ints(1, 2, 3);
+	List<Integer> b = ListFrom.ints(4, 5, 6);
+	List<Integer> c = ListFrom.ints(1, 2, 3, 4, 5, 6);
+	Sorter.bubbleSortIntoFirstList(a, b);
+	assertEquals(c, a);
+
+	a = ListFrom.ints(4, 5, 6);
+	b = ListFrom.ints(1, 2, 3);
+	c = ListFrom.ints(1, 2, 3, 4, 5, 6);
+	Sorter.bubbleSortIntoFirstList(a, b);
+	assertEquals(c, a);
+
+	a = ListFrom.ints(1, 2, 3);
+	b = ListFrom.ints(1, 2, 3);
+	c = ListFrom.ints(1, 1, 2, 2, 3, 3);
+	Sorter.bubbleSortIntoFirstList(a, b);
+	assertEquals(c, a);
+
+
+	a = ListFrom.ints(1, 3, 5);
+	b = ListFrom.ints(0, 2, 4);
+	c = ListFrom.ints(0, 1, 2, 3, 4, 5);
+	Sorter.bubbleSortIntoFirstList(a, b);
+	assertEquals(c, a);
+
+}
+
 }
