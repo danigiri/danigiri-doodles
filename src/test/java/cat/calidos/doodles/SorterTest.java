@@ -276,8 +276,6 @@ public void multilevelBucketSortTest() {
 	c = ListFrom.ints(1, 1, 2, 2, 10, 11);
 	assertEquals(c, Sorter.bucketSort(a, mask));
 	
-	
-	
 }
 
 
@@ -310,5 +308,41 @@ public void bubbleSortIntoFirstListTest() {
 	assertEquals(c, a);
 
 }
+
+
+@Test
+public void quickSortInPlaceTest() {
+
+	assertNull(Sorter.bucketSort(null));
+
+	List<Integer> a = ListFrom.ints(1);
+	List<Integer> c = ListFrom.ints(1);
+	Sorter.quickSortInPlace(a);
+	assertEquals(c, a);
+
+	a = ListFrom.ints(3, 2, 1);
+	c = ListFrom.ints(1, 2, 3);
+	Sorter.quickSortInPlace(a);
+	assertEquals(c, a);
+
+	a = ListFrom.ints(1, 6, 3, 4, 5, 0);
+	c = ListFrom.ints(0, 1, 3, 4, 5, 6);
+	Sorter.quickSortInPlace(a);
+	assertEquals(c, a);
+
+	a = ListFrom.ints(1, 1, 10, 2, 2, 11);
+	c = ListFrom.ints(1, 1, 2, 2, 10, 11);
+	Sorter.quickSortInPlace(a);
+	assertEquals(c, a);
+
+	// the list as input
+	List<Integer> bigSortedList = ListFrom.list(bigUnsortedList);
+	Sorter.quickSortInPlace(bigSortedList);
+
+	// compare the mergesort with another sort which we assume works as well
+	assertEquals(Heap.heapSort(bigUnsortedList).toList(), bigSortedList);
+
+}
+
 
 }

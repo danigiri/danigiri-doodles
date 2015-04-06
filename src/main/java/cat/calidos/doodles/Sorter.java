@@ -18,6 +18,9 @@ package cat.calidos.doodles;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+* @author daniel giribet
+*//////////////////////////////////////////////////////////////////////////////
 public class Sorter {
 	
 
@@ -84,6 +87,10 @@ public class Sorter {
 	}
 
 	
+	/**	Basic elegant quicksort, middle pivot and not in place
+	* 	@param l
+	* 	@return
+	*///////////////////////////////////////////////////////////////////////////
 	public static <T extends Comparable<? super T>> List<T> quickSort(List<T> l) {
 
 		// base cases
@@ -409,7 +416,62 @@ public class Sorter {
 	// 1,2,7,[5],3,4,8
 	// 1,2,5,[7],3,4,8
 	//
-	// otherwise we just quicksort using the middle pivot between a and b
+	// otherwise we just quicksort using the middle pivot between a and b, here we go
+	
+	
+	
+	/** QuickSort in place by swapping, pivot at end of array
+	* 	@param a
+	*///////////////////////////////////////////////////////////////////////////
+	public static <T extends Comparable<? super T>> void quickSortInPlace(List<T> a) {
+
+		if (a==null) {
+			return;
+		}
+		int sizeA = a.size();
+		quickSortInPlace(a, 0, sizeA/2, sizeA);
+	}
+	
+	private static <T extends Comparable<? super T>> void quickSortInPlace(List<T> a, int low, int p, int high) {
+		// error checking
+
+		if (a==null) {
+			return;
+		}
+		if (low<0 || high>a.size()) {
+			throw new IndexOutOfBoundsException("Index out of range of the array");
+		}
+
+		// base case (one or zero-sized array is trivially sorted)
+		if (high-low<=1) {
+			return;
+		}
+
+		// divide the array in two partially sorted segments (firstHigh is the divider)
+		int firstHigh = low;
+		for (int i = low; i<high; i++) {
+			T current = a.get(i);
+			T pivotValue = a.get(p);
+			if (current.compareTo(pivotValue)<0) {
+				a.set(i, a.get(firstHigh));
+				a.set(firstHigh, current);
+				firstHigh++;
+			}
+		}
+		// switch current pivot and firstHigh (note that pivot value could have been swapped)
+		T pivotValue = a.get(p);
+		a.set(p, a.get(firstHigh));
+		a.set(firstHigh, pivotValue);
+		// now the pivot is at first high and to the left of it everything is lower or equal
+		// and on the right it’s higher or equal, we can recursively call on each half and we’re done
+
+		// 
+		quickSortInPlace(a, low, firstHigh-1, firstHigh);
+		quickSortInPlace(a, firstHigh+1, high-1, high);
+
+	}
+
+	
 	
 	
 	
