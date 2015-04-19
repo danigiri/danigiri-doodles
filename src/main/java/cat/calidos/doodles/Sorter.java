@@ -21,6 +21,9 @@ import java.util.List;
 /**
 * @author daniel giribet
 *//////////////////////////////////////////////////////////////////////////////
+/**
+* @author daniel giribet
+*//////////////////////////////////////////////////////////////////////////////
 public class Sorter {
 	
 
@@ -411,12 +414,21 @@ public class Sorter {
 	// 1,4,5,7,[9],8
 	// 1,4,5,7,8,[9]
 	//
-	// another example, which shows we need to move the pivot and reiterate (N^2)
+	// another example, which shows we need to move the pivot and reiterate O(N^2)
 	// 1,5,7,[2],3,4,8
 	// 1,2,7,[5],3,4,8
-	// 1,2,5,[7],3,4,8
+	// 1,2,5,[7],3,4,8 (now we need to move the pivot to the right and so forth)
+	// ...
 	//
-	// otherwise we just quicksort using the middle pivot between a and b, here we go
+	// Basically, we could also implement mergesort by shifting the one of the arrays 
+	// but this is still O(N^2).
+	// (Otherwise we just quicksort using the middle pivot between a and b)
+	// OK, if we have strict constraints to not to use additional buffers
+	// or a call stack (which is a LIFO buffer anyway) then we're stuck in N^2-land
+	// It would make sense in specific constrained environments or where datasize
+	// is small / strict limited memory, etc.
+	//
+	// So let's do quicksort in place by using the stack:
 	
 	
 	
@@ -429,7 +441,7 @@ public class Sorter {
 			return;
 		}
 		int sizeA = a.size();
-		quickSortInPlace(a, 0, sizeA/2, sizeA);
+		quickSortInPlace(a, 0, sizeA-1, sizeA);
 	}
 	
 	private static <T extends Comparable<? super T>> void quickSortInPlace(List<T> a, int low, int p, int high) {
@@ -438,7 +450,7 @@ public class Sorter {
 		if (a==null) {
 			return;
 		}
-		if (low<0 || high>a.size()) {
+		if (low<0 || p>=high || high>a.size()) {
 			throw new IndexOutOfBoundsException("Index out of range of the array");
 		}
 
@@ -448,12 +460,13 @@ public class Sorter {
 		}
 
 		// divide the array in two partially sorted segments (firstHigh is the divider)
+		// notice: firstHigh points to space immediately to the right of lower segment
 		int firstHigh = low;
 		for (int i = low; i<high; i++) {
 			T current = a.get(i);
 			T pivotValue = a.get(p);
 			if (current.compareTo(pivotValue)<0) {
-				a.set(i, a.get(firstHigh));
+				a.set(i, a.get(firstHigh));	// swap current with firstHigh value
 				a.set(firstHigh, current);
 				firstHigh++;
 			}
@@ -472,7 +485,18 @@ public class Sorter {
 	}
 
 	
-	
+	/** Quicksort in place no extra memory besides split tree indexes on stack
+	* @param a
+	*///////////////////////////////////////////////////////////////////////////
+	public static <T extends Comparable<? super T>> void quickSortInPlaceSplit(List<T> a) {
+
+		if (a==null) {
+			return;
+		}
+
+		int sizeA = a.size();
+		quickSortInPlace(a, 0, sizeA/2, sizeA);
+	}
 	
 	
 }
