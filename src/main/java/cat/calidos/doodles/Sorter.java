@@ -16,14 +16,15 @@
 package cat.calidos.doodles;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
 * @author daniel giribet
-*//////////////////////////////////////////////////////////////////////////////
-/**
-* @author daniel giribet
-*//////////////////////////////////////////////////////////////////////////////
+*///////////////////////////////////////////////////////////////////////////////
 public class Sorter {
 	
 
@@ -91,7 +92,7 @@ public class Sorter {
 
 	
 	/**	Basic elegant quicksort, middle pivot and not in place
-	* 	@param l
+	* 	@param l unsorted list
 	* 	@return
 	*///////////////////////////////////////////////////////////////////////////
 	public static <T extends Comparable<? super T>> List<T> quickSort(List<T> l) {
@@ -106,8 +107,8 @@ public class Sorter {
 		}
 
 		// recursive cases
-		List<T> left = new ArrayList<T>();
-		List<T> right = new ArrayList<T>();
+		List<T> left = new ArrayList<T>(size/2);
+		List<T> right = new ArrayList<T>(size/2);
 		int pivot = size/2;
 		T pivotValue = l.get(pivot);
 	 	for (int i=0; i<size; i++) {
@@ -428,7 +429,7 @@ public class Sorter {
 	// It would make sense in specific constrained environments or where datasize
 	// is small / strict limited memory, etc.
 	//
-	// So let's do quicksort in place by using the stack:
+	// So let's do quicksort in place by using the call stack:
 	
 	
 	
@@ -498,5 +499,100 @@ public class Sorter {
 		quickSortInPlace(a, 0, sizeA/2, sizeA);
 	}
 	
+	
+	/** Given a list of words, sort the anagrams together
+	* @param l
+	* @return
+	*////////////////////////////////////////////////////////////////////////////////
+	public static List<String> sortByAnagramsN2(List<String> l) {
+
+		// brute force approach, but grouping the strings of the same size
+		// to make it faster, repetitions of the same word are ‘merged’
+		
+		if (l==null) {
+			return null;
+		}
+		
+		Map<Integer, Set<String>> groupedStrings = new HashMap<Integer,Set<String>>();
+		for (String s: l) {
+			int c = s.length();
+			Set<String> stringsOfSizeC = null;
+			if (groupedStrings.containsKey(c)) {
+				stringsOfSizeC = groupedStrings.get(c);
+			} else {
+				stringsOfSizeC = new HashSet<String>();
+			}
+			stringsOfSizeC.add(s);					// merges identical words
+			groupedStrings.put(c, stringsOfSizeC); 
+		}
+
+		List<String> anagramSorted = new ArrayList<String>(l.size());
+
+		for (Set<String> stringGroup : groupedStrings.values()) {
+			while (!stringGroup.isEmpty()) {
+				List<String> ks = new ArrayList<String>(stringGroup);
+				String currentString = ks.get(0);
+				stringGroup.remove(currentString);
+				anagramSorted.add(currentString);
+				for (int i=1; i<ks.size(); i++) {
+					String anagramCandidate = ks.get(i);
+					if (Strings.isAnagramOf(currentString, anagramCandidate)) {
+						anagramSorted.add(anagramCandidate);
+						stringGroup.remove(anagramCandidate);
+					}
+				}
+			} // while
+		}
+		return anagramSorted;
+	}
+
+	
+	public static <T extends Comparable<? super T>> List<T> yetAnotherMergeSort(List<T> l) {
+
+		if (l==null) {
+			return null;
+		}
+		int size = l.size();
+		if (size<=1) {
+			return l;
+		}
+
+		int halfSize = size/2;		// size>=2, so worst case halfSize==1
+		List<T> leftSortedChunk = yetAnotherMergeSort(l.subList(0, halfSize));
+		List<T> rightSortedChunk = yetAnotherMergeSort(l.subList(halfSize, size));
+
+		int leftIndex = 0;	
+		int rightIndex = 0;
+		int leftSize = leftSortedChunk.size();
+		int rightSize = rightSortedChunk.size();
+		List<T> sortedList = new ArrayList<T>(size);
+		while (leftIndex < leftSize && rightIndex < rightSize) {
+			T leftS = leftSortedChunk.get(leftIndex);
+			T rightS = rightSortedChunk.get(rightIndex);
+			if (leftS.compareTo(rightS)<0) {
+				sortedList.add(leftS);
+				leftIndex++;
+			} else {
+				sortedList.add(rightS);
+				rightIndex++;
+			}
+		}
+		if (leftIndex<leftSize) {
+			sortedList.addAll(leftSortedChunk.subList(leftIndex, leftSize));
+		}
+		if (rightIndex<rightSize) {
+			sortedList.addAll(rightSortedChunk.subList(rightIndex, rightSize));
+		}
+
+		return sortedList;
+	}
+	
+	public static <T extends Comparable<? super T>> List<T> parallelQuickSort(List<T> l) {
+		
+			//choose middle pivot
+			// filter in parallel the list to left and right of pivot using two parallel filters
+			// and then...
+			return null;
+	}
 	
 }

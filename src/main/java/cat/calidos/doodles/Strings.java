@@ -1,5 +1,5 @@
 /**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
+ Copyright 2016 Daniel Giribet <dani - calidos.cat>
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package cat.calidos.doodles;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -164,6 +165,107 @@ private static int countTotal(List<Map<String, Integer>> l) {
 	return count;
 }
 
+// given a set of character deltas from two words and a char, compute the new delta set
+//	words: "abc", "bd" --> a: -1, b: 0, c: -1, d: +1
+private static void countDeltaForChar(Map<String, Integer> deltas, char c, int deltaForChar) {
+	String sc = String.valueOf(c);
+	if (deltas.containsKey(sc)) {
+		int charCount = deltas.get(sc);
+		deltas.put(sc, charCount+deltaForChar);
+	} else {
+		deltas.put(sc, deltaForChar);
+	}
+}
+
+/* Return true if the two words are anagrams
+ *//////////////////////////////////////////////////////////////////////////////////////////////////
+public static boolean isAnagramOf(String a, String b) {
+
+	int aSize = a.length();
+	if (aSize != b.length()) {
+		return false;
+	}
+	
+	// TODO: optimise for max delta or abs(minimum delta) > chars left to process :)
+	Map<String, Integer> deltas = new HashMap<String, Integer>(aSize);
+	for (int i=0; i<aSize; i++) {
+		char aChar = a.charAt(i);
+		char bChar = b.charAt(i);
+		if (aChar != bChar) {
+			countDeltaForChar(deltas, aChar, 1);
+			countDeltaForChar(deltas, bChar, -1);
+		}
+	}
+	Collection<Integer> counts = deltas.values();
+	for (int c : counts) {
+		if (c!=0) {
+			return false;
+		}
+	}
+	return true;
+}
+
+
+// Write code to reverse a C-Style String (C-String means that “abcd” is 
+// represented as ve characters, including the null character )
+public static String reverseCString(String s) {
+	if (s==null) {
+		throw new NullPointerException("Null s to reverse");
+	}
+
+	int sl = s.length();
+	if (sl<=1) {
+		return s;
+	}
+	return reverseCString(s.substring(1,sl))+s.substring(0,1);
+}
+
+
+//Design an algorithm and write code to remove the duplicate characters in a string without using any additional buffer 
+//NOTE: One or two additional variables are ok but an extra copy of the array is not!
+
+//OK, let’s implement an algorithm in place based on the idea that we hold a substring of the unique
+//characters at the beginning in the order supplied in the original string, no expensive
+// linear replacing ops
+//abcad [a]xcda, [ax]cda, [axcd]a —> axcd
+public static String removeDuplicatesInPlace(String s) {
+	if (s==null) {
+		return null;
+	}
+	if (s.length()<=1) {
+		return s;
+	}
+	// using a string builder as we have to modify it to use it in place
+	// but we're only using one buffer in the algorithm itself
+	// a char array could also be used in the same way
+	StringBuilder sb = new StringBuilder(s);
+	int finalLength = findUniqueCharsStringInPlace(0, sb);
+	return sb.substring(0, finalLength+1);
+}
+
+// technically, this is O(N), as the checking on each will be limited to the maximum
+// number of characters we have in our character space (unicode is quite large though)
+//this can be really fast if we had only ASCII chars or a similar space
+private static int findUniqueCharsStringInPlace(int boundary, StringBuilder s) {
+
+	int n = s.length();
+	for (int i = boundary+1;i<n;i++) {
+		char c = s.charAt(i);
+		boolean found = false;
+		int j = boundary;
+		while (!found && j>=0) {
+			found = s.charAt(j)==c;
+			j--;
+		}
+		if (!found) {
+			boundary++;
+			s.setCharAt(boundary, c);
+		}
+	}
+	
+	return boundary;
+	
+} 
 
 
 /*

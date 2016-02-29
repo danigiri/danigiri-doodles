@@ -20,6 +20,10 @@ Problems tackled
 * Min Stack: a stack that tells you the minimum element in the stack, all operations (including min are O(K))
 * Longest 3-substring: longest consecutive 3 chars substring within a string
 * Robot: find paths on NxN grids
+* Group anagrams together in a list of strings
+* Remove duplicate chars from a string in place, linearly
+* Reverse a string
+* Basic Lambda function doodles
 * TODO: add rest of problems
 
 

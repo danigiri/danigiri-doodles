@@ -48,4 +48,56 @@ public void longestSubThreeTest() {
 }
 
 
+@Test
+public void anagramTest() {
+	
+	assertTrue(Strings.isAnagramOf("", ""));
+	assertTrue(Strings.isAnagramOf("a", "a"));
+
+	assertFalse(Strings.isAnagramOf("a", "b"));
+	assertFalse(Strings.isAnagramOf("a", ""));
+	
+	assertTrue(Strings.isAnagramOf("ab", "ba"));
+	assertTrue(Strings.isAnagramOf("abc", "cba"));
+	assertTrue(Strings.isAnagramOf("abc", "bca"));
+	assertTrue(Strings.isAnagramOf("abc", "abc"));
+	assertTrue(Strings.isAnagramOf("abc", "cba"));
+
+	assertFalse(Strings.isAnagramOf("abcd", "abc"));
+	assertFalse(Strings.isAnagramOf("abcd", "abxd"));
+	assertFalse(Strings.isAnagramOf("aaa", "a"));
+
+	assertTrue(Strings.isAnagramOf("arrozx", "zorrxa"));
+
+}
+
+
+@Test
+public void reverseCStringTest() {
+
+	assertEquals("", Strings.reverseCString(""));
+	assertEquals("a", Strings.reverseCString("a"));
+
+	assertEquals("aaa", Strings.reverseCString("aaa"));
+	assertEquals("ba", Strings.reverseCString("ab"));
+	assertEquals("dcba", Strings.reverseCString("abcd"));
+
+}
+
+@Test
+public void removeDuplicatesInPlaceTest() {
+
+	assertEquals("", Strings.removeDuplicatesInPlace(""));
+	assertEquals("a", Strings.removeDuplicatesInPlace("a"));
+
+	assertEquals("a", Strings.removeDuplicatesInPlace("aaa"));
+	assertEquals("ba", Strings.removeDuplicatesInPlace("ba"));
+	assertEquals("abcd", Strings.removeDuplicatesInPlace("abcdaa"));
+
+	assertEquals("abc", Strings.removeDuplicatesInPlace("aabc"));
+	assertEquals("abcd", Strings.removeDuplicatesInPlace("aabbcccdc"));
+
+}
+
+
 }

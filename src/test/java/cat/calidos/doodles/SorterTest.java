@@ -1,5 +1,5 @@
 /**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
+ Copyright 2016 Daniel Giribet <dani - calidos.cat>
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,16 +17,10 @@ package cat.calidos.doodles;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.TreeSet;
 
-import javax.sound.midi.SysexMessage;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import cat.calidos.doodles.builders.ListFrom;
@@ -385,6 +379,78 @@ public void quickSortInPlaceSplitTest() {
 
 }
 
+@Test
+public void sortByAnagramsN2Test() {
+	
+	assertNull(Sorter.sortByAnagramsN2(null));
+	
+	List<String> a = ListFrom.strings("");
+	List<String> b = ListFrom.strings("");
+	assertEquals(b, Sorter.sortByAnagramsN2(a));
+	
+	a = ListFrom.strings("a");
+	b = ListFrom.strings("a");
+	assertEquals(b, Sorter.sortByAnagramsN2(a));
+	
+	a = ListFrom.strings("a", "b");
+	b = ListFrom.strings("a", "b");
+	assertEquals(b, Sorter.sortByAnagramsN2(a));
 
+	a = ListFrom.strings("ab", "ba");
+	b = ListFrom.strings("ab", "ba");
+	assertEquals(b, Sorter.sortByAnagramsN2(a));
+
+	a = ListFrom.strings("ab", "ac", "ba");
+	b = ListFrom.strings("ab", "ba", "ac");
+	assertEquals(b, Sorter.sortByAnagramsN2(a));
+
+	a = ListFrom.strings("ab", "ac", "ba", "xd");
+	b = ListFrom.strings("ab", "ba", "ac", "xd");
+	assertEquals(b, Sorter.sortByAnagramsN2(a));
+
+	a = ListFrom.strings("abc", "xyz", "cba", "xzy");
+	b = ListFrom.strings("abc", "cba", "xzy", "xyz");
+	assertEquals(b, Sorter.sortByAnagramsN2(a));
+
+	a = ListFrom.strings("ab", "ac", "bad");
+	b = ListFrom.strings("ab", "ac", "bad");
+	assertEquals(b, Sorter.sortByAnagramsN2(a));
+
+}
+
+
+@Test
+public void yetAnotherMergeSortTest() {
+	
+	assertNull(Sorter.yetAnotherMergeSort(null));
+
+	List<Integer> a = ListFrom.ints(1);
+	List<Integer> c = ListFrom.ints(1);
+	assertEquals(c, Sorter.yetAnotherMergeSort(a));
+
+	a = ListFrom.ints(3, 2, 1);
+	c = ListFrom.ints(1, 2, 3);
+	assertEquals(c, Sorter.yetAnotherMergeSort(a));
+
+	a = ListFrom.ints(1, 6, 3, 4, 5, 0);
+	c = ListFrom.ints(0, 1, 3, 4, 5, 6);
+	assertEquals(c, Sorter.yetAnotherMergeSort(a));
+
+	a = ListFrom.ints(1, 1, 10, 2, 2, 11);
+	c = ListFrom.ints(1, 1, 2, 2, 10, 11);
+	assertEquals(c, Sorter.yetAnotherMergeSort(a));
+	
+	a = ListFrom.ints(1, 2, 5, 0, 7, 9, 8);
+	c = ListFrom.ints(0, 1, 2, 5, 7, 8, 9);
+	assertEquals(c, Sorter.yetAnotherMergeSort(a));
+
+	// the big list as input
+	List<Integer> bigSortedList = ListFrom.list(bigUnsortedList);
+
+	// compare the quicksort with another sort which we assume works as well
+	assertEquals(Heap.heapSort(bigUnsortedList).toList(), 
+				 Sorter.yetAnotherMergeSort(bigSortedList));
+
+}
 
 }
