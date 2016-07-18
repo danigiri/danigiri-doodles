@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -27,10 +27,10 @@ import cat.calidos.doodles.builders.ListFrom;
 
 public class SorterTest {
 
-private static List<Integer>	bigUnsortedList;
+private List<Integer>	bigUnsortedList;
 
-@BeforeClass
-public static void dataSetup() {
+@Before
+public void dataSetup() {
 	
 	bigUnsortedList = ListFrom.ints(	
 						844, 860, 791, 613, 963, 365, 374, 272, 575, 684, 883, 
@@ -451,6 +451,73 @@ public void yetAnotherMergeSortTest() {
 	assertEquals(Heap.heapSort(bigUnsortedList).toList(), 
 				 Sorter.yetAnotherMergeSort(bigSortedList));
 
+}
+
+@Test
+public void parallelQuickSortTest() {
+	
+	assertNull(Sorter.streamQuickSort(null));
+
+	List<Integer> a = ListFrom.ints(1);
+	List<Integer> c = ListFrom.ints(1);
+	assertEquals(c, Sorter.streamQuickSort(a));
+
+	a = ListFrom.ints(3, 2, 1);
+	c = ListFrom.ints(1, 2, 3);
+	assertEquals(c, Sorter.streamQuickSort(a));
+
+	a = ListFrom.ints(1, 6, 3, 4, 5, 0);
+	c = ListFrom.ints(0, 1, 3, 4, 5, 6);
+	assertEquals(c, Sorter.streamQuickSort(a));
+
+	a = ListFrom.ints(1, 1, 10, 2, 2, 11);
+	c = ListFrom.ints(1, 1, 2, 2, 10, 11);
+	assertEquals(c, Sorter.streamQuickSort(a));
+	
+	a = ListFrom.ints(1, 2, 5, 0, 7, 9, 8);
+	c = ListFrom.ints(0, 1, 2, 5, 7, 8, 9);
+	assertEquals(c, Sorter.streamQuickSort(a));
+
+	// the big list as input
+	List<Integer> bigSortedList = ListFrom.list(bigUnsortedList);
+
+	// compare the quicksort with another sort which we assume works as well
+	assertEquals(Heap.heapSort(bigUnsortedList).toList(), 
+				 Sorter.streamQuickSort(bigSortedList));
+	
+}
+
+// print some fun timings
+
+@Test
+public void quickSortTime() {
+	
+	// the big list as input
+	List<Integer> bigSortedList = ListFrom.list(bigUnsortedList);
+	for (int i=0;i<10;i++) {
+		bigSortedList.addAll(ListFrom.list(bigUnsortedList));
+	}
+	long t0 = System.currentTimeMillis();
+	Sorter.quickSort(bigSortedList);
+	long t1 = System.currentTimeMillis();
+	System.out.println("t(sequential)="+(t1-t0));
+	
+}
+	
+@Test
+public void streamQuickSortTime() {
+	
+	// the big list as input
+	List<Integer> bigSortedList = ListFrom.list(bigUnsortedList);
+	for (int i=0;i<10;i++) {
+		bigSortedList.addAll(ListFrom.list(bigUnsortedList));
+	}
+
+	long t0 = System.currentTimeMillis();
+	Sorter.streamQuickSort(bigSortedList);
+	long t1 = System.currentTimeMillis();
+	System.out.println("t(stream)="+(t1-t0));
+	
 }
 
 }

@@ -21,6 +21,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
 * @author daniel giribet
@@ -587,12 +591,46 @@ public class Sorter {
 		return sortedList;
 	}
 	
-	public static <T extends Comparable<? super T>> List<T> parallelQuickSort(List<T> l) {
+	public static <T extends Comparable<? super T>> List<T> streamQuickSort(List<T> l) {
 		
-			//choose middle pivot
-			// filter in parallel the list to left and right of pivot using two parallel filters
-			// and then...
+		if (l==null) {
 			return null;
+		}
+		
+		int size = l.size();
+		if (size<=1) {
+			return l;
+		}
+
+		int p = size/2;
+		T pivotValue = l.get(p);
+		Map<Boolean,List<T>> g = IntStream.iterate(0, i -> i+1)
+				.limit(size)
+				.filter(i -> i!=p)
+				//.parallel()
+				 .mapToObj(i -> l.get(i))
+			    //.collect(Collectors.groupingByConcurrent(e -> e.compareTo(pivotValue)>0 ));
+				.collect(Collectors.groupingBy(e -> e.compareTo(pivotValue)>0 ));
+
+		// g.get(false) should be lower than pivot and true is higher or equal ^_^
+		// but apparently is the other way around (hence the > in the collector)
+
+		List<T> left = null;
+		if (g.containsKey(false)){
+			left = streamQuickSort(g.get(false));
+		} else {
+			left = new ArrayList<T>();
+		}
+		left.add(pivotValue);
+		
+		if (g.containsKey(true)) {
+			List<T> right = streamQuickSort(g.get(true));
+			left.addAll(right);
+		}
+
+		return left;
 	}
+
+
 	
 }

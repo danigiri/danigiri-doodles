@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -266,6 +267,95 @@ private static int findUniqueCharsStringInPlace(int boundary, StringBuilder s) {
 	return boundary;
 	
 } 
+
+
+//from a list of strings return a suffix tree
+//abc,abd,c,cd —>
+//“”
+//ab c
+//d    d
+
+public static Tree<String> suffixTree(List<String> strings) {
+
+	if (strings==null) {
+		return null;
+	}
+	return suffixTree_(strings, new Tree<String>(""));
+	
+}
+
+
+private static Tree<String> suffixTree_(List<String> strings, Tree<String>t) {
+	
+	// base cases
+	if (strings.size()==0) {
+		return t;
+	}
+	//strings.stream().forEach(s -> {		
+	for (String s : strings) {
+		boolean found = false;
+		Iterator<String> children = t.children.keySet().iterator();
+		while (!found && children.hasNext()) {	// while
+			String childK = children.next();
+			if (!s.equals(childK)) {
+				String pref = commonPrefix(childK, s);
+				if (pref.length()>0) {
+					// found a prefix, handle recursive case:
+					String sPostfix = s.substring(pref.length());
+					List<String> postfixes = new ArrayList<String>(1);
+					postfixes.add(sPostfix);
+					Tree<String> child = t.getChild(childK);
+					if (pref.length()<childK.length()) {					 	// child='aab', s='aa', sprout
+						String newChildPref = childK.substring(pref.length());	// so child='aa' -> 'b' with its
+						Tree<String> nc = new Tree<String>(newChildPref);		// old children assigned to it
+						nc.addAll(child.children);
+						child.data = pref;										// set child to 'aa' and
+						child.clearChildren();									// have a subtree which is 'b'
+						child.addChild(newChildPref, nc);
+					}
+					child = suffixTree_(postfixes, child);
+					t.addChild(childK, child);
+					found = true;
+				}
+			} else {
+				found = true;	// duplicate, we skip it (base case)
+			}
+		}										// end while
+		if (!found) {
+			// base case, new child
+			t.addChild(s, new Tree<String>(s));	// brand new child of the tree
+		}
+	//});
+	}
+	
+	return t;
+
+}
+
+
+private static String commonPrefix(String a, String b) {
+	
+	if (a==null || b==null) {
+		return null;
+	} 
+	StringBuilder prefix = new StringBuilder();
+	boolean equals = true;
+	int i = 0;
+	int al = a.length();
+	int bl = b.length();
+	while (equals && i<al && i<bl) {
+		char ac = a.charAt(i);
+		char bc = b.charAt(i);
+		equals = ac==bc;
+		if (equals) {
+			prefix.append(ac);
+		}
+		i++;
+	}
+	
+	return prefix.toString();
+	
+}
 
 
 /*

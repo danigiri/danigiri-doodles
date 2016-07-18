@@ -63,4 +63,19 @@ public void nthToLastTest() {
 	
 }
 
+@Test
+public void removeDupesTest() {
+	
+	LinkedList<String> l = new LinkedList<String>("a");
+	l.next = new LinkedList<String>("b");
+	l.next.next = new LinkedList<String>("b");
+	l.next.next.next = new LinkedList<String>("c");
+
+	LinkedList<String> l2 = new LinkedList<String>("a");
+	l2.next = new LinkedList<String>("b");
+	l2.next.next = new LinkedList<String>("c");
+
+	assertEquals(l2, LinkedList.removeDupes(l));
+}
+
 }

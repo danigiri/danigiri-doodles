@@ -1,5 +1,5 @@
 /**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
+ Copyright 2016 Daniel Giribet <dani - calidos.cat>
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package cat.calidos.doodles;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.junit.Test;
 
@@ -30,12 +31,13 @@ public class TreeTest {
 public void preorderTest() {
 	
 	Tree<Integer> t = new Tree<Integer>(1);
-	t.left = new Tree<Integer>(2);					
-	t.left.left = new Tree<Integer>(3);
-	t.left.right = new Tree<Integer>(4);			
-	t.right = new Tree<Integer>(5);
-	t.right.left = new Tree<Integer>(6);
-	t.right.right = new Tree<Integer>(7);
+	t.addLeft(new Tree<Integer>(2));				
+	t.getLeft().addLeft(new Tree<Integer>(3));
+	t.getLeft().addRight(new Tree<Integer>(4));			
+	
+	t.addRight(new Tree<Integer>(5));
+	t.getRight().addLeft(new Tree<Integer>(6));
+	t.getRight().addRight(new Tree<Integer>(7));
 	
 	List<Integer> list = ListFrom.ints(1, 2, 3, 4, 5, 6, 7);
 	assertEquals(list, t.preorder());
@@ -47,12 +49,13 @@ public void preorderTest() {
 public void inorderTest() {
 	
 	Tree<Integer> t = new Tree<Integer>(1);
-	t.left = new Tree<Integer>(2);
-	t.left.left = new Tree<Integer>(3);
-	t.left.right = new Tree<Integer>(4);
-	t.right = new Tree<Integer>(5);
-	t.right.left = new Tree<Integer>(6);
-	t.right.right = new Tree<Integer>(7);
+	t.addLeft(new Tree<Integer>(2));				
+	t.getLeft().addLeft(new Tree<Integer>(3));
+	t.getLeft().addRight(new Tree<Integer>(4));			
+	
+	t.addRight(new Tree<Integer>(5));
+	t.getRight().addLeft(new Tree<Integer>(6));
+	t.getRight().addRight(new Tree<Integer>(7));
 	
 	List<Integer> list = ListFrom.ints(3, 2, 4, 1, 6, 5, 7);
 	assertEquals(list, t.inorder());
@@ -64,12 +67,13 @@ public void inorderTest() {
 public void postorderTest() {
 	
 	Tree<Integer> t = new Tree<Integer>(1);
-	t.left = new Tree<Integer>(2);
-	t.left.left = new Tree<Integer>(3);
-	t.left.right = new Tree<Integer>(4);
-	t.right = new Tree<Integer>(5);
-	t.right.left = new Tree<Integer>(6);
-	t.right.right = new Tree<Integer>(7);
+	t.addLeft(new Tree<Integer>(2));				
+	t.getLeft().addLeft(new Tree<Integer>(3));
+	t.getLeft().addRight(new Tree<Integer>(4));			
+	
+	t.addRight(new Tree<Integer>(5));
+	t.getRight().addLeft(new Tree<Integer>(6));
+	t.getRight().addRight(new Tree<Integer>(7));
 	
 	List<Integer> list = ListFrom.ints(3, 4, 2, 6, 7, 5, 1);
 	assertEquals(list, t.postorder());
@@ -100,5 +104,50 @@ public void insertSortedTest() {
 	list = ListFrom.ints(10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
 	assertEquals(list, t.preorder());
 }
+
+@Test
+public void equalsTest() {
+	
+	Tree<Integer> t = new Tree<Integer>(1);
+	t.left = new Tree<Integer>(2);
+	t.left.left = new Tree<Integer>(3);
+	t.left.right = new Tree<Integer>(4);
+	t.right = new Tree<Integer>(5);
+	t.right.left = new Tree<Integer>(6);
+	t.right.right = new Tree<Integer>(7);
+
+	assertFalse(t.equals(null));
+
+	Tree<Integer> t1 = new Tree<Integer>(1);
+
+	assertFalse(t.equals(t1));
+
+	t1.left = new Tree<Integer>(2);
+	t1.left.left = new Tree<Integer>(3);
+	t1.left.right = new Tree<Integer>(4);
+	t1.right = new Tree<Integer>(5);
+	t1.right.left = new Tree<Integer>(6);
+
+	assertFalse(t.equals(t1));
+
+	t1.right.right = new Tree<Integer>(7);
+
+	assertTrue(t.equals(t1));
+
+	t = new Tree<Integer>(1);
+	t.addChild("2", new Tree<Integer>(2));
+	t.addChild("3", new Tree<Integer>(2));
+
+	t1 = new Tree<Integer>(1);
+	assertFalse(t.equals(t1));
+
+	t1.addChild("2", new Tree<Integer>(2));
+	assertFalse(t.equals(t1));
+	
+	t1.addChild("3", new Tree<Integer>(2));
+	assertTrue(t.equals(t1));
+	
+}
+
 
 }

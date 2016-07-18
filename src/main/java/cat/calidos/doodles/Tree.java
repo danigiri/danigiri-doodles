@@ -26,15 +26,15 @@ import java.util.Map;
 public class Tree<T> {
 
 	public T	data;
-	public Map<String, Tree<T>>	children;
-	public Tree<T> left;
-	public Tree<T> right;
+	protected Map<String, Tree<T>>	children;
+	protected Tree<T> left;
+	protected Tree<T> right;
 	public int	maxKeyLength;
 
 	public Tree(T d) {
 		
 		data = d;
-		children = new HashMap<String, Tree<T>>();
+		clearChildren();
 		maxKeyLength = 0;
 		
 	}
@@ -49,16 +49,63 @@ public class Tree<T> {
 		
 	}
 	
+	public void addAll(Map<String, Tree<T>> c) {
+		c.keySet().stream()
+		.forEach(k -> { addChild(k, c.get(k)); });
+	}
+	
+	public Tree<T> addLeft(Tree<T> t) {
+		this.left = t;
+		return t;
+	}
+	
+	public Tree<T> addRight(Tree<T> t) {
+		this.right = t;
+		return t;
+	}
 	
 	public boolean hasChild(String k) {
 		return getChild(k)!=null;
+	}
+	
+	public boolean hasLeft() {
+		return left!=null;
+	}
+	
+	
+	public boolean hasRight() {
+		return right!=null;
 	}
 	
 	
 	public Tree<T> getChild(String k){
 		return children.get(k);
 	}
+	
+	public Tree<T> getLeft() {
+		return left;
+	}
 
+	public Tree<T> getRight() {
+		return right;
+	}
+
+	public int childrenCount() {
+		int c = children.size();
+		if (hasLeft()) {c++;};
+		if (hasRight()) {c++;};
+		return c;
+	}
+	
+	public Map<String,Tree<T>> clearChildren() {
+		Map<String, Tree<T>> c = children;
+		children = new HashMap<String, Tree<T>>();
+		return c;
+	}
+	
+	public Tree<T> clearChild(String k) {
+		return children.remove(k);
+	}
 	
 	public List<T> preorder() {
 		return preorder_(new ArrayList<T>());
@@ -185,4 +232,47 @@ public class Tree<T> {
 		return s.toString();
 		
 	}
+	
+	//FIXME: this doesn't seem to work for complex trees (see string prefixes test)
+	@Override
+	public boolean equals(Object o) {
+		
+		if (o==null) {
+			return false;
+		}
+		if (!(o instanceof Tree<?>)) {
+			return false;
+		}
+		@SuppressWarnings("unchecked")
+		final Tree<T> t = (Tree<T>)o;
+		boolean equals = this.childrenCount()==t.childrenCount() &&
+				(this.data==null && t.data==null || this.data.equals(t.data));
+		Iterator<String> keys = this.children.keySet().iterator();
+		while (equals && keys.hasNext()) {
+			 String childKey = keys.next();
+			 Tree<T> child = getChild(childKey);
+			 Tree<T> childT = t.getChild(childKey);
+			 equals = child.equals(childT);
+		}
+		if (equals && hasLeft()) {
+			if (!t.hasLeft()) {
+				return false;
+			}
+			equals = getLeft().equals(t.getLeft());
+ 		}
+		if (equals && hasRight()) {
+			if (!t.hasRight()) {
+				return false;
+			}
+			equals = getRight().equals(t.getRight());
+		}
+		return equals;
+		
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.toString().hashCode();
+	}
+	
 }

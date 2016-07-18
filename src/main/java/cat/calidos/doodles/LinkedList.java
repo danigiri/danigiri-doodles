@@ -1,5 +1,5 @@
 /**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
+ Copyright 2016 Daniel Giribet <dani - calidos.cat>
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 */
 package cat.calidos.doodles;
 
-
 public class LinkedList<T> {
 
 public T data;
@@ -26,12 +25,57 @@ public LinkedList(T d) {
 	this.next = null;
 }
 
-
 public int length() {
 	if (next==null) {
 		return 1;	
 	}
 	return 1+next.length();
+}
+
+@Override
+public boolean equals(Object obj) {
+	if (obj==null) {
+		return false;
+	}
+	if (!(obj instanceof LinkedList<?>)) {
+		return false;
+	}
+	boolean equals = true;
+	LinkedList<T> l = this;
+	@SuppressWarnings("unchecked")
+	final LinkedList<T> o = (LinkedList<T>) obj;
+	while (equals && l!=null && o!=null) {
+		equals = l.data==null && o.data==null || l.data!=null && l.data.equals(o.data);
+		if (equals) {
+			if (l.next==null && o.next==null) {
+				return true;
+			}
+			return l.next.equals(o.next);
+		}
+	}
+	
+	return equals;
+};
+
+@Override
+public int hashCode() {
+	return this.toString().hashCode();
+};
+
+@Override
+public String toString() {
+	StringBuffer s = new StringBuffer();
+	s.append("[");
+	LinkedList<T> l = this;
+	s.append(this.data);
+	l = l.next;
+	while (l!=null) {
+		s.append(",");
+		s.append(l.data);
+		l = l.next;
+	}
+	s.append("]");
+	return s.toString();
 }
 
 
@@ -71,6 +115,52 @@ public static LinkedList<?> nthToLast_(LinkedList<?> nthCandidate, LinkedList<?>
 
 }
 
+public static <T> LinkedList<T> removeDupes(LinkedList<T> l) {
+	
+	if (l==null) {
+		return null;
+	}
+	LinkedList<T> uniqueList = null;	// empty list
+	return removeDupes(uniqueList, uniqueList,l);
+}
+
+private static <T> LinkedList<T> removeDupes(LinkedList<T> unique, LinkedList<T> uTail, LinkedList<T> l) {
+
+	if (l==null) {
+		return null;
+	}
+	
+	// base case
+	LinkedList<T> current = l;
+	LinkedList<T> i = unique;
+	
+	boolean found = false;
+	while (!found && i!=null) {
+		found = i.data==null && current.data==null || i.data.equals(current.data);
+		if (!found) {
+			i = i.next;
+		}
+	} // while
+	
+	// notice that if the unique list was an empty list (null) it also means found==false
+	if (!found) {
+		// did not find current in unique list
+		if (unique==null) {
+			unique = new LinkedList<T>(current.data);		// unique list was empty
+			uTail = unique;
+		} else {
+			uTail.next = new LinkedList<T>(current.data);	
+			uTail = uTail.next;								// uTail points to new end
+		}
+	}
+
+	// recursive case
+	if (l.next!=null) {
+		unique = removeDupes(unique, uTail, l.next);
+	}
+	
+	return unique;
+}
 
 
 }

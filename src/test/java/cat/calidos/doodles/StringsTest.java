@@ -17,7 +17,11 @@ package cat.calidos.doodles;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
+
+import cat.calidos.doodles.builders.ListFrom;
 
 
 public class StringsTest {
@@ -98,6 +102,33 @@ public void removeDuplicatesInPlaceTest() {
 	assertEquals("abcd", Strings.removeDuplicatesInPlace("aabbcccdc"));
 
 }
+
+
+@Test
+public void suffixTreeTest() {
+	
+	List<String> l = ListFrom.strings("abb", "abb", "abbc", "abbd", "abbe", "az", "x");
+	
+	Tree<String> t = new Tree<String>("");
+
+	Tree<String> bb = new Tree<String>("bb");
+	bb.addChild("c", new Tree<String>("c"));
+	bb.addChild("d", new Tree<String>("d"));
+	bb.addChild("e", new Tree<String>("e"));
+	
+	Tree<String> a = new Tree<String>("a");
+	a.addChild("bb", bb);
+	a.addChild("z", new Tree<String>("z"));
+	t.addChild("a", a);
+	t.addChild("x", new Tree<String>("x"));
+	
+	Tree<String> t1 = Strings.suffixTree(l);
+	assertEquals(t.toString(), t1.toString());
+	
+}
+
+
+
 
 
 }
