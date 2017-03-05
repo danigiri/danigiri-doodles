@@ -1,5 +1,5 @@
 /**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
+ Copyright 2016 Daniel Giribet <dani - calidos.cat>
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -38,6 +38,28 @@ public void minStackTest() {
 
 	stack.pop();
 	assertEquals(new Integer(1), stack.min());
+}
+
+@Test
+public void minStackMultipleMinimumsTest() {
+	
+	MinStack<Integer> stack = new MinStack<Integer>(1);
+	
+	stack.push(1);
+	assertEquals(new Integer(1), stack.min());
+
+	stack.pop();
+	assertEquals(new Integer(1), stack.min());
+
+	stack.push(2);
+	assertEquals(new Integer(1), stack.min());
+
+	stack.push(1);
+	assertEquals(new Integer(1), stack.min());
+	
+	stack.pop();
+	assertEquals(new Integer(1), stack.min());
+
 }
 
 }

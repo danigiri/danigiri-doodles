@@ -18,7 +18,7 @@ package cat.calidos.doodles;
 // How would you design a stack which, in addition to push and pop, also has a 
 // function min which returns the minimum element? Push, pop and min should 
 // all operate in O(1) time 
-// FIXME: if we push two minimums that are equal we have an issue!
+
 public class MinStack<T> extends Stack<T> {
 
 protected Stack<T> min;
@@ -33,12 +33,24 @@ public MinStack(T d) {
 	push(d);
 }
 
+// we have [s: 1 1, m:1 ]
+// pop()
+// we should have [s:1 , m:1 ]
+// this means if we add a value that is equal to the minimum we still add it, so when we pop we do
+// not run out of minimum stack
+// [s: 1, m:1]
+// push(1)
+// [s: 1 1, m:1 1]
+// pop()
+// we have [s:1 , m:1 ]
+
+
 public void push(T d) {		// O(K)
 	if (isEmpty()) {
 		super.push(d);
 		min.push(d);
 	} else {
-		if (((Comparable) d).compareTo(min.peek())<0) {
+		if (((Comparable) d).compareTo(min.peek())<=0) {
 			min.push(d);	// new minimum!
 		}
 		super.push(d);
