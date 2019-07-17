@@ -97,22 +97,23 @@ public static LinkedList<?> nthToLast(int n, LinkedList<?> l) {
 //
 public static LinkedList<?> nthToLast_(LinkedList<?> nthCandidate, LinkedList<?> lb, int lbLength, int n, LinkedList<?> l) {
 
-	// our buffer has the right size
-	if (lbLength==n+1) {
+	if (lbLength<n+1) {
+		// buffer too small
+		if (l.next==null) { // base case, reached the end and the buffer is not the right size
+			return null;
+		} else {			// recursive case, increase buffer and advance
+			return nthToLast_(nthCandidate, lb.next, lbLength+1, n, l.next); // induction (smaller l)
+		}
+	} else {
+		// our buffer has the right size
 		if (l.next==null) {	// base case, reached the end & buffer is the right size, return candidate
 			return nthCandidate;
 		} else {
-							// recursive case, shift buffer and advance
+			// recursive case, shift candidate and buffer to the right (keeping length) and advance
 			return nthToLast_(nthCandidate.next, lb.next, lbLength, n, l.next); // induction (smaller l)
 		}
-	} 
-	// buffer too small
-	if (l.next==null) { // base case, reached the end and buffer is not the right size
-		return null;
-	} else {			// recursive case, increase buffer and advance
-		return nthToLast_(nthCandidate, lb.next, lbLength+1, n, l.next); // induction (smaller l)
 	}
-
+	
 }
 
 public static <T> LinkedList<T> removeDupes(LinkedList<T> l) {
