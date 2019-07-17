@@ -52,6 +52,7 @@ public void insert(DLinkedList<T> e) {
 	}
 }
 
+
 // return previous or return next if removing head
 public DLinkedList<T> remove() {
 	DLinkedList<T> l = null;
@@ -67,6 +68,7 @@ public DLinkedList<T> remove() {
 	return l;
 }
 
+
 public int length() {
 	int length = 1;
 		DLinkedList<T> p = this;
@@ -81,6 +83,7 @@ public int length() {
 	}
 	return length;
 }
+
 
 @Override
 public String toString() {
@@ -111,6 +114,7 @@ public String toString() {
 	return s.toString();
 
 }
+
 
 }
 

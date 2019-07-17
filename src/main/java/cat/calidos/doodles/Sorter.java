@@ -286,7 +286,7 @@ public class Sorter {
 					buckets.add(bucket);
 				} else {						// bucket existed (empty or not)
 					bucket = buckets.get(bucketIndex);
-					if (bucket==null) {					
+					if (bucket==null) {
 						bucket = new ArrayList<T>();
 						buckets.set(bucketIndex, bucket);
 					}
@@ -295,7 +295,7 @@ public class Sorter {
 			} else {
 					throw new IndexOutOfBoundsException("Cannot sort negative values");
 			}
-						
+
 		}
 				
 		// recursive case

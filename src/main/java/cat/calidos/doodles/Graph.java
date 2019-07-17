@@ -28,10 +28,12 @@ public class Graph<T> {
 
 protected Map<T, Set<T>> vertices;
 
+
 public Graph() {
 	vertices = new HashMap<T, Set<T>>();
 
 }
+
 
 public Graph(T t) {
 	vertices = new HashMap<T, Set<T>>();
@@ -93,6 +95,7 @@ public Set<T> getEdges(T t) {
 	return vertices.get(t);
 }
 
+
 public Set<T> getVertices() {
 	return vertices.keySet();
 }
@@ -106,6 +109,7 @@ public boolean hasVertex(T t) {
 public int vertexCount() {
 	return vertices.keySet().size();
 }
+
 
 public boolean isEmpty() {
 	return vertexCount()==0;
