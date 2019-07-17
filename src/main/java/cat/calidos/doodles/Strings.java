@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class Strings {
@@ -197,13 +198,9 @@ public static boolean isAnagramOf(String a, String b) {
 			countDeltaForChar(deltas, bChar, -1);
 		}
 	}
-	Collection<Integer> counts = deltas.values();
-	for (int c : counts) {
-		if (c!=0) {
-			return false;
-		}
-	}
-	return true;
+
+	return !deltas.values().stream().filter(d -> d!=0).findAny().isPresent();
+
 }
 
 
