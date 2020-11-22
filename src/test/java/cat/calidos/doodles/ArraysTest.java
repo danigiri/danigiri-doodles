@@ -14,22 +14,21 @@ public class ArraysTest {
 
 @Test
 public void testRotateInPlace() {
-	Arrays<Integer> arrays = new Arrays<Integer>();
 
 	List<Integer> a = ArrayFrom.ints(1, 2, 3, 4);
-	arrays.rotateInPlace(ArrayFrom.ints(1, 2, 3, 4), 0);
+	Arrays.rotateInPlace(ArrayFrom.ints(1, 2, 3, 4), 0);
 	assertEquals(a, a);
 
 	a = ArrayFrom.ints(1, 2, 3, 4);
-	arrays.rotateInPlace(a, 1);
+	Arrays.rotateInPlace(a, 1);
 	assertEquals(ArrayFrom.ints(2, 3, 4, 1), a);
 
 	a = ArrayFrom.ints(1, 2, 3, 4);
-	arrays.rotateInPlace(a, 4);
+	Arrays.rotateInPlace(a, 4);
 	assertEquals(ArrayFrom.ints(1, 2, 3, 4),  a);
 
 	a = ArrayFrom.ints(1, 2, 3, 4);
-	arrays.rotateInPlace(a, 2);
+	Arrays.rotateInPlace(a, 2);
 	assertEquals(ArrayFrom.ints(3, 4, 1, 2), a);
 
 }

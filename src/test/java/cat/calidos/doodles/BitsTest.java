@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import cat.calidos.doodles.builders.IntegerFrom;
-
 
 public class BitsTest {
 

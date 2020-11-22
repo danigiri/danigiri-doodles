@@ -8,7 +8,7 @@ import java.util.List;
 public class Arrays<X> {
 
 
-public void rotateInPlace(List<X> v, int pos) {
+public static <X> void rotateInPlace(List<X> v, int pos) {
 
 	if (v==null || pos==0 || v.size()<2 || v.size()==pos) {
 		return;
@@ -20,7 +20,7 @@ public void rotateInPlace(List<X> v, int pos) {
 
 }
 
-private void shiftOne(List<X> v) {
+private static <X> void shiftOne(List<X> v) {
 	
 	X first = v.get(0);
 	int size = v.size();

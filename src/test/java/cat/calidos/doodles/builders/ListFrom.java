@@ -23,7 +23,7 @@ public class ListFrom {
 
 public static List<Integer> ints(int... v) {
 	
-	List<Integer> a = new ArrayList<Integer>();
+	List<Integer> a = new ArrayList<Integer>(v.length);
 	for (int i : v) {
 		a.add(Integer.valueOf(i));
 	}
