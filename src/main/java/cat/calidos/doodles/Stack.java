@@ -1,5 +1,7 @@
 package cat.calidos.doodles;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class Stack<T> {
 
@@ -47,5 +49,48 @@ public T peek() {
 	return elements.data;
 	
 }
+
+/** Check for parentheses balance, return true if parentheses are balanced, return false otherwise
+*	Empty string is true
+*/
+
+private static Character LEFTPAR = '(';
+private static Character RIGHTPAR = ')';
+
+public static boolean areParenthesesBalanced(String expr) {
+
+	// '' --> true
+	// '()' -->true
+	// '(())' -->true
+	// '(()(()))' -->true
+	// '(()-->false
+	// '(()))' -->false
+	// ')' --> false
+	// (((()) --> false
+
+	int length = expr.length();
+	List<Character> stack = new ArrayList<Character>();
+	int i = 0;
+	boolean ok = true;
+	while (ok && i<length) {
+		Character current = expr.charAt(i++);
+		if (current.equals(LEFTPAR)) {
+			stack.add(LEFTPAR);
+		} else if (current.equals(RIGHTPAR)) {
+			if (stack.size()>0) {
+				stack.remove(stack.size()-1);
+			} else {
+				ok = false;
+			}
+		} else {
+			throw new IllegalArgumentException("Invalid expression '"+expr+"'");
+		}
+	}
+
+	return ok && stack.size()==0;
+
+}
+
+
 
 }
