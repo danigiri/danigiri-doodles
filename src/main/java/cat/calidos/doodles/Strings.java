@@ -355,6 +355,56 @@ private static String commonPrefix(String a, String b) {
 }
 
 
+// Brute force version, also non extra structures O(N^2)
+// @return true if all the characters are unique
+public static boolean allCharsAreUniqueInPlace(String s) {
+
+	if (s == null) {
+		throw new NullPointerException("Cannot distinguish uniqueness of null string");
+	}
+
+	boolean noRepeats = true;
+	int i = 0;
+	while (noRepeats && i < s.length()) {
+		char current = s.charAt(i);
+		int j = i + 1;
+		while (noRepeats && j < s.length()) {
+			noRepeats = current != s.charAt(j);
+			j++;
+		}
+		i++;
+	}
+
+	return noRepeats;
+
+}
+
+
+// Non brute force, using structures
+// @return true if all the characters are unique, O(N) <== O(N)*O(k)
+public static boolean allCharsAreUnique(String s) {
+
+	if (s == null) {
+		throw new NullPointerException("Cannot distinguish uniqueness of null string");
+	}
+
+	Set<Character> foundChars = new HashSet<Character>();
+	boolean noRepeats = true;
+	int i = 0;
+	while (noRepeats && i < s.length()) {
+		char current = s.charAt(i);
+		noRepeats = !foundChars.contains(current);
+		if (noRepeats) {
+			foundChars.add(current);
+			i++;
+		}
+	}
+
+	return noRepeats;
+
+}
+
+
 /*
  * 
  * TEST hello

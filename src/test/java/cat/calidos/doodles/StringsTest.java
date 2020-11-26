@@ -128,7 +128,23 @@ public void suffixTreeTest() {
 }
 
 
+@Test
+public void allCharsAreUniqueTest() {
 
+	assertTrue(Strings.allCharsAreUnique(""));
+	assertTrue(Strings.allCharsAreUnique("a"));
+	assertTrue(Strings.allCharsAreUnique("abc"));
+	assertFalse(Strings.allCharsAreUnique("abca"));
+	assertFalse(Strings.allCharsAreUnique("aaaa"));
+
+	assertTrue(Strings.allCharsAreUniqueInPlace(""));
+	assertTrue(Strings.allCharsAreUniqueInPlace("a"));
+	assertTrue(Strings.allCharsAreUniqueInPlace("abc"));
+	assertFalse(Strings.allCharsAreUniqueInPlace("abca"));
+	assertFalse(Strings.allCharsAreUniqueInPlace("aaaa"));
+
+	
+}
 
 
 }
