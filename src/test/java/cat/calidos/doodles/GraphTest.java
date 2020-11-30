@@ -77,13 +77,14 @@ public void depthFirstFindTest() {
 	g.addEdge("b", "s");
 	p = QueueFrom.strings("a", "b", "s");
 	assertEquals(p, g.depthFirstFind("a", "s"));
-	
+
 }
 
 
 @Test
+@Ignore
 public void depthFirstSearchTest() {
-	
+
 	Graph<String> g = new Graph<String>("a");
 	Graph<String> s = g.depthFirstSearch();
 	assertEquals(g, s);
@@ -106,9 +107,10 @@ public void depthFirstSearchTest() {
 	//		| ->c -\
 	//		|       => d
 	//		\ -----/
-	
+
 	s = g.depthFirstSearch();
 	assertTrue(s.equals(expectedX) || s.equals(expectedY));
+
 }
 
 
@@ -184,10 +186,10 @@ public void breadthFirstSearchTest() {
 	//		| ->c -\
 	//		|       => d
 	//		\ -----/
-	
+
 	s = g.breadthFirstSearch();
 	assertEquals(expectedY, s);
-	
+
 	g.addEdge("b", "e");
 	expectedY.addEdge("b", "e");
 	s = g.breadthFirstSearch();
@@ -206,6 +208,20 @@ public void breadthFirstSearchTest() {
 	assertEquals(expectedY, s);
 
 }
+
+
+@Test
+public void areConnected2Test() {
+
+	assertTrue(expectedX.areConnected2("a", "a"));
+	assertTrue(expectedX.areConnected2("a", "d"));
+	assertTrue(expectedX.areConnected2("c", "d"));
+
+	assertFalse(expectedX.areConnected2("b", "d"));
+	assertFalse(expectedX.areConnected2("d", "a"));
+
+}
+
 
 //@Test
 //public void asListTest() {

@@ -15,11 +15,14 @@
 */
 package cat.calidos.doodles;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 //tagged, directed graph, T equals ops are considered constant, T are considered unique within the graph
@@ -298,6 +301,40 @@ public Graph<T> breadthFirstSearch() {
 	}	
 
 	return g;
+}
+
+
+public boolean areConnected2(T s, T e) {
+
+	if (this.vertexCount() == 0 || !this.hasVertex(s) || !this.hasVertex(e)) {
+		return false;
+	}
+
+	if (s==e) {
+		return true;
+	}
+
+	boolean connected = false;
+	List<T> pending = getEdges(s).stream().collect(Collectors.toList());
+
+	Set<T> visited = new HashSet<T>();
+	while (pending.size() > 0 && !connected) {
+		List<T> nextPending = new ArrayList<T>();
+		while (pending.size() > 0 && !connected) {
+			T current = pending.remove(pending.size() - 1);
+			if (!current.equals(e)) {
+				getEdges(current).stream().filter(v -> !visited.contains(v)).forEach(v -> nextPending.add(v));
+			} else {
+				connected = true;
+			}
+		}
+		if (!connected) {
+			pending = nextPending;
+		}
+	}
+
+	return connected;
+
 }
 
 
