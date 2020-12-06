@@ -18,6 +18,10 @@ package cat.calidos.doodles;
 
 public class Bits {
 
+public static final String PRETTY_HEADER1 = "|------|*------|*------|*------|";
+public static final String PRETTY_HEADER0 = "31------23------15------7------0";
+
+
 /** 'substring' from i to j from M into N
  * @param n integer
  * @param m integer
@@ -37,7 +41,7 @@ public static int subBits(int n, int m, int i, int j) {
 		i = j;
 		j = s;
 	}
-	
+
 	for (int x = i; x<=j; x++) {
 		int mask = 0x1 << x;
 		int v = m & mask;
@@ -50,6 +54,30 @@ public static int subBits(int n, int m, int i, int j) {
 
 	return n;
 }
+
+
+//pretty print a binary number as a string
+
+public static String prettyPrint(int n) {
+
+	StringBuffer s = new StringBuffer(33*3);
+	s.append(PRETTY_HEADER0);
+	s.append("\n");
+	s.append(PRETTY_HEADER1);
+	s.append("\n");
+	int mask = 1 << 31;
+	//ints are 32 bits long
+	for (int i=0; i<32; i++) {
+		s.append((n & mask)==mask ? "1" : "0");
+		n = n<<1;
+	}
+	s.append("\n");
+
+	return s.toString();
+
+}
+
+
 
 
 }
