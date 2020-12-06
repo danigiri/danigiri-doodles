@@ -45,14 +45,21 @@ public Graph(T t) {
 
 
 public boolean addVertex(T t) {
-	
+
 	boolean added = false;
-	
+
 	if (!hasVertex(t)) {
 		vertices.put(t, new HashSet<T>());
+		added = true;
 	}
+
 	return added;
-	
+
+}
+
+
+public boolean removeVertex(T leaf) {
+	return vertices.remove(leaf)!=null;
 }
 
 
@@ -72,6 +79,7 @@ public boolean areConnected(T a, T b) {
 
 
 public boolean addEdge(T a, T b) {
+
 	if (a==null || b==null) {
 		throw new NullPointerException("Null tags not allowed");
 	}
@@ -88,6 +96,22 @@ public boolean addEdge(T a, T b) {
 	}
 
 	return newVertex;
+
+}
+
+
+public boolean removeEdge(T a, T b) {
+
+	if (a==null || b==null) {
+		throw new NullPointerException("Null tags not allowed");
+	}
+	if (!hasVertex(a) || !hasVertex(b) || !areConnected(a, b)) {
+		return false;
+	}
+
+	getEdges(a).remove(b);
+
+	return true;
 
 }
 
@@ -424,6 +448,82 @@ private List<T> _buildList(T artifact, Set<T> visited, Graph<T> dependencies, Se
 }
 
 
+//we use a different algorithm
+//order in the graph is reversed, edges point to the projects that depend on a given artifact
+//we build a graph of dependencies
+//we ignore dependencies that point to themselves
+//we maintain a list of nodes that have no edges incoming to those (leafs), which we will use
+//to start the build list
+
+public List<T> buildOrder2(List<T> artifacts, List<T> sources, List<T> destinations) {
+
+	if (artifacts == null || sources == null || destinations == null) {
+		throw new IndexOutOfBoundsException("Null params");
+	}
+
+	int artifactsCount = artifacts.size();
+	int sourcesCount = sources.size();
+	int destinationsCount = destinations.size();
+	if (artifactsCount == 0 || sourcesCount != destinationsCount) {
+		throw new IllegalArgumentException("Problematic arguments");
+	}
+
+	Graph<T> deps = new Graph<T>();
+	artifacts.stream().forEach(a -> deps.addVertex(a));
+	Set<T> leaves = artifacts.stream().collect(Collectors.toSet());
+	for (int i = 0; i < sourcesCount; i++) {
+		T source = sources.get(i);
+		T dest = destinations.get(i);
+		if (source == null || dest == null) {
+			throw new NullPointerException("null dep at position " + i);
+		}
+		if (!source.equals(dest)) { // skip self references
+			deps.addEdge(source, dest);
+			if (leaves.contains(dest)) {
+				leaves.remove(dest);
+			}
+		}
+	}
+	// graph is built
+	if (leaves.size() == 0) {
+		throw new RuntimeException("Cannot build");
+	}
+
+	// we create empty build list
+	// once we have the graph and the leaf list
+	// while leaf list is not empty
+	// for each leaf,
+	// add to build list
+	// find the dependencies and for each dep
+	// check dep is not in graph → loop error
+	// add them to a temporary dep set
+	// for each leaf,
+	// remove its dep edges
+	// remove leaf node
+	// for all the dep set
+	// add to leaf list
+
+	List<T> build = new ArrayList<T>(artifactsCount);
+
+	while (leaves.size() > 0) {
+		Set<T> nextLeaves = new HashSet<T>();
+		leaves.stream().forEach(leaf -> {
+			Set<T> leafDeps = deps.getEdges(leaf);
+			leafDeps.stream().forEach(leafDep -> {
+				if (!deps.hasVertex(leafDep)) {
+					throw new RuntimeException("Loop at " + leaf + "->" + leafDep);
+				}
+				nextLeaves.add(leafDep);
+			});
+			deps.removeVertex(leaf);	// this will remove all the edges for this leaf
+			build.add(leaf);
+		});
+		leaves = nextLeaves;
+	}
+
+	return build;
+
+}
 
 @Override
 public boolean equals(Object obj) { // O(N)

@@ -15,13 +15,14 @@
 */
 package cat.calidos.doodles;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import cat.calidos.doodles.builders.ListFrom;
 import cat.calidos.doodles.builders.QueueFrom;
@@ -33,7 +34,7 @@ private static Graph<String>	expectedX;
 private static Graph<String>	expectedY;
 
 
-@Before
+@BeforeEach
 public void setup() {
 	
 	expectedX = new Graph<String>("a");
@@ -84,7 +85,7 @@ public void depthFirstFindTest() {
 
 
 @Test
-@Ignore
+@Disabled
 public void depthFirstSearchTest() {
 
 	Graph<String> g = new Graph<String>("a");
@@ -225,7 +226,7 @@ public void areConnected2Test() {
 }
 
 
-@Test
+@Test @DisplayName("Build order test")
 public void buildOrderTest() {
 
 	// projects: a, b, c, d, e, f
@@ -254,6 +255,69 @@ public void buildOrderTest() {
 	assertTrue(order2.contains("e"));
 	order2.remove("e");	// could be in any location
 	assertEquals(ListFrom.strings("f", "a", "b", "d", "c"), order2);
+
+}
+
+
+@Test @DisplayName("Build order test loop exception")
+@Disabled
+public void buildOrderLoopTest() {
+
+	Graph<String> graph = new Graph<String>();
+
+	List<String> artifacts = ListFrom.strings("a", "b", "c", "d", "e", "f");
+	List<String> sources 		= ListFrom.strings("a", "f", "b", "f", "d", "c");
+	List<String> destinations 	= ListFrom.strings("d", "b", "d", "a", "c", "a");
+
+	assertThrows(StackOverflowError.class, () -> graph.buildOrder(artifacts, destinations, sources));
+
+}
+
+
+
+@Test @DisplayName("Build order test 2")
+public void buildOrderTes2t() {
+
+	// projects: a, b, c, d, e, f
+	// deps: (a,d), (f,b), (b,d), (f,a), (d,c)
+	// output: [e, c, d, a, b, f]
+	// reverse graph
+	// deps: (d,a), (b,f), (d,b), (a,f), (c,d)
+	// output: f, e, a, b, d, c
+
+	Graph<String> graph = new Graph<String>();
+
+	List<String> artifacts = ListFrom.strings("a", "b", "c", "d", "e", "f");
+	List<String> sources 		= ListFrom.strings("a", "f", "b", "f", "d");
+	List<String> destinations 	= ListFrom.strings("d", "b", "d", "a", "c");
+
+	List<String> order = graph.buildOrder2(artifacts, sources, destinations);
+	assertNotNull(order);
+	//System.err.println(order);
+	assertTrue(order.contains("e"));
+	order.remove("e");	// could be in any location
+	assertEquals(ListFrom.strings("f", "a", "b", "d", "c"), order);
+
+	List<String> order2 = graph.buildOrder2(artifacts, destinations, sources);
+	assertNotNull(order2);
+	//System.err.println(order2);
+	assertTrue(order2.contains("e"));
+	order2.remove("e");	// could be in any location
+	assertEquals(ListFrom.strings("c", "d", "a", "b", "f"), order2);
+
+}
+
+
+@Test @DisplayName("Build order test loop exception")
+public void buildOrder2LoopTest() {
+
+	Graph<String> graph = new Graph<String>();
+
+	List<String> artifacts = ListFrom.strings("a", "b", "c", "d", "e", "f");
+	List<String> sources 		= ListFrom.strings("a", "f", "b", "f", "d", "c");
+	List<String> destinations 	= ListFrom.strings("d", "b", "d", "a", "c", "a");
+
+	assertThrows(RuntimeException.class, () -> graph.buildOrder2(artifacts, sources, destinations));
 
 }
 
