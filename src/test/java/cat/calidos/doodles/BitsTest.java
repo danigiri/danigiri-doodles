@@ -64,4 +64,18 @@ public void prettyPrintTest() {
 }
 
 
+@Test @DisplayName("insert test")
+public void insertTest() {
+
+	int inserted = Bits.insert(512, 128+1, 0, 7);
+	String[] lines = Bits.prettyPrint(inserted).split("\\n");
+	assertEquals("00000000000000000000001010000001", lines[2]);
+
+	int inserted2 = Bits.insert(512+1, 128+0, 0, 7);
+	String[] lines2 = Bits.prettyPrint(inserted2).split("\\n");
+	assertEquals("00000000000000000000001010000000", lines2[2]);
+
+}
+
+
 }

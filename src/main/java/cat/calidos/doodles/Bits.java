@@ -21,6 +21,8 @@ public class Bits {
 public static final String PRETTY_HEADER1 = "|------|*------|*------|*------|";
 public static final String PRETTY_HEADER0 = "31------23------15------7------0";
 
+private static int INT_SIZE = 32;
+
 
 /** 'substring' from i to j from M into N
  * @param n integer
@@ -74,6 +76,30 @@ public static String prettyPrint(int n) {
 	s.append("\n");
 
 	return s.toString();
+
+}
+
+
+public static int insert(int n, int m, int i, int j) {
+
+	if (j<i || i>=INT_SIZE || j>=INT_SIZE) {
+		throw new ArrayIndexOutOfBoundsException("bad indexes");
+	}
+
+	int output = 0;
+	int writerMask = 1;	// we use this mask to slide through the integer
+	int insertionMask = 1;
+	for (int x=0; x<INT_SIZE; x++) {
+		if (x<i || x>j) {			// normal writing operation
+			output |= n & writerMask;
+		} else {					// insert M into it
+			output |= m & insertionMask;
+			insertionMask = insertionMask << 1;
+		}
+		writerMask = writerMask << 1; // logical shift, not arithmetic one, but arithmetic works given mask is positive
+	}
+
+	return output;
 
 }
 
