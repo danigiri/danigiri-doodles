@@ -57,7 +57,7 @@ public boolean addVertex(T t) {
 
 
 public boolean areConnected(T a, T b) {
-	
+
 	boolean areConnected;
 
 	if (!hasVertex(a)) {
@@ -65,8 +65,9 @@ public boolean areConnected(T a, T b) {
 	} else {
 		areConnected = vertices.get(a).contains(b);
 	}
-		
+
 	return areConnected;
+
 }
 
 
@@ -93,7 +94,7 @@ public boolean addEdge(T a, T b) {
 
 public Set<T> getEdges(T t) {
 	if (!hasVertex(t)) {
-		throw new IndexOutOfBoundsException("");
+		throw new IndexOutOfBoundsException("Graph does not have vertex "+t);
 	}
 	return vertices.get(t);
 }
@@ -263,10 +264,10 @@ public Graph<T> breadthFirstSearch() {
 	if (isEmpty()) {
 		return g;
 	}
-	
+
 	Set<T> v = new HashSet<T>(getVertices());
 	Map<T,T> parents = new HashMap<T,T>(v.size());
-		
+
 	while (!v.isEmpty()) {
 		T c = v.iterator().next();
 		v.remove(c);
@@ -293,7 +294,7 @@ public Graph<T> breadthFirstSearch() {
 					parents.put(e, c);
 				}
 			}
-			
+
 		}
 	}
 	for (T t : parents.keySet()) {
@@ -338,35 +339,120 @@ public boolean areConnected2(T s, T e) {
 }
 
 
-@Override
-public boolean equals(Object obj) {		// O(N)
+//given a list of artifacts and dependencies, build a build order list
+//artifact dependencies form a graph
+//we need to keep a list of targets that have no parent, those will be the starting points for a
+//search tree that will give us the list of dependencies for each target
+//for each of those
+//once we have the search tree for each, we start a graph recursive traversal, for current node
+//skip if artifact has been built, otherwise:
+//if artifact is a leaf
+//a) add artifact to build list in that order
+//b) add artifact to already built hash table, so we don’t rebuild it keeping O() low
+//if artifact has children
+//recursive call for each, by induction, when that returns we assume the artifact has been built
+//add current node to built
+//add current node to build list, return build list
+//done!
+//Warning: to avoid loops, we keep a visited hash (notice !=built list), if we find a child in the 
+//visited list we throw exception
 
-    if (obj == null) {
-        return false;
-    }
-    if (obj == this) {
-        return true;
-    }
-    if (!(obj instanceof Graph)) {
-        return false;
-    }
-    
-    @SuppressWarnings("unchecked")
-    Graph<T> g = (Graph<T>)obj;
-    
-    if (vertexCount()!=g.vertexCount()) {
-    	return false;
-    }
-    
-    boolean equals = true;
-    Iterator<T> gVerticesIterator = getVertices().iterator();
-    while (gVerticesIterator.hasNext() && equals) {
-    	T gVertex = gVerticesIterator.next();
-    	equals = vertices.containsKey(gVertex) && 
-    				vertices.get(gVertex).equals(g.getEdges(gVertex));
-    }
-    
-    return equals;
+public List<T> buildOrder(List <T> artifacts, List<T> sources, List<T> destinations) {
+
+	if (artifacts==null || sources==null || destinations==null 
+	|| sources.size()!=destinations.size()) {
+		throw new NullPointerException("Bad parameters");
+	}
+
+	//create dependency graph and potential targets list
+	int artifactCount = artifacts.size();
+	Graph<T> dependencies = new Graph<T>();
+	Set<T> targets = new HashSet<T>(artifactCount);
+	artifacts.stream().forEach(a -> targets.add(a));
+
+	//build graph from dependencies lists
+	for (int i=0; i<sources.size(); i++) {
+		T source = sources.get(i);
+		T dest = destinations.get(i);
+		if (targets.contains(dest)) {	// no longer a target, now a dependency
+			targets.remove(dest);
+		}
+		if (!dependencies.hasVertex(source)) {
+			dependencies.addVertex(source);	// O(k)
+		}
+		if (!dependencies.hasVertex(dest)) {
+			dependencies.addVertex(dest);	// O(k)
+		}
+		dependencies.addEdge(source, dest);	// O(K)
+	} // for
+
+	//we have now a dependency graph and a list of root targets for each target we do rec call
+	List<T> buildList = new ArrayList<T>(artifactCount);
+	Set<T> builtSet = new HashSet<T>(artifactCount);
+	targets.stream().forEach(a -> {
+		Set<T> visited = new HashSet<T>();
+		_buildList(a, visited, dependencies, builtSet).forEach(e -> buildList.add(e));
+	});
+
+	return buildList;
+
+}
+
+private List<T> _buildList(T artifact, Set<T> visited, Graph<T> dependencies, Set<T> builtSet) {
+
+	List<T> buildList = new ArrayList<T>();
+	// if the artifact is not in dependencies, it means that it is a standalone artifact that can be built alone
+	Set<T> edges = dependencies.hasVertex(artifact) ? dependencies.getEdges(artifact) : new HashSet<T>(0);
+	if (edges.size()>0) {				// complex case		
+		edges.stream().forEach(child -> {	
+			if (visited.contains(child)) {
+				throw new StackOverflowError("Loop detected by "+child+" dep");
+			}
+			if (!builtSet.contains(child)) {
+				visited.add(artifact);		// avoid loops
+				_buildList(child, visited, dependencies, builtSet).forEach(e -> buildList.add(e));	// induction
+				visited.remove(artifact);	// when we go through a different branch, visited!=built
+			}
+		});
+	}
+
+	buildList.add(artifact);
+	builtSet.add(artifact);
+
+	return buildList;
+
+}
+
+
+
+@Override
+public boolean equals(Object obj) { // O(N)
+
+	if (obj == null) {
+		return false;
+	}
+	if (obj == this) {
+		return true;
+	}
+	if (!(obj instanceof Graph)) {
+		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	Graph<T> g = (Graph<T>) obj;
+
+	if (vertexCount() != g.vertexCount()) {
+		return false;
+	}
+
+	boolean equals = true;
+	Iterator<T> gVerticesIterator = getVertices().iterator();
+	while (gVerticesIterator.hasNext() && equals) {
+		T gVertex = gVerticesIterator.next();
+		equals = vertices.containsKey(gVertex) && vertices.get(gVertex).equals(g.getEdges(gVertex));
+	}
+
+	return equals;
 
 }
 
