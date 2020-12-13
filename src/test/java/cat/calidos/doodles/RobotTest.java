@@ -16,16 +16,15 @@
 
 package cat.calidos.doodles;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 
 public class RobotTest {
 
-@Test
+@Test @DisplayName("Test possible paths in grid")
 public void testPathsInSquareGrid() {
 
 	assertEquals(0, Robot.pathsInSquareGrid(0));
@@ -39,7 +38,7 @@ public void testPathsInSquareGrid() {
 }
 
 
-@Test
+@Test @DisplayName("Test possible paths in grid with obstacles")
 public void testPathsInSquareGridWithObstacles() {
 	
 	boolean[][] o0 = {{}, {}};
@@ -86,7 +85,7 @@ public void testPathsInSquareGridWithObstacles() {
 }
 
 
-@Test
+@Test @DisplayName("Test possible non stop path in square grid")
 public void testNonStopPathsInSquareGrid() {
 	
 	assertEquals(0, Robot.nonStopPathsInSquareGrid(0));
@@ -103,6 +102,53 @@ public void testNonStopPathsInSquareGrid() {
 	// ..x	.-x	--x	..x	.-x	..x
 
 }
+
+
+@Test @DisplayName("Test find path in grid with obstacles")
+public void testMaze() {
+
+	boolean[][] m1 = {	{false, false, false},
+						{false, true , false},
+						{false, true , false}};	// bottom left is a dead end
+
+	java.util.LinkedList<String> path = Robot.mazePath(m1, m1.length, m1[0].length);
+
+	java.util.LinkedList<String> expected = new java.util.LinkedList<String>();
+	expected.add(Robot.RIGHT);
+	expected.add(Robot.RIGHT);
+	expected.add(Robot.DOWN);
+	expected.add(Robot.DOWN);
+	assertAll("path checks", 
+		() -> assertNotNull(path),
+		() -> assertEquals(4, path.size()),
+		() -> assertEquals(expected, path)
+	);
+
+}
+
+
+@Test @DisplayName("Test find path in grid with obstacles, but clear of them")
+public void testClearMaze() {
+
+	boolean[][] m1 = {	{false, false, false},
+						{false, false, false},
+						{false, false, false}};	// all clear
+
+	java.util.LinkedList<String> path = Robot.mazePath(m1, m1.length, m1[0].length);
+
+	java.util.LinkedList<String> expected = new java.util.LinkedList<String>();
+	expected.add(Robot.DOWN);
+	expected.add(Robot.DOWN);
+	expected.add(Robot.RIGHT);
+	expected.add(Robot.RIGHT);
+	assertAll("path checks", 
+		() -> assertNotNull(path),
+		() -> assertEquals(4, path.size()),
+		() -> assertEquals(expected, path)
+	);
+
+}
+
 
 
 }
