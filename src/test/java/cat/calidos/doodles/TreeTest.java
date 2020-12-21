@@ -18,7 +18,6 @@ package cat.calidos.doodles;
 import static org.junit.Assert.*;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 import org.junit.Test;
 
