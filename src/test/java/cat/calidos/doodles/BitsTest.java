@@ -98,12 +98,24 @@ public void swapTest() {
 	int a2 = swap2.get("a");
 	int b2 = swap2.get("b");
 
-	assertAll("basic swap tests",
+	assertAll("equal number swap tests",
 			() -> assertNotNull(a2),
 			() -> assertNotNull(b2),
 			() -> assertEquals(111, a2),
 			() -> assertEquals(111, b2)
 	);
+
+	Map<String, Integer> swap3 = Bits.swap(0, 0);
+	int a3 = swap3.get("a");
+	int b3 = swap3.get("b");
+
+	assertAll("zero swap tests",
+			() -> assertNotNull(a3),
+			() -> assertNotNull(b3),
+			() -> assertEquals(0, a3),
+			() -> assertEquals(0, b3)
+	);
+
 
 }
 

@@ -139,5 +139,30 @@ public static Map<String, Integer> swap(int a, int b) {
 }
 
 
+//same with recursive option, no loop and no mask variables, only parameters
+public static Map<String, Integer> swap2(int a, int b) {
+	return _swap2(a, b, 1);
+}
+
+
+private static Map<String, Integer> _swap2(int a, int b, int mask) {
+
+	// base case
+	if (mask==0) {
+		Map<String, Integer> output = new HashMap<String, Integer>(2);
+		output.put("a", a);
+		output.put("b", b);
+		return output;
+	}
+	if (((mask&a)^(mask&b))==0) {
+		return _swap2(a, b, mask<<1);
+	} else if ((mask&a)!=0) {
+		return _swap2(a&(~mask), b|mask, mask<<1);
+	} else {
+		return _swap2(a|mask, b&(~mask), mask<<1);
+	}
+
+}
+
 
 }
