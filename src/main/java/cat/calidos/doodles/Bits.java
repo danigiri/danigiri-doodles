@@ -15,6 +15,8 @@
  */
 package cat.calidos.doodles;
 
+import java.util.HashMap;
+import java.util.Map;
 
 public class Bits {
 
@@ -103,6 +105,38 @@ public static int insert(int n, int m, int i, int j) {
 
 }
 
+
+
+//write an algorithm to swap to numbers in place without a temporary variable
+//numbers are a and b
+//let’s do it bit by bit, for each bit
+//a) if xor == 0 , get any of the two values
+//b) if a & 1 ==1 we set 1 → b and 0 → a
+//c) otherwise we set 1 -> a and 0 -> b
+
+public static Map<String, Integer> swap(int a, int b) {
+
+	int mask = 1;
+	Map<String, Integer> output = new HashMap<String, Integer>(2);
+
+	for (int i=0; i<INT_SIZE; i++) {
+		if (((mask&a)^(mask&b))==0) {
+			// no op
+		} else if ((mask&a)!=0) {
+			a = a&(~mask);
+			b = b|mask;
+		} else {
+			a = a|mask;
+			b = b&(~mask);
+	}
+		mask = mask << 1;
+	}
+	output.put("a", a);
+	output.put("b", b);
+
+	return output;
+
+}
 
 
 

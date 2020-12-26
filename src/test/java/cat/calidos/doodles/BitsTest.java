@@ -2,6 +2,8 @@ package cat.calidos.doodles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -74,6 +76,34 @@ public void insertTest() {
 	int inserted2 = Bits.insert(512+1, 128+0, 0, 7);
 	String[] lines2 = Bits.prettyPrint(inserted2).split("\\n");
 	assertEquals("00000000000000000000001010000000", lines2[2]);
+
+}
+
+
+@Test @DisplayName("swap test")
+public void swapTest() {
+
+	Map<String, Integer> swap = Bits.swap(129, 77);
+	int a = swap.get("a");
+	int b = swap.get("b");
+
+	assertAll("basic swap tests",
+			() -> assertNotNull(a),
+			() -> assertNotNull(b),
+			() -> assertEquals(77, a),
+			() -> assertEquals(129, b)
+	);
+
+	Map<String, Integer> swap2 = Bits.swap(111, 111);
+	int a2 = swap2.get("a");
+	int b2 = swap2.get("b");
+
+	assertAll("basic swap tests",
+			() -> assertNotNull(a2),
+			() -> assertNotNull(b2),
+			() -> assertEquals(111, a2),
+			() -> assertEquals(111, b2)
+	);
 
 }
 
