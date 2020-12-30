@@ -1,18 +1,22 @@
 // STRINGS TEST . JAVA
+
 package cat.calidos.doodles;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import cat.calidos.doodles.builders.ListFrom;
 
 
 public class StringsTest {
 
-@Test
+
+@Test @DisplayName("Test unique chars")
 public void uniqueTest() {
 
 	assertTrue(Strings.unique("a"));
@@ -22,9 +26,9 @@ public void uniqueTest() {
 }
 
 
-@Test
+@Test @DisplayName("Longest three repeated chars")
 public void longestSubThreeTest() {
-	
+
 	assertEquals(null, Strings.longestSubThree(null));
 	assertEquals("", Strings.longestSubThree(""));
 	assertEquals("", Strings.longestSubThree("a"));
@@ -38,15 +42,15 @@ public void longestSubThreeTest() {
 }
 
 
-@Test
+@Test @DisplayName("Anagram test")
 public void anagramTest() {
-	
+
 	assertTrue(Strings.isAnagramOf("", ""));
 	assertTrue(Strings.isAnagramOf("a", "a"));
 
 	assertFalse(Strings.isAnagramOf("a", "b"));
 	assertFalse(Strings.isAnagramOf("a", ""));
-	
+
 	assertTrue(Strings.isAnagramOf("ab", "ba"));
 	assertTrue(Strings.isAnagramOf("abc", "cba"));
 	assertTrue(Strings.isAnagramOf("abc", "bca"));
@@ -62,7 +66,7 @@ public void anagramTest() {
 }
 
 
-@Test
+@Test @DisplayName("Reverse C string")
 public void reverseCStringTest() {
 
 	assertEquals("", Strings.reverseCString(""));
@@ -74,7 +78,8 @@ public void reverseCStringTest() {
 
 }
 
-@Test
+
+@Test @DisplayName("Remove duplicates in place")
 public void removeDuplicatesInPlaceTest() {
 
 	assertEquals("", Strings.removeDuplicatesInPlace(""));
@@ -90,31 +95,31 @@ public void removeDuplicatesInPlaceTest() {
 }
 
 
-@Test
+@Test @DisplayName("Suffix tree")
 public void suffixTreeTest() {
-	
+
 	List<String> l = ListFrom.strings("abb", "abb", "abbc", "abbd", "abbe", "az", "x");
-	
+
 	Tree<String> t = new Tree<String>("");
 
 	Tree<String> bb = new Tree<String>("bb");
 	bb.addChild("c", new Tree<String>("c"));
 	bb.addChild("d", new Tree<String>("d"));
 	bb.addChild("e", new Tree<String>("e"));
-	
+
 	Tree<String> a = new Tree<String>("a");
 	a.addChild("bb", bb);
 	a.addChild("z", new Tree<String>("z"));
 	t.addChild("a", a);
 	t.addChild("x", new Tree<String>("x"));
-	
+
 	Tree<String> t1 = Strings.suffixTree(l);
 	assertEquals(t.toString(), t1.toString());
-	
+
 }
 
 
-@Test
+@Test @DisplayName("Test if all chars are unique")
 public void allCharsAreUniqueTest() {
 
 	assertTrue(Strings.allCharsAreUnique(""));
@@ -129,7 +134,45 @@ public void allCharsAreUniqueTest() {
 	assertFalse(Strings.allCharsAreUniqueInPlace("abca"));
 	assertFalse(Strings.allCharsAreUniqueInPlace("aaaa"));
 
-	
+}
+
+
+@Test @DisplayName("Test count number of occurrences of word")
+public void testTrivialCount() {
+
+	assertEquals(0, Strings.trivialCount("a", ""));
+	assertEquals(0, Strings.trivialCount("a", "bx"));
+	assertEquals(1, Strings.trivialCount("ab", "aaabbx"));
+	assertEquals(2, Strings.trivialCount("ab", "aaaabaabbx"));
+	assertEquals(0, Strings.trivialCount("abba", "abb"));
+
+}
+
+
+@Test @DisplayName("Test count number all word occurrences")
+public void testCountWords() {
+
+	Map<String, Integer> counts = new Strings().countWords("a ab a,d,x ee, d,  f");
+	assertAll("Check basic word counts", 
+		() -> assertNotNull(counts),
+		() -> assertEquals(6, counts.size()),
+		() -> assertTrue(counts.containsKey("a")),
+		() -> assertTrue(counts.containsKey("ab")),
+		() -> assertTrue(counts.containsKey("d")),
+		() -> assertTrue(counts.containsKey("x")),
+		() -> assertTrue(counts.containsKey("ee")),
+		() -> assertTrue(counts.containsKey("f"))
+	);
+
+	assertAll("Check  word counts", 
+		() -> assertEquals(2, counts.get("a")),
+		() -> assertEquals(1, counts.get("ab")),
+		() -> assertEquals(2, counts.get("d")),
+		() -> assertEquals(1, counts.get("x")),
+		() -> assertEquals(1, counts.get("ee")),
+		() -> assertEquals(1, counts.get("f"))
+	);
+
 }
 
 

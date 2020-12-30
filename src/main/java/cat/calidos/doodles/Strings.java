@@ -1,20 +1,8 @@
-/**
- Copyright 2016 Daniel Giribet <dani - calidos.cat>
+// STRINGS . JAVA
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 package cat.calidos.doodles;
 
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -403,6 +391,174 @@ public static boolean allCharsAreUnique(String s) {
 	return noRepeats;
 
 }
+
+
+public static int trivialCount(String w, String t) {
+
+	// we assume String lookups are constant, that String is equivalent to a char array
+	if (w == null || t == null) {
+		throw new NullPointerException("Bad parameters");
+	}
+
+	int count = 0;
+	int i = 0;
+	int length = t.length();
+	while (i < length) {
+		if (t.charAt(i) == w.charAt(0)) { // partial match
+			int matchIndex = 0;
+			while (matchIndex < w.length() && i < length && t.charAt(i) == w.charAt(matchIndex)) {
+				matchIndex++;
+				i++;
+			}
+			if (matchIndex == w.length()) {
+				count++;
+			}
+		} else { // no partial, continue
+			i++;
+		}
+
+	}
+
+	return count;
+
+}
+
+
+//16.2 word frequencies, for all words in a book. What if we were running this algorithm
+//multiple times?
+//we assume spaces are the only word separators, but we add it to the skip chars, that also 
+//mark (, “ etc.) 
+//algo:
+//setup skip chars set, can use a sparse table, which means we have O(k)
+//while not end of text
+//skip blank chars and skip chars, when first char found
+//select root char tree, if root char tree does not exist, create from scratch
+//loop until blank or skip
+//get next char
+//if next char is in tree, continue
+//if next char is not in tree, add node
+//if looped, add +1 to last node
+//continue with main loop
+
+//second part, for each tree:
+//do a depth first search for numerically tagged nodes, keeping a list of chars visited so far
+//recursive will be easier
+
+private class Node {
+
+public char c;
+public int count;
+public Map<Character, Node> children;
+
+
+Node(char s) {
+	this.c = s;
+	this.count = 0;
+	this.children = new HashMap<Character, Node>();
+}
+
+
+@Override
+public String toString() {
+	return _toString(0).toString();
+}
+
+
+private StringBuffer _toString(int tab) {
+
+	StringBuffer buffer = new StringBuffer();
+	for (int i=0; i<tab; i++) {
+		buffer.append("\t");
+	}
+	buffer.append("[");
+	buffer.append(c);
+	if (count>0) {
+		buffer.append(":");
+		buffer.append(count);
+	}
+	buffer.append("]");
+	if (!this.children.isEmpty()) {
+		buffer.append("\n");
+		children.values().forEach(c -> buffer.append(c._toString(tab+1)));
+	}
+
+	return buffer;
+
+}
+
+}
+
+
+public Map<String, Integer> countWords(String t) {
+
+	//// first part, build the tree ////
+	if (t == null) {
+		throw new NullPointerException("Bad input string");
+	}
+
+	Set<Character> stop = new HashSet<Character>(4);
+	stop.add(' ');
+	stop.add(',');
+	stop.add('.');
+
+	Map<Character, Node> trees = new HashMap<Character, Node>();
+	int i = 0;
+	int length = t.length();
+	while (i < length) {
+
+		char c = t.charAt(i++); // skip stop chars
+		while (i < length && stop.contains(c)) {
+			c = t.charAt(i++);
+		}
+		if (!trees.containsKey(c)) {
+			trees.put(c, new Node(c));
+		}
+		Node node = trees.get(c);
+		while (i < length && !stop.contains(c)) { // current word until end||stop char
+			c = t.charAt(i++);
+			if (!stop.contains(c)) { // word continues
+				if (!node.children.containsKey(c)) {
+					node.children.put(c, new Node(c));
+				}
+				node = node.children.get(c);
+			}
+		}
+		node.count++;
+		// at this moment we are either at end or at a stop char, skip loop will iterate
+
+	}
+
+
+	//// second part, parse the tree to build output ////
+	Map<String, Integer> counts = new HashMap<String, Integer>();
+	trees.values().stream().forEach(tree -> countWordTree(tree, new StringBuffer(), counts));
+
+	return counts;
+
+}
+
+
+private static void countWordTree(Node t, StringBuffer w, Map<String, Integer> counts) {
+
+	// base case
+	w.append(t.c);
+	if (t.count > 0) {
+		String word = w.toString();
+		counts.put(word, t.count);
+	}
+
+	// recursive cases, by induction, child tree is smaller than t,
+	// and the post condition leaves the w buffer constant
+	t.children.values().forEach(c -> countWordTree(c, w, counts));
+
+	// post condition: we do not modify the w buffer, notice w is at least 1 characters long
+	int length = w.length();
+	w.delete(length-1, length);
+
+}
+
+
+
 
 
 /*
