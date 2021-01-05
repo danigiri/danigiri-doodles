@@ -82,6 +82,16 @@ public static String prettyPrint(int n) {
 }
 
 
+public static String prettyPrint(int[] v) {
+
+	StringBuffer s = new StringBuffer();
+	for (int i=0; i<v.length; i++) {
+		s.append(Bits.prettyPrint(v[i]));
+	}
+	return s.toString();
+}
+
+
 public static int insert(int n, int m, int i, int j) {
 
 	if (j<i || i>=INT_SIZE || j>=INT_SIZE) {
@@ -163,6 +173,102 @@ private static Map<String, Integer> _swap2(int a, int b, int mask) {
 	}
 
 }
+
+
+//implement a bloom filter
+//define a set of k hash functions, let’s say three, that map to the size of the bloom filter
+//number of ints x 32
+//calculate and set/lookup for each
+public static boolean existsInBloom(String k, int[] bloom) {
+
+	int m = bloom.length*SIZE_INT;
+
+	return bitSet(k1(k, m), bloom, m) && bitSet(k2(k ,m), bloom, m) && bitSet(k3(k,m),bloom, m);
+
+}
+
+
+private static boolean bitSet(int i, int[] bloom, int m) {
+
+	int mask = 1;
+	int intPos = i/SIZE_INT;
+	int bitPos = i-intPos;
+
+	return (bloom[intPos] & mask<<bitPos)!=0;
+
+}
+
+private static int SIZE_INT = 32;
+
+public static int[] setBloom(String k, int[] bloom) {
+
+	int m = bloom.length*SIZE_INT;
+
+	int k1 = k1(k, m);
+	int k2 = k2(k, m);
+	int k3 = k3(k, m);
+
+	bloom = setBloomBit(k1, bloom, m);
+	bloom = setBloomBit(k2, bloom, m);
+	bloom = setBloomBit(k3, bloom, m);
+
+	return bloom;
+
+}
+
+private static int[] setBloomBit(int i, int[] bloom, int m) {
+
+	int mask = 1;
+
+	int intPos = i/SIZE_INT;
+	int bitPos = i-intPos;
+
+	bloom[intPos] |= mask<<bitPos;
+
+	return bloom;
+
+}
+
+private static int k1(String k, int m) {
+
+	int h = k.length()*m;
+	for (int i=0; i<k.length();i++) {
+		h += Character.getNumericValue(k.charAt(i)) * k.length();
+	}
+
+	return h % m;
+}
+
+
+private static int k2(String k, int m) {
+
+	int h = k.length()*(m-1);
+	int mask = 1;
+
+	for (int i=0; i<k.length(); i++) {
+		h += mask << (Character.getNumericValue(k.charAt(i)) % m);
+}
+
+return h % m;
+
+}
+
+
+private static int k3(String k, int m) {
+
+	int h = k.length()*(m-2);
+
+	for (int i=0; i<k.length(); i++) {
+		int incr = Character.getNumericValue(k.charAt(i)) * k.length();
+		h = i % k.length()==0 ? h+incr : h-incr;
+	}
+
+	h = h<0 ? -h : h;
+
+	return h % m;
+
+}
+
 
 
 }

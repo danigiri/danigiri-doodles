@@ -3,6 +3,7 @@ package cat.calidos.doodles;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -116,6 +117,80 @@ public void swapTest() {
 			() -> assertEquals(0, b3)
 	);
 
+
+}
+
+
+@Test @DisplayName("Bloom filter test")
+public void bloomTest() {
+
+	int[] bloom = {0,0,0,0};
+
+	assertFalse(Bits.existsInBloom("a", bloom));
+	assertFalse(Bits.existsInBloom("abc", bloom));
+	assertFalse(Bits.existsInBloom("axxxx", bloom));
+
+	String k0 = "abcefghijk";
+	bloom = Bits.setBloom(k0, bloom);
+//	System.err.println(Bits.prettyPrint(bloom));
+	String k1 = "abcefghijr";
+	bloom = Bits.setBloom(k1, bloom);
+//	System.err.println(Bits.prettyPrint(bloom));
+	String k2 = "abcefghijz";
+	bloom = Bits.setBloom(k2, bloom);
+//	System.err.println(Bits.prettyPrint(bloom));
+
+	assertTrue(Bits.existsInBloom(k0, bloom));
+	assertTrue(Bits.existsInBloom(k1, bloom));
+	assertTrue(Bits.existsInBloom(k2, bloom));
+	
+}
+
+
+@Test @DisplayName("Bloom filter test big")
+public void bloomTest2() {
+
+	int[] bloom = {
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			};
+
+	assertFalse(Bits.existsInBloom("a", bloom));
+	assertFalse(Bits.existsInBloom("abc", bloom));
+	assertFalse(Bits.existsInBloom("axxxx", bloom));
+
+	int testSize = 1000;
+	for (int i=0; i<testSize; i++) {
+		String k = UUID.randomUUID().toString();
+		bloom = Bits.setBloom(k, bloom);
+		assertTrue(Bits.existsInBloom(k, bloom));
+	}
+
+	int falsePositives = 0;
+	for (int i=0; i<testSize; i++) {
+		String k = UUID.randomUUID().toString();
+		if (Bits.existsInBloom(k, bloom)) {
+			falsePositives++;
+		}
+	}
+
+	assertTrue(falsePositives<(testSize/20));
 
 }
 
