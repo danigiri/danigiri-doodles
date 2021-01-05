@@ -1,3 +1,5 @@
+// BITS TEST . JAVA
+
 package cat.calidos.doodles;
 
 import static org.junit.jupiter.api.Assertions.*;
