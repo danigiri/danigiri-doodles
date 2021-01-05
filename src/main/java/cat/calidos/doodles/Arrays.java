@@ -53,7 +53,7 @@ private static <X> Optional<X> rowWinner(X[] row) {
 	int i = 1;
 	while (i < SIZE && candidate != null && candidate.equals(row[i++])) {}
 
-	return i == SIZE ? Optional.of(candidate) : Optional.empty();
+	return i == SIZE  && candidate.equals(row[i-1])? Optional.of(candidate) : Optional.empty();
 
 }
 
@@ -64,7 +64,7 @@ private static <X> Optional<X> colWinner(X[][] board, int col) {
 	int i = 1;
 	while (i < SIZE && candidate != null && candidate.equals(board[i++][col])) {}
 
-	return i == SIZE ? Optional.of(candidate) : Optional.empty();
+	return i == SIZE && candidate.equals(board[i-1][col]) ? Optional.of(candidate) : Optional.empty();
 
 }
 
@@ -79,8 +79,9 @@ private static <X> Optional<X> diagonalWinner(X[][] board) {
 		return Optional.of(candidate);
 	}
 
+	candidate = board[0][SIZE-1];
 	i = 1;
-	j = SIZE - 1;
+	j = SIZE - 2;
 	while (i < SIZE && j >= 0 && candidate != null && candidate == board[i++][j--]) {}
 
 	return i == SIZE && j < 0 ? Optional.of(candidate) : Optional.empty();

@@ -44,23 +44,43 @@ public void testTicTacToe() {
 	assertTrue(Arrays.ticTacToeWinner(board).isEmpty());
 
 
-	Character[][] board2 = {	{'a', null, null},
-								{null, 'b', null},
-								{null, null, 'a'}
+	Character[][] board2 = {{'a', null, null},
+							{null,'b',  null},
+							{null, null, 'a'}
 	};
 	assertTrue(Arrays.ticTacToeWinner(board2).isEmpty());
 
-	Character[][] board3 = {	{'a', null, null},
-								{'b', 'b', 'b'},
-								{null, null, 'a'}
+	Character[][] board3 = {{'a', null, null},
+							{'b', 'b',  'b'},
+							{null,null, 'a'}
 	};
 	assertEquals('b', Arrays.ticTacToeWinner(board3).get());
 
-	Character[][] board4 = {	{'a', null, 'b'},
-								{'a', 'b', 'b'},
-								{null, null, 'b'}
+	Character[][] board4 = {{'a', null, 'b'},
+							{'a', 'b',  'b'},
+							{null,null, 'b'}
 	};
-	assertEquals('b', Arrays.ticTacToeWinner(board3).get());
+	assertEquals('b', Arrays.ticTacToeWinner(board4).get());
+
+}
+
+
+@Test @DisplayName("Tic tac toe diagonals winner")
+public void testTicTacToeDiagonals() {
+
+	Character[][] board = {	{'b', null, 'b'},
+							{null, 'b', null},
+							{null, 'a', 'b'}
+	};
+	assertEquals('b', Arrays.ticTacToeWinner(board).get());
+
+
+	Character[][] board2 = {	{'a', null, 'b'},
+								{null, 'b', null},
+								{'b', null, 'a'}
+	};
+	assertEquals('b', Arrays.ticTacToeWinner(board2).get());
+
 }
 
 
