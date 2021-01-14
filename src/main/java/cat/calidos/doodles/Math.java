@@ -1,22 +1,9 @@
-/*
- *    Copyright 2016 Daniel Giribet
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
+// MATH . JAVA
 
 package cat.calidos.doodles;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.IntStream;
 
@@ -27,10 +14,9 @@ public class Math {
 
 
 public static int multiplyWithPlus(int a, int b) {
-	return IntStream.range(0, b)
-			    .map(n -> a)
-			    .sum();
+	return IntStream.range(0, b).map(n -> a).sum();
 }
+
 
 public static int divideWithSubstract(double a, double b) {
 	if (b==0) {
@@ -101,4 +87,254 @@ private static int _getStepsCached(int n, Map<Integer, Integer> cache) {
 }
 
 
+
+//16.5 write and algorithm that computes the number of trailing zeros in n factorial
+
+//f(n) =n*f(n-1)
+
+//naive implementation: compute factorial and then do an iteration of divisions and modulus
+//
+
+private static int factorial(int n) {
+
+	if (n==1) {
+		return 1;
+	}
+
+	int f = n*factorial(n-1);
+
+	return f;
+
 }
+
+
+
+public static int trailingZerosFactorialSmall(int n) {
+
+	int f = factorial(n);
+
+	int zeros = 0;
+	while ((f % 10)==0) {
+		zeros++;
+		f = f/10;
+	}
+
+	return zeros;
+
+}
+
+//it works but we run into int/long limits quickly
+//f(10) = 10*9*8*7*6*5*4*3*2*1 = f(9)*10 = 10*10*[9*8*7*6*4*3]
+/*
+trailing(10) 2+trailing(9*8*7*6*4*3)
+f(n) =
+	f<=10 → factorial(10)
+	f>10 → n*f(n-1)
+
+f(11) = (1+10)*f(9) = f(9)+10*f(9)
+
+
+f(15)= 15*14*13*12*11*10*9*8*7*6*5*4*3*2*1
+f(15) = (10+5)*(10+4)*(10+3)*(10+2)*(10+1)*f(10)
+f(15) = (10)*f(14)+5*f(14)
+f(2) =
+
+f(n) = n<=10 →	factorial(10)					// precomputed
+	n>10 →	[factorial(n-1), 0] +(n % 10)*factorial(n-1)	// recursive + precomputed
+*/
+
+public static int trailingZeros(int n) {
+
+	java.util.LinkedList<Integer> f = factorialBig2(n);
+	System.err.println(f);
+	int zeros = 0;
+	while (!f.isEmpty() && f.pollFirst()==0) {
+		zeros++;
+	}
+
+	return zeros;
+
+}
+
+
+private static int factorialTen(int n) {
+	int f = 1;
+	for (int i=n; i>0; i--) {
+		f*=i;
+	}
+
+	return f;
+
+}
+
+
+public static java.util.LinkedList<Integer> intToList(int n) {
+
+	java.util.LinkedList<Integer> list = new java.util.LinkedList<Integer>();
+
+	if (n==0) {
+		list.add(0);
+	}
+
+	while (n!=0) {
+		list.add(n%10);
+		n /= 10;
+	}
+
+	return list;
+
+}
+
+
+
+private static java.util.LinkedList<Integer> factorialBig(int n) {
+
+	java.util.LinkedList<Integer> f;
+	if (n<=10) {
+			f = intToList(factorialTen(n));
+	} else {
+		java.util.LinkedList<Integer> first = factorialBig(n-1);
+		first.addFirst(0);
+		java.util.LinkedList<Integer> second = multiply(n%10, first);
+		f = sum(first, second);
+	}
+
+	return Math.clone(f);
+
+}
+
+
+private static java.util.LinkedList<Integer> factorialBig2(int n) {
+
+	return (n==1) ? Math.intToList(1) : Math.multiplyBig(intToList(n), factorialBig2(n-1));
+
+}
+
+
+private static java.util.LinkedList<Integer> clone(java.util.LinkedList<Integer> l) {
+	return l.stream().collect(LinkedList::new, LinkedList::add, LinkedList::addAll);
+
+}
+
+
+public static java.util.LinkedList<Integer> multiply(int n, java.util.LinkedList<Integer> l) {
+
+
+	// n is guaranteed to be <10
+	java.util.LinkedList<Integer> r = new java.util.LinkedList<Integer>();
+
+	if (n==0) {
+		r.add(0);
+		return r;
+	}
+
+	int carryOver = 0;
+	while (!l.isEmpty()) {
+		int mult = (l.pollFirst()*n)+carryOver;
+		r.add(mult % 10);
+		carryOver = mult / 10;
+	};
+
+	if (carryOver>0) {
+		r.add(carryOver);
+	}
+
+	return r;
+
+}
+
+
+public static LinkedList<Integer> multiplyBig(java.util.LinkedList<Integer> a, java.util.LinkedList<Integer> b) {
+
+	java.util.LinkedList<Integer> result = new java.util.LinkedList<Integer>();
+	int shift = 0;
+
+	while (!a.isEmpty()) {
+
+		int current = a.pollFirst();
+		LinkedList<Integer> m = current!=0 ? multiply(current, Math.clone(b)) : intToList(0);
+		for (int s=0; s<shift; s++) {				// shift op
+			m.addFirst(0);
+		}
+		result = sum(result, m);
+		shift++;
+	}
+
+	return result;
+
+}
+
+
+//[3, 2] * 5
+//3*5 = 15, co = 1, c = 5, list=[5]
+//2*5+1 = 11, co = 1, c=1, list=[5,1]
+//list=[5,1,1]
+
+public static java.util.LinkedList<Integer> sum(java.util.LinkedList<Integer> a, java.util.LinkedList<Integer> b) {
+
+	java.util.LinkedList<Integer> s = new java.util.LinkedList<Integer>();
+	int carryOver = 0;
+	while (!a.isEmpty() || !b.isEmpty()) {
+		int currentA = !a.isEmpty() ? a.pollFirst() : 0;
+		int currentB = !b.isEmpty() ? b.pollFirst() : 0;
+		int current = currentA+currentB+carryOver;
+		s.add(current%10);
+		carryOver = current/10;
+	}
+
+	if (carryOver>0) {
+		s.add(carryOver);
+	}
+
+	return s;
+
+}
+
+
+public static java.util.LinkedList<Integer> substract(java.util.LinkedList<Integer> a, int n) {
+
+	java.util.LinkedList<Integer> result = new java.util.LinkedList<Integer>();
+
+	java.util.LinkedList<Integer> a2 = clone(a);
+
+	int carryOver = n;
+	while (!a2.isEmpty() && carryOver!=0) {
+		int current = a2.pollFirst()-carryOver;
+		if (current<=0 && a2.isEmpty() && result.isEmpty()) {			// one digit, add
+			result.add(current);
+		} else if (current==0 && a2.isEmpty() && !result.isEmpty()){	// not add zero, noop
+		} else if (current>0) {											// no carry over, clone rest of list
+			result.add(current);
+			a2.stream().forEachOrdered(e -> result.add(e));
+			carryOver = 0;	// stops loop
+		} else {														// carry over, continue
+			current = current+10;
+			result.add(current);
+			carryOver = 1;
+		}
+	}
+
+	return result;
+
+}
+
+
+
+
+}
+
+/*
+ *    Copyright 2016 Daniel Giribet
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
