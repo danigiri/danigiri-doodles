@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 /**
 * @author daniel giribet
 *//////////////////////////////////////////////////////////////////////////////
-public class Math {
+public class Maths {
 
 
 public static int multiplyWithPlus(int a, int b) {
@@ -19,6 +19,7 @@ public static int multiplyWithPlus(int a, int b) {
 
 
 public static int divideWithSubstract(double a, double b) {
+
 	if (b==0) {
 		throw new ArithmeticException("Cannot divide by zero");
 	}
@@ -146,7 +147,7 @@ f(n) = n<=10 →	factorial(10)					// precomputed
 public static int trailingZeros(int n) {
 
 	java.util.LinkedList<Integer> f = factorialBig2(n);
-	System.err.println(f);
+	//System.err.println(f);
 	int zeros = 0;
 	while (!f.isEmpty() && f.pollFirst()==0) {
 		zeros++;
@@ -199,14 +200,14 @@ private static java.util.LinkedList<Integer> factorialBig(int n) {
 		f = sum(first, second);
 	}
 
-	return Math.clone(f);
+	return Maths.clone(f);
 
 }
 
 
 private static java.util.LinkedList<Integer> factorialBig2(int n) {
 
-	return (n==1) ? Math.intToList(1) : Math.multiplyBig(intToList(n), factorialBig2(n-1));
+	return (n==1) ? Maths.intToList(1) : Maths.multiplyBig(intToList(n), factorialBig2(n-1));
 
 }
 
@@ -252,7 +253,7 @@ public static LinkedList<Integer> multiplyBig(java.util.LinkedList<Integer> a, j
 	while (!a.isEmpty()) {
 
 		int current = a.pollFirst();
-		LinkedList<Integer> m = current!=0 ? multiply(current, Math.clone(b)) : intToList(0);
+		LinkedList<Integer> m = current!=0 ? multiply(current, Maths.clone(b)) : intToList(0);
 		for (int s=0; s<shift; s++) {				// shift op
 			m.addFirst(0);
 		}
@@ -319,6 +320,86 @@ public static java.util.LinkedList<Integer> substract(java.util.LinkedList<Integ
 }
 
 
+
+//16.8 given any integer, write a function that prints the description of the integer in english
+//terms. 1034 → "One thousand, thirty four"
+//we will go up to a million, but billions and trillions should follow the same approach
+
+
+private static int MILLION = 1000000;
+private static String MILLION_ENG = " million";
+private static int THOUSAND = 1000;
+private static String THOUSAND_ENG = " thousand";
+private static int HUNDRED = 100;
+private static String HUNDRED_ENG = " hundred";
+private static String AND = " and";
+private static String COMMA = ",";
+private static int TWENTY = 20;
+private static int TEN = 10;
+private static String underTwenty[] = {"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", 
+										"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", 
+										"seventeen", "eighteen", "nineteen"};
+private static String tens[] = {null, null, "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+
+public static String toEnglish(int n) {
+
+	if (n == 0) {
+		return "zero";
+	}
+	String s = "";
+	if (n < 0) {
+		s = "minus ";
+		n = -n;
+	}
+
+	s += toEnglishBase(n);
+
+	return s;
+
+}
+
+
+private static String toEnglishBase(int n) {
+
+	String s = "";
+	// base cases
+	if (n==0) {
+		// no op
+	} else if (n<TWENTY) {
+		return underTwenty[n];
+	} else if (n<HUNDRED) {						// recursive case 1
+		s = tens[n/TEN];
+		String rest = toEnglishBase(n%TEN);
+		s = rest.length()>0 ? s+" "+rest : s;
+	} else {									// recursive case 2
+		int currentBase = 1;
+		String currentBaseString = "";
+		if (n/MILLION>0) {
+			currentBase = MILLION;
+			currentBaseString = MILLION_ENG;
+		} else if (n/THOUSAND>0) {
+			currentBase = THOUSAND;
+			currentBaseString = THOUSAND_ENG;
+		} else if (n/HUNDRED>0) {
+			currentBase = HUNDRED;
+			currentBaseString = HUNDRED_ENG;
+		}
+		s = toEnglishBase(n/currentBase)+currentBaseString;
+		String rest = toEnglishBase(n%currentBase);
+		if (rest.length()>0) {
+			if (currentBase==HUNDRED) {
+				s += AND;
+			} else if (currentBase==MILLION || currentBase==THOUSAND) {
+				s += COMMA;
+			}
+			s +=" "+rest;
+		}
+
+	}
+
+	return s;
+
+}
 
 
 }

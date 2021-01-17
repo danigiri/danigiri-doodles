@@ -189,7 +189,7 @@ public static int smallestDiff(List<Integer> a, List<Integer> b) {
 		}
 		// we are either at the end of we have found a transition
 		if (c<merged.size()) {
-			int minCandidate = java.lang.Math.abs(currentValue-merged.get(c));
+			int minCandidate = Math.abs(currentValue-merged.get(c));
 			if (lackMin || minCandidate<min) {
 				min = minCandidate;
 				lackMin = false;
