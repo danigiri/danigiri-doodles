@@ -2,6 +2,7 @@ package cat.calidos.doodles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -80,6 +81,31 @@ public void testTicTacToeDiagonals() {
 								{'b', null, 'a'}
 	};
 	assertEquals('b', Arrays.ticTacToeWinner(board2).get());
+
+}
+
+@Test @DisplayName("Min distance test")
+public void minDistanceTest() {
+
+	List<Integer> a = ArrayFrom.ints(1, 2, 3, 4, 66);
+	List<Integer> b = ArrayFrom.ints(9, 6 ,7);
+	assertEquals(2, Arrays.smallestDiff(a, b));
+
+	a = ArrayFrom.ints(1);
+	b = ArrayFrom.ints(1);
+	assertEquals(0, Arrays.smallestDiff(a, b));
+
+	a = ArrayFrom.ints(1);
+	b = ArrayFrom.ints(2);
+	assertEquals(1, Arrays.smallestDiff(a, b));
+
+	a = ArrayFrom.ints(1, 1, 1, 1, 1, 1);
+	b = ArrayFrom.ints(2);
+	assertEquals(1, Arrays.smallestDiff(a, b));
+
+	a = ArrayFrom.ints(5, 4, 3, 1, 66);
+	b = ArrayFrom.ints(55, 2);
+	assertEquals(1, Arrays.smallestDiff(a, b));
 
 }
 

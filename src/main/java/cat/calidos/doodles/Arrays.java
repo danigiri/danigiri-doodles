@@ -1,5 +1,7 @@
 package cat.calidos.doodles;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,9 +115,94 @@ private static <X> void shiftOne(List<X> v) {
 }
 
 
+//16.6 smallest difference, given two arrays of integers compute the pair of values (one value // in each array) with the smallest difference (non-negative). Return the difference
+//a: [1, 2, 3, 4, 66]
+//b: [9, 6, 7]
+//returns 2, which is 4-6
+//arrays can be different size
+//duplicates can exist
+//approach one, naive implementation
+//sort the two arrays 2 x O(n log n)
+//merge them O(n), keeping track of which is which
+//[1, 2, 3, 4, 6, 7, 9, 66]
+//[a, a, a, a, b, b, b, a]
+//look for adjacent pairs, keep the smallest, return, O(n)
+//currentValue=c[i], currentArray=lookup[i],
+//while lookup[i++]==currentArray[i], continue
+//minCandidate ← min calculation
+//new candidate? swap
+//we will assume sort is implemented
+//if one of the arrays is empty, we consider error
+
+
+public static int smallestDiff(List<Integer> a, List<Integer> b) {
+
+	if (a == null || b == null) {
+		throw new NullPointerException("bad params, null value(s)");
+	}
+
+	int aSize = a.size();
+	int bSize = b.size();
+	if (aSize == 0 || bSize == 0) {
+		throw new IllegalArgumentException("bad params, empty array(s)");
+	}
+
+	Collections.sort(a);
+	Collections.sort(b);
+
+
+	// now we merge
+	List<Integer> merged = new ArrayList<Integer>(aSize + bSize);
+	List<Character> lookup = new ArrayList<Character>(aSize + bSize);
+
+	int i = 0;
+	int j = 0;
+	while (i < aSize || j < bSize) {
+		if (i >= aSize) {
+			merged.add(b.get(j++));
+			lookup.add('B');
+		} else if (j >= bSize) {
+			merged.add(a.get(i++));
+			lookup.add('A');
+		} else {
+			int aCurrent = a.get(i);
+			int bCurrent = b.get(j);
+			if (aCurrent < bCurrent) {
+				merged.add(a.get(i++));
+				lookup.add('A');
+			} else {
+				merged.add(b.get(j++));
+				lookup.add('B');
+			}
+		}
+	}
+
+	int c = 0;
+	int min = -1;
+	boolean lackMin = true;
+	// we look for transitions from one array to the next, and keep min distance
+	while (c<merged.size()) {
+		char currentArray = lookup.get(c);
+		int currentValue = merged.get(c);
+		while (++c<merged.size() && lookup.get(c)==currentArray) {
+			currentValue = merged.get(c);
+		}
+		// we are either at the end of we have found a transition
+		if (c<merged.size()) {
+			int minCandidate = java.lang.Math.abs(currentValue-merged.get(c));
+			if (lackMin || minCandidate<min) {
+				min = minCandidate;
+				lackMin = false;
+			}
+		}
+	}
+
+	return min;
 
 }
 
+
+}
 
 /*
  *    Copyright 2019 Daniel Giribet
