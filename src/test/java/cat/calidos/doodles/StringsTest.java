@@ -176,6 +176,22 @@ public void testCountWords() {
 }
 
 
+@Test @DisplayName("Test checking if two strings are permutations of each other")
+public void arePermutationTest() {
+
+	assertTrue(Strings.arePermutation("", ""));
+	assertTrue(Strings.arePermutation("a", "a"));
+	assertTrue(Strings.arePermutation("ab", "ba"));
+	assertTrue(Strings.arePermutation("ab", "ab"));
+	assertTrue(Strings.arePermutation("accbcc", "abcccc"));
+
+	assertFalse(Strings.arePermutation("a", "ab"));
+	assertFalse(Strings.arePermutation("", "ab"));
+	assertFalse(Strings.arePermutation("accbxc", "abcccc"));
+
+}
+
+
 }
 
 /**

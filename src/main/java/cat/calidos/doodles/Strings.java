@@ -2,17 +2,13 @@
 
 package cat.calidos.doodles;
 
-import java.nio.Buffer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-
 
 public class Strings {
 
@@ -146,6 +142,7 @@ private static Map<String, Integer> newCounter(String c) {
 	m.put(c, 1);
 	return m;
 }
+
 
 private static int countTotal(List<Map<String, Integer>> l) {
 	int count = 0;
@@ -558,7 +555,54 @@ private static void countWordTree(Node t, StringBuffer w, Map<String, Integer> c
 }
 
 
+//1.2 check permutations, fivent two strings, write a method to decide if one is a permutation
+//of the other
+//we treat the string as char arrays
+//[‘a’, ‘b’, ‘c’,’c’,’e’]
+//[‘a’,’c’,’e’,’c’,’b’] → true
+/// “aa” → false, etc.
+//we check the length first, if it’s different, no permutation
+//if it’s the same, we create an array or map of counts of each character for the first string
+//and on the second we decrement
+//at the point we reach zero, we remove from the map
+//if the map is empty at the end, it’s a permutation
+//it’s logically equivalent to an array of chars and then doing a sweep to check all is zeros
 
+
+public static boolean arePermutation(String a, String b) {
+
+	if (a.length() != b.length()) {
+		return false;
+	}
+
+	Map<Character, Integer> counts = new HashMap<Character, Integer>();
+	a.chars().mapToObj(c -> (char) c).forEach(c -> {
+		if (counts.containsKey(c)) {
+			counts.put(c, counts.get(c) + 1);
+		} else {
+			counts.put(c, 1);
+		}
+	});
+
+	boolean finished = false;
+	int i = 0;
+	while (!finished && !counts.isEmpty()) {
+		char currentChar = b.charAt(i++);
+		if (counts.containsKey(currentChar)) {
+			int currentCharCount = counts.get(currentChar);
+			if (currentCharCount > 1) {
+				counts.put(currentChar, currentCharCount - 1);
+			} else {
+				counts.remove(currentChar);
+			}
+		} else {
+			finished = true;
+		}
+	}
+
+	return counts.isEmpty();
+
+}
 
 
 /*
