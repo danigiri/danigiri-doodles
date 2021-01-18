@@ -362,8 +362,7 @@ public static String toEnglish(int n) {
 private static String toEnglishBase(int n) {
 
 	String s = "";
-	// base cases
-	if (n==0) {
+	if (n==0) {									// base cases
 		// no op
 	} else if (n<TWENTY) {
 		return underTwenty[n];

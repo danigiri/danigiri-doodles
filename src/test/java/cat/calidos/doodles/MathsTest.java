@@ -280,6 +280,19 @@ public void intToEnglishTest() {
 }
 
 
+@Test @DisplayName("integer into English, negative")
+public void intToEnglishNegativeTest() {
+
+	assertEquals("minus twenty one", Maths.toEnglish(-21));
+	assertEquals("minus sixty nine", Maths.toEnglish(-69));
+
+	assertEquals("minus six hundred", Maths.toEnglish(-600));
+	assertEquals("minus six hundred and six", Maths.toEnglish(-606));
+	assertEquals("minus six hundred and fifty two", Maths.toEnglish(-652));
+	
+}
+
+
 }
 /**
 Copyright 2016 Daniel Giribet <dani - calidos.cat>
