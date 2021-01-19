@@ -1,19 +1,8 @@
-/**
- Copyright 2016 Daniel Giribet <dani - calidos.cat>
+// LINKED LIST . JAVA
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-*/
 package cat.calidos.doodles;
+
+import java.util.Optional;
 
 public class LinkedList<T> {
 
@@ -25,12 +14,14 @@ public LinkedList(T d) {
 	this.next = null;
 }
 
+
 public int length() {
 	if (next==null) {
 		return 1;	
 	}
 	return 1+next.length();
 }
+
 
 @Override
 public boolean equals(Object obj) {
@@ -159,9 +150,51 @@ private static <T> LinkedList<T> removeDupes(LinkedList<T> unique, LinkedList<T>
 	if (l.next!=null) {
 		unique = removeDupes(unique, uTail, l.next);
 	}
-	
+
 	return unique;
+
+}
+
+
+public static <T> Optional<T> kthElement(LinkedList<T> l, int k) {
+	return kthElementRec(l, k).right;
+}
+
+
+private static <T> Pair<Integer, Optional<T>> kthElementRec(LinkedList<T> l, int k) {
+
+	if (l == null) {
+		return new Pair<Integer, Optional<T>>(k, Optional.empty());
+	}
+	// recursive call, valid by induction
+	Pair<Integer, Optional<T>> pair = kthElementRec(l.next, k);
+	// now pair either has the value or it has zero or it has counter >0
+	if (pair.right.isPresent()) { // found!
+		return pair;
+	} else if (pair.left == 0) {
+		return new Pair<Integer, Optional<T>>(0, Optional.of(l.data)); // found!
+	} else {
+		return new Pair<Integer, Optional<T>>(--pair.left, pair.right); // not found, continue
+																		// search
+	}
+
 }
 
 
 }
+
+/**
+Copyright 2016 Daniel Giribet <dani - calidos.cat>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/

@@ -15,20 +15,20 @@
 */
 package cat.calidos.doodles;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class LinkedListTest {
 
 
 @Test
 public void testLinkedList() {
-	
+
 	LinkedList<String> l0 = new LinkedList<String>("a");
 	assertEquals("a", l0.data);
-	
+
 	l0.next = new LinkedList<String>("b");
 	assertEquals(2, l0.length());
 
@@ -76,6 +76,32 @@ public void removeDupesTest() {
 	l2.next.next = new LinkedList<String>("c");
 
 	assertEquals(l2, LinkedList.removeDupes(l));
+}
+
+
+@Test @DisplayName("Linked list kth element test")
+public void kthElementTest() {
+
+	assertTrue(LinkedList.kthElement(null, 0).isEmpty());
+
+	LinkedList<String> l = new LinkedList<String>("a");
+	assertTrue(LinkedList.kthElement(l, 1).isEmpty());
+	assertEquals("a", LinkedList.kthElement(l, 0).get());
+	assertTrue(LinkedList.kthElement(l, 5).isEmpty());
+
+	l.next = new LinkedList<String>("b");
+	assertEquals("b", LinkedList.kthElement(l, 0).get());
+	assertEquals("a", LinkedList.kthElement(l, 1).get());
+	assertTrue(LinkedList.kthElement(l, 5).isEmpty());
+
+	l.next.next = new LinkedList<String>("c");
+	l.next.next.next = new LinkedList<String>("d");
+	l.next.next.next.next = new LinkedList<String>("e");
+	assertEquals("e", LinkedList.kthElement(l, 0).get());
+	assertEquals("c", LinkedList.kthElement(l, 2).get());
+	assertEquals("a", LinkedList.kthElement(l, 4).get());
+	assertTrue(LinkedList.kthElement(l, 15).isEmpty());
+
 }
 
 }
