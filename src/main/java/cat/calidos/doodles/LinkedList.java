@@ -169,13 +169,12 @@ private static <T> Pair<Integer, Optional<T>> kthElementRec(LinkedList<T> l, int
 	// recursive call, valid by induction
 	Pair<Integer, Optional<T>> pair = kthElementRec(l.next, k);
 	// now pair either has the value or it has zero or it has counter >0
-	if (pair.right.isPresent()) { // found!
+	if (pair.right.isPresent()) {										// found!
 		return pair;
 	} else if (pair.left == 0) {
-		return new Pair<Integer, Optional<T>>(0, Optional.of(l.data)); // found!
+		return new Pair<Integer, Optional<T>>(0, Optional.of(l.data)); 	// found!
 	} else {
-		return new Pair<Integer, Optional<T>>(--pair.left, pair.right); // not found, continue
-																		// search
+		return new Pair<Integer, Optional<T>>(--pair.left, pair.right); // not found, continue search
 	}
 
 }
