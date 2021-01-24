@@ -145,7 +145,7 @@ public void bloomTest() {
 	assertTrue(Bits.existsInBloom(k0, bloom));
 	assertTrue(Bits.existsInBloom(k1, bloom));
 	assertTrue(Bits.existsInBloom(k2, bloom));
-	
+
 }
 
 
@@ -196,5 +196,30 @@ public void bloomTest2() {
 
 }
 
+
+@Test @DisplayName("Longest sequence of 1s with 1 bit flip")
+public void longestOneSequenceWithFlip() {
+	int n = 1775;
+//	System.err.println(Bits.prettyPrint(n));
+	assertEquals(8, Bits.longestOneSequenceWithFlip(n));
+
+	n = 1;
+	assertEquals(2, Bits.longestOneSequenceWithFlip(n));
+
+	n = 3;
+	assertEquals(3, Bits.longestOneSequenceWithFlip(n));
+
+	n = 7;
+	assertEquals(4, Bits.longestOneSequenceWithFlip(n));
+
+	n = 8;
+	assertEquals(2, Bits.longestOneSequenceWithFlip(n));
+
+	n = 631463;
+	//00000000000010011010001010100111
+	//System.err.println(Bits.prettyPrint(n));
+	assertEquals(4, Bits.longestOneSequenceWithFlip(n));
+
+}
 
 }

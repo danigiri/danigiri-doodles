@@ -270,5 +270,65 @@ private static int k3(String k, int m) {
 }
 
 
+//5.3 you have an integer and you can flip exactly one bit from 0 to 1, find out what is the 
+//longest sequence of 1’s you can make
+//example 1775,  11011101111, output → 8
+//as we can flip 110111x1111
+//bear in mind that we could be in a position where we have 1101100010, so we have to be 
+//exhaustive
+//we also could have 101101101, where the answer is 5 and not 4
+//we keep the longest 1 count
+//we keep the longest pair of 1 counts separated only by one 0
+//we keep the previous 1 count
+//we keep the current 1 count
+
+
+public static int longestOneSequenceWithFlip(int number) {
+
+	int longestCount = 0;
+	int longestPair = 0;
+	int previousCount = 0;
+	int currentCount = 0;
+	int zeroCount = 0;
+	int previousValue = -1;
+	int mask = 1;
+
+	for (int i = 0; i < SIZE_INT; i++) {
+		// update current status
+		int currentValue = number & mask;
+		if (currentValue == 0) {
+			zeroCount++;
+			if (zeroCount > 1) {
+				previousCount = 0; // we cannot match anymore
+			} else {
+				previousCount = currentCount; // we can still match
+			}
+			if (previousValue != 0) {
+				if (currentCount > longestCount) {
+					longestCount = currentCount;
+				}
+				currentCount = 0; // we stop counting current
+				// update global status
+			}
+		} else {
+			currentCount++;
+			if (zeroCount == 1 && previousCount > 0) { // candidate for pair
+				int candidateForPair = currentCount + previousCount;
+				if (candidateForPair > longestPair) { // update global status
+					longestPair = candidateForPair;
+				}
+			}
+		}
+		previousValue = currentValue;
+		mask = mask << 1;
+	}
+
+	if (longestPair == 0) { // no pairs :sadface:
+		return longestCount + 1;
+	}
+	return longestPair + 1;	// longest pair will always be longer than the longestCount
+
+}
+
 
 }
