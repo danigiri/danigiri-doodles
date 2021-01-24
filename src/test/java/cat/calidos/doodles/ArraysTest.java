@@ -84,6 +84,7 @@ public void testTicTacToeDiagonals() {
 
 }
 
+
 @Test @DisplayName("Min distance test")
 public void minDistanceTest() {
 
@@ -110,6 +111,48 @@ public void minDistanceTest() {
 }
 
 
+
+
+@Test @DisplayName("Magic index test")
+public void magicIndexTest() {
+
+	List<Integer> a = ArrayFrom.ints(0);
+	assertEquals(0, Arrays.magicIndex(a).get());
+
+	a = ArrayFrom.ints(-1);
+	assertTrue(Arrays.magicIndex(a).isEmpty());
+
+	a = ArrayFrom.ints(-1, 0);
+	assertTrue(Arrays.magicIndex(a).isEmpty());
+
+	a = ArrayFrom.ints(-1, 0, 1);
+	assertTrue(Arrays.magicIndex(a).isEmpty());
+
+	a = ArrayFrom.ints(-1, 0, 1, 3);
+	assertEquals(3, Arrays.magicIndex(a).get());
+
+	a = ArrayFrom.ints(0, 5, 6, 7);
+	assertEquals(0, Arrays.magicIndex(a).get());
+
 }
 
+
+}
+
+
+/*
+ *    Copyright 2020 Daniel Giribet
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 

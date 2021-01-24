@@ -201,6 +201,47 @@ public static int smallestDiff(List<Integer> a, List<Integer> b) {
 
 }
 
+//8.3 a magic index in an array A[0...n-1] is defined as A[i]==i
+//given a sorted array of distinct integers, find the magic index, if one exists
+//brute force it would be if we go element by element, but given it’s sorted, can we
+//optimize and go for log(n)? yes
+
+//go to the middle element
+//is it magic?
+//if so, return
+// is it smaller than the index, discard all left elements
+// is it bigger than the index, can call from the max(current, index) to end of range
+// [-1, -1, -1, 2, 3, 5 ]
+// [-1, 1, 5, 6, 7, 8, 9]
+
+public static Optional<Integer> magicIndex(java.util.List<Integer> a) {
+	return (a==null || a.size()==0) ? Optional.empty() : magicIndexRange(a, 0, a.size());
+}
+
+
+private static Optional<Integer> magicIndexRange(java.util.List<Integer> a, int start, int end) {
+
+	if (start >= end) { 		// base case, out of bounds
+		return Optional.empty();
+	}
+
+	int index = start + ((end - start) / 2);
+	int current = a.get(index);
+	if (current == index) {			 // base case, magic found
+		return Optional.of(index);
+	} else if (current < index) {	// recursive case, cannot discard anything
+		Optional<Integer> right = magicIndexRange(a, index + 1, end);
+		if (right.isPresent()) {
+			return right;
+		}
+		return magicIndexRange(a, start, index);
+	} else { 						// recursive case, can discard right hand side, as all will be bigger
+		return magicIndexRange(a, start, index);
+	}
+
+}
+
+
 
 }
 
