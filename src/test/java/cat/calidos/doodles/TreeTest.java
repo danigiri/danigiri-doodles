@@ -1,26 +1,16 @@
-/**
- Copyright 2016 Daniel Giribet <dani - calidos.cat>
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-*/
+// TREE TEST . JAVA
 package cat.calidos.doodles;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
+import cat.calidos.doodles.builders.ArrayFrom;
 import cat.calidos.doodles.builders.ListFrom;
 
 
@@ -28,16 +18,16 @@ public class TreeTest {
 
 @Test
 public void preorderTest() {
-	
+
 	Tree<Integer> t = new Tree<Integer>(1);
-	t.addLeft(new Tree<Integer>(2));				
+	t.addLeft(new Tree<Integer>(2));
 	t.getLeft().addLeft(new Tree<Integer>(3));
-	t.getLeft().addRight(new Tree<Integer>(4));			
-	
+	t.getLeft().addRight(new Tree<Integer>(4));
+
 	t.addRight(new Tree<Integer>(5));
 	t.getRight().addLeft(new Tree<Integer>(6));
 	t.getRight().addRight(new Tree<Integer>(7));
-	
+
 	List<Integer> list = ListFrom.ints(1, 2, 3, 4, 5, 6, 7);
 	assertEquals(list, t.preorder());
 
@@ -46,7 +36,7 @@ public void preorderTest() {
 
 @Test
 public void inorderTest() {
-	
+
 	Tree<Integer> t = new Tree<Integer>(1);
 	t.addLeft(new Tree<Integer>(2));				
 	t.getLeft().addLeft(new Tree<Integer>(3));
@@ -145,8 +135,59 @@ public void equalsTest() {
 	
 	t1.addChild("3", new Tree<Integer>(2));
 	assertTrue(t.equals(t1));
-	
+
+}
+
+
+@Test @DisplayName("Balanced search tree from sorted array") 
+public void balancedSearchTreeTest() {
+
+	assertNull(Tree.balancedSearchTree(new ArrayList<Integer>()));
+	assertThrows(NullPointerException.class, () -> Tree.balancedSearchTree(null));
+
+	List<Integer> a = ArrayFrom.ints(1);
+	Tree<Integer> expected = new Tree<Integer>(1);
+	assertEquals(expected, Tree.balancedSearchTree(a));
+
+	a = ArrayFrom.ints(1, 2);
+	expected = new Tree<Integer>(2);
+	expected.left = new Tree<Integer>(1);
+	assertEquals(expected, Tree.balancedSearchTree(a));
+
+	a = ArrayFrom.ints(1, 2, 3);
+	expected = new Tree<Integer>(2);
+	expected.left = new Tree<Integer>(1);
+	expected.right = new Tree<Integer>(3);
+	assertEquals(expected, Tree.balancedSearchTree(a));
+
+	a = ArrayFrom.ints(1, 2, 3, 4, 5, 6, 7);
+	expected = new Tree<Integer>(4);
+	expected.left = new Tree<Integer>(2);
+	expected.left.left = new Tree<Integer>(1);
+	expected.left.right = new Tree<Integer>(3);
+	expected.right = new Tree<Integer>(6);
+	expected.right.left = new Tree<Integer>(5);
+	expected.right.right = new Tree<Integer>(7);
+
+	assertEquals(expected, Tree.balancedSearchTree(a));
+
 }
 
 
 }
+
+/**
+Copyright 2016 Daniel Giribet <dani - calidos.cat>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/

@@ -183,16 +183,61 @@ public class Tree<T> {
 		}
 		
 	}
-	
-	
+
+
+	// 4.2 minimal tree, given a sorted increasing order array with unique integer elements, write an 
+	// algorithm to create a minimal height binary search tree
+
+	// [1, 2, 3]
+	// [2]
+	// [1], [3]
+	//
+
+	public static <T> Tree<T> balancedSearchTree(List<T> a) {
+		
+		if (a==null) {
+			throw new NullPointerException("bad parameter");
+	}
+		if (a.isEmpty()) {
+			return null;
+	}
+
+	return balancedSearchTreeRange(a,0, a.size());
+	}
+
+	private static <T> Tree<T>  balancedSearchTreeRange(List<T> a, int start, int end) {
+
+	int size = end-start;
+	if (size==1) {
+
+		return new Tree<T>(a.get(start));
+
+	}
+	if (size==2) {
+		Tree<T> root = new Tree<T>(a.get(end-start-1));
+		root.left = balancedSearchTreeRange(a, end-start-2, end-start-1);
+
+		return root;
+
+	}
+	int middle = start+(size/2);
+	Tree<T> root = new Tree<T>(a.get(middle));
+	root.left = balancedSearchTreeRange(a, start, middle);
+	root.right = balancedSearchTreeRange(a, middle+1, end);
+
+	return root;
+
+	}
+
+
 	@Override
 	public String toString() {
 		return toString(new StringBuffer(), new StringBuffer());
 	}
 
 	
-	protected String toString(StringBuffer s, StringBuffer tab) {		
-		
+	protected String toString(StringBuffer s, StringBuffer tab) {
+
 		tab.append(" ");
 		s.append(tab);
 		s.append("[");
