@@ -242,6 +242,113 @@ private static Optional<Integer> magicIndexRange(java.util.List<Integer> a, int 
 }
 
 
+//10.3 given a sorted array of n integers that has been rotated an unknown number of times, 
+//write the code to find an element in the array, original sorting is increased order
+//what we can do is find the place where the order is reversed, we should be able to find it
+//given log(n) time
+//if we find the element during that search, return (lucky)
+//once we know the point where the cut off point is we have two sub arrays
+//establish where in the two the element may be and then perform a basic log(n) search
+
+//cut off point
+//get element in the middle, is the next element (mod size) smaller?
+//if so, found!
+//if not, the cut off point is either left or right of the middle element, guaranteed
+//take middle element on the left,
+//is it bigger? it means the cut off is on the left, between middle element and current
+//is it smaller? we do not know
+//if we do not know
+//take middle element on the right, is it smaller? cutoff is right, between current and end
+//if it’s neither of the two
+//[1, 2, 3, 4, 5, 6, 7, 8, 9]
+//[2, 3, 4, 5, 6, 7, 8, 9, 1]
+//[      M     x     M      ]
+//this means the cut off point is either in [start, left middle] or in [right middle, end]
+//make recursive call, yay, log(n)
+//
+//alternative, we have an algorithm that returns the two sorted ranges
+//if range size==1
+//return [start,end] and []
+//if range size==2
+//if a[start]<a[start+1]
+//return [start, end], []
+
+
+public static Optional<Integer> findInRotatedArray(List<Integer> a, int target) {
+
+	if (a == null || a.size() == 0) {
+		return Optional.empty();
+	}
+	int c = cutOffPoint(a, 0, a.size()).get(); // worst case is cutoff is at the end
+	// find out in which of the two segments may have the element, there are three cases
+	// we rotated to original position, equivalent to being in the second segment
+	// or we are in the first one
+	if (target <= a.get(a.size() - 1)) { // it’s on the second segment
+		return findInSortedRange(a, target, c, a.size());
+	} else { // it’s on the first segment
+		return findInSortedRange(a, target, 0, c - 1);
+	}
+
+}
+
+
+// return first element that is smaller, start of logical array
+private static Optional<Integer> cutOffPoint(List<Integer> a, int start, int end) {
+
+	int size = end - start;
+	if (size <= 1) {
+		return Optional.empty();
+	}
+	if (size == 2) {
+		if (a.get(start) > a.get(start + 1)) {
+			return Optional.of(start + 1); // found
+		} else {
+			return Optional.empty(); // not here
+		}
+	}
+
+	// we have at least 3 elements
+	int	middle	= start + size/2;
+	int	middleValue	= a.get(middle);
+	int leftPos = start + (middle-start)/2;
+	if(a.get(leftPos)>middleValue) { // guaranteed to be here
+		return cutOffPoint(a, leftPos, middle + 1);
+	}
+	int rightPos = middle + (end-middle)/2;
+	if (a.get(rightPos)<middleValue) { // guaranteed to be here
+		return cutOffPoint(a, middle, rightPos + 1);
+
+	}
+	// it’s on either left of leftPos or right of rightPos
+	Optional<Integer> leftCandidate = cutOffPoint(a, start, middle + 1);
+	return leftCandidate.isPresent() ? leftCandidate : cutOffPoint(a, rightPos, end);
+
+}
+
+
+private static Optional<Integer> findInSortedRange(List<Integer> a, int e, int start, int end) {
+
+	// base cases
+	if (start >= end) {
+		return Optional.empty();
+	}
+	if (start == end - 1) {
+		return a.get(start) == e ? Optional.of(start) : Optional.empty();
+	}
+	int middle = start + (end - start / 2);
+	int middleValue = a.get(middle);
+	if (middleValue == e) {
+		return Optional.of(middle);
+	}
+	// recursive cases, log(n)
+	if (e < middleValue) {
+		return findInSortedRange(a, e, start, middle);
+	} else {
+		return findInSortedRange(a, e, middle + 1, end);
+	}
+
+}
+
 
 }
 

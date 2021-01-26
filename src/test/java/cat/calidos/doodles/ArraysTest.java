@@ -111,8 +111,6 @@ public void minDistanceTest() {
 }
 
 
-
-
 @Test @DisplayName("Magic index test")
 public void magicIndexTest() {
 
@@ -137,8 +135,17 @@ public void magicIndexTest() {
 }
 
 
+@Test @DisplayName("Find element in rotated sorted array")
+public void findInRotatedArrayTest() {
+
+	List<Integer> a = ArrayFrom.ints(3, 4, 5, 6, 7, 9, 11, 1, 2);
+
+	assertTrue(Arrays.findInRotatedArray(a, 8).isEmpty());
+	
 }
 
+
+}
 
 /*
  *    Copyright 2020 Daniel Giribet
