@@ -302,9 +302,6 @@ public static Optional<Integer> findInRotatedArray(List<Integer> a, int target) 
 private static Optional<Integer> findBiggest(List<Integer> a, int start, int end) {
 
 	int size = end - start;
-	if (size < 1) {
-		return Optional.empty();
-	}
 	if (size == 1) {
 		return Optional.of(start);
 	}

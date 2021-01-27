@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -138,18 +139,18 @@ public void magicIndexTest() {
 @Test @DisplayName("Find element in rotated sorted array")
 public void findInRotatedArrayTest() {
 
+	//							  	 0  1  2  3  4  5  6   7  8
 	List<Integer> a = ArrayFrom.ints(3, 4, 5, 6, 7, 9, 11, 1, 2);
 	assertTrue(Arrays.findInRotatedArray(a, 8).isEmpty());
 	assertTrue(Arrays.findInRotatedArray(a, 0).isEmpty());
 	assertTrue(Arrays.findInRotatedArray(a, 26).isEmpty());
 
-	//			   0  1  2  3  4  5  6   7  8
-	ArrayFrom.ints(3, 4, 5, 6, 7, 9, 11, 1, 2);
 	assertEquals(1, Arrays.findInRotatedArray(a, 4).get());
 	assertEquals(0, Arrays.findInRotatedArray(a, 3).get());
 	assertEquals(6, Arrays.findInRotatedArray(a, 11).get());
 	assertEquals(7, Arrays.findInRotatedArray(a, 1).get());
 	assertEquals(8, Arrays.findInRotatedArray(a, 2).get());
+
 }
 
 
@@ -171,6 +172,28 @@ public void findInRotatedArrayTest2() {
 	assertEquals(7, Arrays.findInRotatedArray(a, 9).get());
 	assertEquals(8, Arrays.findInRotatedArray(a, 11).get());
 	
+}
+
+
+
+@Test @DisplayName("Find element in rotated sorted array that rotated to perfectly sorted")
+public void findInRotatedArrayTest3() {
+
+	//								 0  1   2  3  4  5  6  7  8
+	List<Integer> a = ArrayFrom.ints(9, 11, 3, 3, 3, 3, 3, 6, 7);
+	assertTrue(Arrays.findInRotatedArray(a, 8).isEmpty());
+	assertTrue(Arrays.findInRotatedArray(a, 0).isEmpty());
+	assertEquals(0, Arrays.findInRotatedArray(a, 9).get());
+	assertEquals(1, Arrays.findInRotatedArray(a, 11).get());
+	assertEquals(7, Arrays.findInRotatedArray(a, 6).get());
+	assertEquals(8, Arrays.findInRotatedArray(a, 7).get());
+
+	int ambiguous = Arrays.findInRotatedArray(a, 3).get();
+	assertAll("ambiguous position", 
+		() ->assertTrue(ambiguous<=6),
+		() ->assertTrue(ambiguous>=2)
+	);
+
 }
 
 
