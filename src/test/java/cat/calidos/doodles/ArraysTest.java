@@ -139,8 +139,37 @@ public void magicIndexTest() {
 public void findInRotatedArrayTest() {
 
 	List<Integer> a = ArrayFrom.ints(3, 4, 5, 6, 7, 9, 11, 1, 2);
-
 	assertTrue(Arrays.findInRotatedArray(a, 8).isEmpty());
+	assertTrue(Arrays.findInRotatedArray(a, 0).isEmpty());
+	assertTrue(Arrays.findInRotatedArray(a, 26).isEmpty());
+
+	//			   0  1  2  3  4  5  6   7  8
+	ArrayFrom.ints(3, 4, 5, 6, 7, 9, 11, 1, 2);
+	assertEquals(1, Arrays.findInRotatedArray(a, 4).get());
+	assertEquals(0, Arrays.findInRotatedArray(a, 3).get());
+	assertEquals(6, Arrays.findInRotatedArray(a, 11).get());
+	assertEquals(7, Arrays.findInRotatedArray(a, 1).get());
+	assertEquals(8, Arrays.findInRotatedArray(a, 2).get());
+}
+
+
+@Test @DisplayName("Find element in rotated sorted array that rotated to perfectly sorted")
+public void findInRotatedArrayTest2() {
+
+	//			 	   0  1  2  3  4  5  6  7  8
+	List<Integer> a = ArrayFrom.ints(1, 2, 3, 4, 5, 6, 7, 9, 11);
+	assertTrue(Arrays.findInRotatedArray(a, 8).isEmpty());
+	assertTrue(Arrays.findInRotatedArray(a, 0).isEmpty());
+	assertTrue(Arrays.findInRotatedArray(a, 26).isEmpty());
+	assertEquals(0, Arrays.findInRotatedArray(a, 1).get());
+	assertEquals(1, Arrays.findInRotatedArray(a, 2).get());
+	assertEquals(2, Arrays.findInRotatedArray(a, 3).get());
+	assertEquals(3, Arrays.findInRotatedArray(a, 4).get());
+	assertEquals(4, Arrays.findInRotatedArray(a, 5).get());
+	assertEquals(5, Arrays.findInRotatedArray(a, 6).get());
+	assertEquals(6, Arrays.findInRotatedArray(a, 7).get());
+	assertEquals(7, Arrays.findInRotatedArray(a, 9).get());
+	assertEquals(8, Arrays.findInRotatedArray(a, 11).get());
 	
 }
 

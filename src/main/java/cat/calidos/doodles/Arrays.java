@@ -276,52 +276,52 @@ private static Optional<Integer> magicIndexRange(java.util.List<Integer> a, int 
 
 public static Optional<Integer> findInRotatedArray(List<Integer> a, int target) {
 
-	if (a == null || a.size() == 0) {
+	if (a == null) {
 		return Optional.empty();
 	}
-	int c = cutOffPoint(a, 0, a.size()).get(); // worst case is cutoff is at the end
+	int size = a.size();
+	// now we need to find out which is the logical start of the array, which is the next element of the last big
+	// number, the next one to that is the logical start, or 'c'
+	// bear in mind that if we are lucky and rotated to the start of the array, the last bigger is the last element
+	int big = findBiggest(a, 0, size).get(); // returns last element that is bigger
+	int c = big==size-1 ? 0 : big+1;
+
 	// find out in which of the two segments may have the element, there are three cases
 	// we rotated to original position, equivalent to being in the second segment
 	// or we are in the first one
-	if (target <= a.get(a.size() - 1)) { // it’s on the second segment
-		return findInSortedRange(a, target, c, a.size());
+	if (target <= a.get(size - 1)) { // it’s on the second segment
+		return findInSortedRange(a, target, c, size);
 	} else { // it’s on the first segment
-		return findInSortedRange(a, target, 0, c - 1);
+		return findInSortedRange(a, target, 0, c);
 	}
 
 }
 
 
-// return first element that is smaller, start of logical array
-private static Optional<Integer> cutOffPoint(List<Integer> a, int start, int end) {
+// return last element that is bigger
+private static Optional<Integer> findBiggest(List<Integer> a, int start, int end) {
 
 	int size = end - start;
-	if (size <= 1) {
+	if (size < 1) {
 		return Optional.empty();
 	}
+	if (size == 1) {
+		return Optional.of(start);
+	}
 	if (size == 2) {
-		if (a.get(start) > a.get(start + 1)) {
-			return Optional.of(start + 1); // found
+		if (a.get(start) < a.get(start + 1)) {
+			return Optional.of(start + 1);
 		} else {
-			return Optional.empty(); // not here
+			return Optional.of(start);
 		}
 	}
-
-	// we have at least 3 elements
-	int	middle	= start + size/2;
-	int	middleValue	= a.get(middle);
-	int leftPos = start + (middle-start)/2;
-	if(a.get(leftPos)>middleValue) { // guaranteed to be here
-		return cutOffPoint(a, leftPos, middle + 1);
+	// we have at least 3 elements, all the gets are guaranteed to work
+	int middle = start + size / 2;
+	if (a.get(start) > a.get(middle)) { // cut off point is somewhere in the left hand side
+		return findBiggest(a, start, middle);
+	} else { // otherwise it’s on the right hand side
+		return findBiggest(a, middle, end);
 	}
-	int rightPos = middle + (end-middle)/2;
-	if (a.get(rightPos)<middleValue) { // guaranteed to be here
-		return cutOffPoint(a, middle, rightPos + 1);
-
-	}
-	// it’s on either left of leftPos or right of rightPos
-	Optional<Integer> leftCandidate = cutOffPoint(a, start, middle + 1);
-	return leftCandidate.isPresent() ? leftCandidate : cutOffPoint(a, rightPos, end);
 
 }
 
@@ -332,10 +332,10 @@ private static Optional<Integer> findInSortedRange(List<Integer> a, int e, int s
 	if (start >= end) {
 		return Optional.empty();
 	}
-	if (start == end - 1) {
+	if (start == (end - 1)) {
 		return a.get(start) == e ? Optional.of(start) : Optional.empty();
 	}
-	int middle = start + (end - start / 2);
+	int middle = start + (end - start)/2;
 	int middleValue = a.get(middle);
 	if (middleValue == e) {
 		return Optional.of(middle);
