@@ -347,6 +347,78 @@ private static Optional<Integer> findInSortedRange(List<Integer> a, int e, int s
 }
 
 
+//16.10 given a list of people with their birth and death years, compute the year that
+//had the most people alive, consider all people lived between 1900 and 2000, inclusive
+//both birth and death year are counted as ‘living’ years
+//[1900, 1990], [1990, 2000], → 1990
+//could be that no one lived at the same time, extreme case but possible
+//if no year is lived by more than one person, we return the first year somebody lived
+//but could return null
+//besides the brute force approach, what can we do?
+//idea 1:
+//for each person, we increment an array of living people on each year
+//we look for the max integer, return
+//given 100 is K, complexity is O(n) which is as fast as we can get
+//any sorting will be (nlogn) which is slower
+//can we do something more clever?
+//we can build a list that starts at the earliest and records deaths and births
+//look for the max
+/*
+[1900:1]
+	  |
+	[1991:0]
+, add [1990, 2000]
+	[1900:1]
+	  |
+	[1990: 2]
+	  |
+	[1991:1]
+	  |
+[2001:0]
+*/
+//then compute the max with a list
+//even though worst case is we have a list of 100 items, we are no slower than
+//the brute force approach
+//faster implementation
+//just compute the deaths and births with a direct access on an array, let’s say
+//we have 10 years
+//[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+//[1, 0, 0,-1, 0, 0, 0, 0, 0, 0]
+//[1, 1,-1,-1, 0, 0, 0, 0, 0, 0]
+//most lived year is i=1
+//completely linear O(n)+O(k) to find the best year, awesome, can work with really large
+//periods, constrained only by memory
+
+
+public static int mostLived(List<Integer> births, List<Integer> deaths, int K, int start) {
+
+	// init data structure
+	List<Integer> years = new ArrayList<Integer>(K + 1);
+	for (int i = 0; i<=K; i++) {
+		years.add(0);
+	}
+
+	// set counts
+	births.forEach(birth -> years.set(birth-start, years.get(birth-start) + 1));
+	deaths.forEach(death -> years.set(death+1-start, years.get(death+1-start) - 1));
+
+	// now find max position
+	int max = -1;
+	int maxLiving = 0;
+	int currentlyLiving = 0;
+	for (int j = 0; j <= K; j++) {
+		currentlyLiving += years.get(j);
+		if (currentlyLiving > maxLiving) {
+			max = j;
+			maxLiving = currentlyLiving;
+		}
+	}
+
+	return start+max;
+
+}
+
+
 }
 
 /*

@@ -171,9 +171,8 @@ public void findInRotatedArrayTest2() {
 	assertEquals(6, Arrays.findInRotatedArray(a, 7).get());
 	assertEquals(7, Arrays.findInRotatedArray(a, 9).get());
 	assertEquals(8, Arrays.findInRotatedArray(a, 11).get());
-	
-}
 
+}
 
 
 @Test @DisplayName("Find element in rotated sorted array that rotated to perfectly sorted")
@@ -189,10 +188,30 @@ public void findInRotatedArrayTest3() {
 	assertEquals(8, Arrays.findInRotatedArray(a, 7).get());
 
 	int ambiguous = Arrays.findInRotatedArray(a, 3).get();
-	assertAll("ambiguous position", 
+	assertAll("ambiguous position",
 		() ->assertTrue(ambiguous<=6),
 		() ->assertTrue(ambiguous>=2)
 	);
+
+}
+
+@Test @DisplayName("Find most lived year")
+public void findMostLivedYearTest() {
+
+	int numYears = 101;
+
+	int startYear = 1900;
+	List<Integer> births = ArrayFrom.ints(1900, 1990);
+	List<Integer> deaths = ArrayFrom.ints(1990, 2000);
+	assertEquals(1990, Arrays.mostLived(births, deaths, numYears, startYear));
+
+	births = ArrayFrom.ints(1900, 1991);
+	deaths = ArrayFrom.ints(1990, 2000);
+	assertEquals(1900, Arrays.mostLived(births, deaths, numYears, startYear));
+
+	births = ArrayFrom.ints(1900, 1900, 1909, 1901);
+	deaths = ArrayFrom.ints(1910, 2000, 1910, 1911);
+	assertEquals(1909, Arrays.mostLived(births, deaths, numYears, startYear));
 
 }
 
