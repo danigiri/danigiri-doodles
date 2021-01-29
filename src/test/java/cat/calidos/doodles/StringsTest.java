@@ -192,6 +192,24 @@ public void arePermutationTest() {
 }
 
 
+@Test @DisplayName("Test URL expansion")
+public void expandURLTest() {
+
+	char[] input	 = "abcd efg hi    ".toCharArray();
+	char[] expected  = "abcd%20efg%20hi".toCharArray();
+	assertEquals(new String(expected), new String(Strings.expandURL(input)));
+
+	input	 = " abcd  ".toCharArray();
+	expected = "%20abcd".toCharArray();
+	assertEquals(new String(expected), new String(Strings.expandURL(input)));
+
+	input	 = "  abcd    ".toCharArray();
+	expected = "%20%20abcd".toCharArray();
+	assertEquals(new String(expected), new String(Strings.expandURL(input)));
+
+}
+
+
 }
 
 /**

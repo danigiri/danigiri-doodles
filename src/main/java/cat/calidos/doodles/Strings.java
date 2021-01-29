@@ -605,6 +605,55 @@ public static boolean arePermutation(String a, String b) {
 }
 
 
+//1.3 given a string (array of chars in java), replace all occurrences of a space with %20
+//assume you have enough space at the end, do the replacement in place
+//we assume the space at the end is actually the exact one to hold everything in place
+//okay
+//“abcd efg hi    ” → “abcd%20efg%20hi”
+//we can iterate and count the number of spaces O(n)
+//then start from the end and start ‘moving’ + nspacesleft*2 into the end
+//once we find a space, we append %20 to the end, decrement nspacesleft, skip the space
+//continue until nspacesleft==0, we do not need to modify the rest of array
+//O(n+n) ⇒ O(n) voila!
+//this one would work if the space is not exact, as you do not know how many positions
+//you have to move
+//we can make it faster if we build onto the assumption that we have exact space
+//start from the end, copy chars, when space is found, expand, continue until start
+//we assume that we have spaces at the end to make room
+//we also assume that the last space is not expandable
+//an space-only array is considered empty
+//O(n) voila!
+
+
+public static char[] expandURL(char[] str) {
+
+	int length = str.length;
+	int reader = length;
+	while (reader > 0 && str[--reader] == ' ') {}
+	if (reader == 0) {
+		return str;
+	}
+	// reader currently points to last char of string
+	int writer = length - 1;
+	// note we want to process until very first char, could be that we have to expand it
+	while (reader >= 0) {
+
+		char current = str[reader--];
+		if (current == ' ') {
+			str[writer--] = '0';
+			str[writer--] = '2';
+			str[writer--] = '%';
+		} else {
+			str[writer--] = current;
+		}
+
+	}
+
+	return str;
+
+}
+
+
 /*
  * 
  * TEST hello
