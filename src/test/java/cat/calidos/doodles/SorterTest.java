@@ -1,18 +1,5 @@
-/**
- Copyright 2016 Daniel Giribet <dani - calidos.cat>
+// SORTER TEST . JAVA
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 package cat.calidos.doodles;
 
 import static org.junit.Assert.*;
@@ -20,7 +7,6 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import cat.calidos.doodles.builders.ListFrom;
@@ -31,7 +17,7 @@ private List<Integer>	bigUnsortedList;
 
 @Before
 public void dataSetup() {
-	
+
 	bigUnsortedList = ListFrom.ints(	
 						844, 860, 791, 613, 963, 365, 374, 272, 575, 684, 883, 
 						387, 64, 349, 407, 37, 864, 611, 189, 646, 564, 888, 
@@ -213,7 +199,7 @@ public void bTreeTest() {
 
 @Test
 public void bucketSortTest() {
-	
+
 	assertNull(Sorter.bucketSort(null));
 
 	List<Integer> a = ListFrom.ints(3, 2, 1);
@@ -341,7 +327,7 @@ public void quickSortInPlaceTest() {
 
 @Test
 public void quickSortInPlaceSplitTest() {
-	
+
 	assertNull(Sorter.bucketSort(null));
 
 	List<Integer> a = ListFrom.ints(1);
@@ -491,7 +477,7 @@ public void parallelQuickSortTest() {
 
 @Test
 public void quickSortTime() {
-	
+
 	// the big list as input
 	List<Integer> bigSortedList = ListFrom.list(bigUnsortedList);
 	for (int i=0;i<10;i++) {
@@ -501,12 +487,13 @@ public void quickSortTime() {
 	Sorter.quickSort(bigSortedList);
 	long t1 = System.currentTimeMillis();
 	System.out.println("t(sequential)="+(t1-t0));
-	
+
 }
-	
+
+
 @Test
 public void streamQuickSortTime() {
-	
+
 	// the big list as input
 	List<Integer> bigSortedList = ListFrom.list(bigUnsortedList);
 	for (int i=0;i<10;i++) {
@@ -517,7 +504,46 @@ public void streamQuickSortTime() {
 	Sorter.streamQuickSort(bigSortedList);
 	long t1 = System.currentTimeMillis();
 	System.out.println("t(stream)="+(t1-t0));
-	
-}
 
 }
+
+@Test
+public void recursiveStackSorterTest() {
+
+	Stack<Integer> stack = new Stack<Integer>();
+	stack.push(7);
+	stack.push(2);
+	stack.push(9);
+	stack.push(4);
+	stack.push(1);
+	stack.push(3);
+	Stack<Integer> expected = new Stack<Integer>();
+	expected.push(9);
+	expected.push(7);
+	expected.push(4);
+	expected.push(3);
+	expected.push(2);
+	expected.push(1);
+	assertEquals(expected, Sorter.sort(stack));
+	assertEquals(expected, Sorter.sortRec(stack));
+
+}
+
+
+}
+
+/**
+Copyright 2016 Daniel Giribet <dani - calidos.cat>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/

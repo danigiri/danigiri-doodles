@@ -240,9 +240,9 @@ public class Sorter {
 			} else {
 				throw new IndexOutOfBoundsException("Cannot sort negative values");
 			}
-			
+
 		}
-		
+
 		// recursive case (not really)
 		// Bucket list is sorted itself and we would recursively sort the buckets 
 		// themselves, but as we do not have several levels of sorting refinement
@@ -297,7 +297,7 @@ public class Sorter {
 			}
 
 		}
-				
+
 		// recursive case
 		// Bucket list is sorted itself and we would recursively sort the buckets 
 		// (with more precision on each call until we run out of 'precision',
@@ -631,6 +631,93 @@ public class Sorter {
 		return left;
 	}
 
+	// 3.5: sort a stack so the smallest items are on the top, you can use an auxiliary temporary 
+	// stack but no other structures, operations are push, pop, peek, isEmpty
 
+	// one way would be to use recursivity, which implictly uses a stack
+	// if the stack is empty: return stack
+	// if the stack has only one element: return stack
+	// if the stack has more than one element
+	// remove top of the stack
+	// recursive call on the rest, by induction, what is returned is sorted
+	// if the item I have is smaller than the top, I push to stack and return
+	// if the item is bigger, I push onto secondary stack until the item is smaller or I reach the 
+	// end, then push the item, then push secondary stack into primary, return stack
+
+//		return sortRecReversed(s);
 	
+	//		return Stack.reverse(sortRecReversed(s));
+//	}
+	
+//	private static <T extends Comparable<? super T>> Stack<T> sortRecReversed(Stack<T> s) {
+	public static <T extends Comparable<? super T>> Stack<T> sortRec(Stack<T> s) {
+
+		// base cases
+		if (s.isEmpty()) {
+			return s;
+		}
+		T top = s.pop();
+		if (s.isEmpty()) {
+			s.push(top);
+			return s;
+		}
+
+		Stack<T> sorted = sortRec(s); // recursive call, by induction we are sorted now, but not the ‘top’ item
+		Stack<T> aux = new Stack<T>();
+		while (!sorted.isEmpty() && top.compareTo(s.peek()) > 0) {
+			aux.push(sorted.pop());
+		}
+		sorted.push(top);
+		while (!aux.isEmpty()) {
+			sorted.push(aux.pop());
+		}
+
+		return sorted;
+
+	}
+
+
+	// do we have an iterative method?
+	// yes, outer loop
+	// while stack is not empty
+//		current element is top of the stack
+//		if we are at the end, finish, otherwise:
+//		if the top is smaller than the new top, continue
+//		if the top is bigger than the new top, swap out until we find the location in the aux
+	// at the end, move all elements from the aux to the main stack, return ^^
+
+	// [3, 1, 4, 9, 2, 7]
+	// [3], [1, 4, 9, 2, 7] SWAP
+	// [1], [3, 4, 9, 2, 7]
+	// [1, 3] [4, 9, 2, 7]
+	// [1, 3, 4] [9, 2, 7]
+	// [1, 3, 4, 9] [2, 7] SWAP and bubble down
+	// [1, 2, 3, 4, 9] [7], take 7, we have to bubble it down
+	// [1, 2, 3, 4, 7, 9] , move from aux and return
+
+	public static <T extends Comparable<? super T>> Stack<T> sort(Stack<T> s) {
+
+		Stack<T> aux = new Stack<T>();
+
+		while (!s.isEmpty()) { 	//// main loop ////
+			T current = s.pop(); // we always bubble
+			while (!aux.isEmpty() && current.compareTo(aux.peek()) < 0) {
+				s.push(aux.pop());
+			}
+			// we can add to aux the current element, aux is now sorted
+			aux.push(current);
+			// at this moment we could have an optimization that stores the state, namely the
+			// number of bubbles and we restore it, we will save comparisons but still
+			// O(n^2), and without it we are more functional (this is actually equivalent to the state stored in the
+			// recursive call 'stack')
+		} 						//// end main ////
+		// now we reverse and return the sorted stack
+		while (!aux.isEmpty()) {
+			s.push(aux.pop());
+		}
+
+		return s;
+
+	}
+
 }
