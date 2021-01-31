@@ -96,5 +96,83 @@ public static boolean areParenthesesBalanced(String expr) {
 }
 
 
+@Override
+public String toString() {
+
+	StringBuffer s = new StringBuffer();
+	if (!isEmpty()) {
+		s.append("[top]");
+	}
+	s.append("[");
+	LinkedList<T> current = elements;
+	while (current!=null) {
+		T currentData = current.data;
+		s.append(currentData);
+		current = current.next;
+		if (current!=null) {
+			s.append(",");
+		}
+	}
+	s.append("]");
+
+	return s.toString();
+
+}
+
+
+@Override
+public boolean equals(Object obj) {
+
+	try {
+	@SuppressWarnings("unchecked")
+	Stack<T> o = (Stack<T>)obj;
+
+	boolean equals = true;
+	Stack<T> aux = new Stack<T>();
+	Stack<T> auxO = new Stack<T>();
+	while (equals && !isEmpty() && !o.isEmpty()) {
+		T current = pop();
+		T currentO = o.pop();
+		aux.push(current);
+		auxO.push(currentO);
+		equals = (current==null && currentO==null) || current.equals(currentO);
+	}
+	equals = isEmpty() && o.isEmpty();
+	while (!aux.isEmpty()) {
+		push(aux.pop());
+	}
+	while (!auxO.isEmpty()) {
+		o.push(auxO.pop());
+	}
+
+	return equals;
+
+	} catch(ClassCastException e) {
+		return false;
+	}
+}
+
+
+public static <T extends Comparable<? super T>> Stack<T> reverse(Stack<T> stack) {
+	return reverseRec(stack, new Stack<T>());
+}
+
+
+private static <T extends Comparable<? super T>> Stack<T> reverseRec(Stack<T> stack, Stack<T> reversed) {
+
+	if (stack.isEmpty()) {
+
+		return reversed;
+
+	}
+	T top = stack.pop();
+	reversed.push(top);
+	reversed = reverseRec(stack, reversed);
+	stack.push(top);
+
+	return reversed;
+
+}
+
 
 }
