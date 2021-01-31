@@ -3,7 +3,7 @@ package cat.calidos.doodles;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Stack<T> {
+public class Stack<T extends Comparable<? super T>> {
 
 protected LinkedList<T> elements;
 
@@ -11,14 +11,17 @@ public Stack() {
 	elements = null;
 }
 
+
 public Stack(T d) {
 	elements = null;
 	push(d);
 }
 
+
 public boolean isEmpty() {
 	return elements==null;
 }
+
 
 public int height() {
 	if (isEmpty()) {
@@ -26,6 +29,7 @@ public int height() {
 	}
 	return elements.length();
 }
+
 
 public void push(T d) {
 	LinkedList<T> newTop = new LinkedList<T>(d);

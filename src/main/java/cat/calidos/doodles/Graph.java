@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 //tagged, directed graph, T equals ops are considered constant, T are considered unique within the graph
 //no null tags
-public class Graph<T> {
+public class Graph<T extends Comparable<? super T>> {
 
 protected Map<T, Set<T>> vertices;
 

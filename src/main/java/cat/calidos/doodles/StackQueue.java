@@ -4,7 +4,7 @@ package cat.calidos.doodles;
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public class StackQueue <X> {
+public class StackQueue <X extends Comparable<? super X>> {
 
 private Stack<X>	queue	= new Stack<X>();
 private Stack<X>	buffer	= new Stack<X>();

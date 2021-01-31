@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Heap<T> {
+public class Heap<T extends Comparable<? super T>> {
 
 	protected List<T> data;
 
@@ -71,7 +71,7 @@ public class Heap<T> {
 		bubbleUp(pos);
 	}
 
-	public static <T> Queue<T> heapSort(List<T> l) {	// O(N logN)
+	public static <T extends Comparable<? super T>> Queue<T> heapSort(List<T> l) {	// O(N logN)
 	
 		Heap<T> h = new Heap<T>();
 		for (T e : l) {
@@ -100,9 +100,9 @@ public class Heap<T> {
 			T left = getLeft(pos);
 				if (hasRight(pos)) {
 					T right = getRight(pos);
-					if (((Comparable)left).compareTo(right)<=0) { 
+					if (left.compareTo(right)<=0) { 
 						// right is bigger
-						if (((Comparable)v).compareTo(right)<0) {
+						if (v.compareTo(right)<0) {
 							// right is bigger than current, we need to swap and recurse
 							setRight(pos, v);
 							data.set(pos, right);
@@ -110,7 +110,7 @@ public class Heap<T> {
 						}
 					} else { 
 						// left is bigger
-						if (((Comparable)v).compareTo(left)<0) {
+						if (v.compareTo(left)<0) {
 							// left is bigger than current, we need to swap and recurse
 							setLeft(pos, v);
 							data.set(pos, left);
@@ -119,7 +119,7 @@ public class Heap<T> {
 					}
 				} else {
 					// we only have a left
-					if (((Comparable)v).compareTo(left)<0) {
+					if (v.compareTo(left)<0) {
 						// left is bigger than current, we need to swap and recurse
 						setLeft(pos, v);
 						data.set(pos, left);
@@ -136,7 +136,7 @@ public class Heap<T> {
 
 		if (hasParent(pos)) {
 			T parent = getParent(pos);
-			if (((Comparable)parent).compareTo(v)<0) {
+			if (parent.compareTo(v)<0) {
 				setParent(pos, v);
 				data.set(pos, parent);
 				bubbleUp(parentIndexFrom(pos));

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Queue<T> {
+public class Queue<T extends Comparable<? super T>> {
 
 protected LinkedList<T> first;
 protected LinkedList<T> last;
@@ -104,7 +104,7 @@ public void removeTail() {
 	last.next = null;
 }
 
-public static <T> void reverse(Queue<T> q) {
+public static <T extends Comparable<? super T>> void reverse(Queue<T> q) {
 	if (q.isEmpty()) {
 	} else {
 		T e = q.dequeue();

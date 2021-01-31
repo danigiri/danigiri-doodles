@@ -19,7 +19,7 @@ package cat.calidos.doodles;
 // function min which returns the minimum element? Push, pop and min should 
 // all operate in O(1) time 
 
-public class MinStack<T> extends Stack<T> {
+public class MinStack<T extends Comparable<? super T>> extends Stack<T> {
 
 protected Stack<T> min;
 
