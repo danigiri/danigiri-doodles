@@ -4,10 +4,10 @@ package cat.calidos.doodles;
 
 import java.util.Optional;
 
-public class LinkedList<T> {
+public class LinkedList<T extends Comparable<? super T>> {
 
 public T data;
-protected LinkedList<T> next;
+public LinkedList<T> next;
 
 public LinkedList(T d) {
 	this.data = d;
@@ -107,8 +107,9 @@ public static LinkedList<?> nthToLast_(LinkedList<?> nthCandidate, LinkedList<?>
 	
 }
 
-public static <T> LinkedList<T> removeDupes(LinkedList<T> l) {
-	
+
+public static <T extends Comparable<? super T>> LinkedList<T> removeDupes(LinkedList<T> l) {
+
 	if (l==null) {
 		return null;
 	}
@@ -116,16 +117,18 @@ public static <T> LinkedList<T> removeDupes(LinkedList<T> l) {
 	return removeDupes(uniqueList, uniqueList,l);
 }
 
-private static <T> LinkedList<T> removeDupes(LinkedList<T> unique, LinkedList<T> uTail, LinkedList<T> l) {
+
+private static <T extends Comparable<? super T>> LinkedList<T> removeDupes(LinkedList<T> unique, LinkedList<T> uTail,
+																			LinkedList<T> l) {
 
 	if (l==null) {
 		return null;
 	}
-	
+
 	// base case
 	LinkedList<T> current = l;
 	LinkedList<T> i = unique;
-	
+
 	boolean found = false;
 	while (!found && i!=null) {
 		found = i.data==null && current.data==null || i.data.equals(current.data);
@@ -133,7 +136,7 @@ private static <T> LinkedList<T> removeDupes(LinkedList<T> unique, LinkedList<T>
 			i = i.next;
 		}
 	} // while
-	
+
 	// notice that if the unique list was an empty list (null) it also means found==false
 	if (!found) {
 		// did not find current in unique list
@@ -156,12 +159,12 @@ private static <T> LinkedList<T> removeDupes(LinkedList<T> unique, LinkedList<T>
 }
 
 
-public static <T> Optional<T> kthElement(LinkedList<T> l, int k) {
+public static <T extends Comparable<? super T>> Optional<T> kthElement(LinkedList<T> l, int k) {
 	return kthElementRec(l, k).right;
 }
 
 
-private static <T> Pair<Integer, Optional<T>> kthElementRec(LinkedList<T> l, int k) {
+private static <T extends Comparable<? super T>> Pair<Integer, Optional<T>> kthElementRec(LinkedList<T> l, int k) {
 
 	if (l == null) {
 		return new Pair<Integer, Optional<T>>(k, Optional.empty());
@@ -176,6 +179,84 @@ private static <T> Pair<Integer, Optional<T>> kthElementRec(LinkedList<T> l, int
 	} else {
 		return new Pair<Integer, Optional<T>>(--pair.left, pair.right); // not found, continue search
 	}
+
+}
+
+
+//for each element, we find out which of the two lists we need to place the item
+//we concatenate the first element from the left to the right list and return
+//edge case, all elements are on the right list
+//we assume the partition input does belong to the list so the right list is never empty
+//but we do not know how many of the partition items there will be
+
+
+public static <T extends Comparable<? super T>> LinkedList<T> partition(LinkedList<T> l, T partition) {
+
+	if (l == null) {
+		throw new NullPointerException("Null list cannot be partitioned");
+	}
+
+	LinkedList<T> left = null;
+	LinkedList<T> firstLeft = null;
+	LinkedList<T> right = null;
+
+	LinkedList<T> current = l;
+	while (current!=null) {
+
+		if (current.data.compareTo(partition) < 0) { // element goes to the left
+			LinkedList<T> leftHead = new LinkedList<T>(current.data);
+			if (left == null) {
+				left = leftHead;
+				firstLeft = left;
+			} else {
+				leftHead.next = left;
+				left = leftHead;
+			}
+		} else { // element goes to the right
+			LinkedList<T> rightHead = new LinkedList<T>(current.data);
+			if (right == null) {
+				right = rightHead;
+			} else {
+				rightHead.next = right;
+				right = rightHead;
+			}
+		}
+
+		current = current.next;
+
+	} // while
+
+	if (firstLeft != null) {
+		firstLeft.next = right; // guaranteed to have at least one element
+		return left;
+	} else {
+		return right; // no left elements
+	}
+
+}
+
+
+public LinkedList<T> reverse() {
+
+	LinkedList<T> reverse = null;
+	LinkedList<T> head = null;
+	Stack<T> stack = new Stack<T>();
+	LinkedList<T> current = this;
+	while (current!=null) {
+		stack.push(current.data);
+		current = current.next;
+	} 
+	while (!stack.isEmpty()) {
+		LinkedList<T> newHead= new LinkedList<T>(stack.pop());
+		if (reverse==null) {
+			reverse = newHead;
+		} else {
+			head.next = newHead;
+		}
+		head = newHead;
+	}
+
+	return reverse;
 
 }
 

@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import cat.calidos.doodles.builders.LinkedListFrom;
+
 public class LinkedListTest {
 
 
@@ -103,5 +105,37 @@ public void kthElementTest() {
 	assertTrue(LinkedList.kthElement(l, 15).isEmpty());
 
 }
+
+
+@Test @DisplayName("Reverse linked list test")
+public void reverseTest() {
+
+	LinkedList<String> l = new LinkedList<String>("a");
+	l.next = new LinkedList<String>("b");
+	l.next.next = new LinkedList<String>("c");
+
+	LinkedList<String> expected = new LinkedList<String>("c");
+	expected.next = new LinkedList<String>("b");
+	expected.next.next = new LinkedList<String>("a");
+
+	assertEquals(expected, l.reverse());
+}
+
+
+@Test @DisplayName("Linked list partition list test")
+public void partitionListTest() {
+
+
+	LinkedList<Integer> l = LinkedListFrom.ints(3, 5, 8, 5, 10, 2, 1);
+	LinkedList<Integer> expected = LinkedListFrom.ints(1,2, 3, 10, 5, 8, 5);
+	assertEquals(expected, LinkedList.partition(l, 5));
+
+	l = LinkedListFrom.ints(5, 8, 5, 10);
+	expected = LinkedListFrom.ints(10, 5, 8, 5);
+	assertEquals(expected, LinkedList.partition(l, 5));
+
+
+}
+
 
 }
