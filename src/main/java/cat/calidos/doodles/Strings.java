@@ -654,6 +654,46 @@ public static char[] expandURL(char[] str) {
 }
 
 
+//1.4 given a string, write a function to check if it is a permutation of a palindrome
+//you can ignore casing and non letter chars
+//example ‘tact coa’, output: true (permutations: taco cat, acto cta
+
+//basically the number of instances for a given letter has to be even except for one single 
+//letter that can be uneven (as it could be on the middle of the palindrome)
+//we build a map of letters and count them
+//at the end, we look for uneven numbers, if we find more than one, return false
+//otherwise return true
+
+private static char[] ALLOWED_CHARS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+										'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+
+public static boolean isPalindromePermutation(String s) {
+
+	Set<Character> allowed = new HashSet<Character>(ALLOWED_CHARS.length);
+	for (int i=0; i<ALLOWED_CHARS.length; i++) {
+		allowed.add(ALLOWED_CHARS[i]);
+	}
+
+	Map<Character, Integer> counts = new HashMap<Character, Integer>(ALLOWED_CHARS.length);
+
+	s.chars().filter(c -> allowed.contains((char)c)).forEach(c -> {
+		int count = counts.containsKey((char) c) ? counts.get((char) c) : 0;
+		counts.put((char)c, ++count);
+	});
+
+	int evenCount = 0;
+	Iterator<Character> keys = counts.keySet().iterator();
+	while (evenCount <= 1 && keys.hasNext()) {
+		if (counts.get(keys.next()) % 2 != 0) {
+			evenCount++;
+		}
+	}
+
+	return evenCount <= 1;
+
+}
+
+
 /*
  * 
  * TEST hello

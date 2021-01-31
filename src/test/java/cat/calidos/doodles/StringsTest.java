@@ -210,6 +210,21 @@ public void expandURLTest() {
 }
 
 
+@Test @DisplayName("Test string palindrome permutations")
+public void palindromePermutationTest() {
+
+	assertTrue(Strings.isPalindromePermutation(""));
+	assertTrue(Strings.isPalindromePermutation("a"));
+	assertTrue(Strings.isPalindromePermutation("tat"));
+	assertTrue(Strings.isPalindromePermutation("tta"));
+	assertTrue(Strings.isPalindromePermutation("tact coa"));
+	assertFalse(Strings.isPalindromePermutation("tact coat"));
+	assertFalse(Strings.isPalindromePermutation("xxyz"));
+
+}
+
+
+
 }
 
 /**
