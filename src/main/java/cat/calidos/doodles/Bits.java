@@ -1,18 +1,5 @@
-/**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
+// BITS . JAVA
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 package cat.calidos.doodles;
 
 import java.util.HashMap;
@@ -331,4 +318,86 @@ public static int longestOneSequenceWithFlip(int number) {
 }
 
 
+
+//5.4 next number, given a positive integer, print the next smallest and next largest number
+//that have the same number of 1’s in their binary representation
+
+//11100 → smallest bigger number is 11010, as 01110 is even bigger
+//okay, so you find the first zero, set it to 1, set the previous to zero
+//digit (MAX_INT)
+//0001100 → 0001010, we are in fact looking for the last zero in the first batch
+//11000 → 10100 is the next biggest number
+//10000 → 01000 is correct
+//if we start with zero, look for the first 1
+//then look for the first zero, set it to 1, previous<-zero
+//smallest
+//11100 → does not exist
+//01100 → 10100
+//001110 → 010110
+//okay, you find the first 1, if it’s position 0, no solution exists
+//if it’s position >0, set it to zero, set previous to 1
+
+
+
+public static String nextNumbersInBinary(int n) {
+
+	if (n<=0) {
+		return "[]";
+	}
+
+	StringBuffer s = new StringBuffer();
+	s.append("[");
+	int maskSmaller = 1;
+	boolean smallerHasSolution = (n & maskSmaller)==0;		// if the first digit is zero we have a solution
+	while (maskSmaller!=0 && ((n & maskSmaller) != 0)) {	// look for first 0
+		maskSmaller = maskSmaller << 1;
+		smallerHasSolution = true;							// if after 111's we have at least a zero we have a solution
+	}
+	while (maskSmaller!=0 && (n & maskSmaller) == 0) {						// look for first 1
+		maskSmaller = maskSmaller << 1;
+	}
+	if (smallerHasSolution) { // we have a solution
+		int smaller = n & ~maskSmaller; 			// last bit to 0
+		smaller = smaller | (maskSmaller >> 1); // previous bit to 1
+		s.append(smaller);
+	}
+	s.append(",");
+	// next bigger number
+	if (n > 0 && n < Integer.MAX_VALUE) {
+		int maskBigger = 1;
+		if ((n & maskBigger) == 0) { // we start with zero, look for first 1
+			while ((n & maskBigger) == 0) {
+				maskBigger = maskBigger << 1;
+			}
+		}
+		while ((n & maskBigger) != 0) { // look for next zero now
+			maskBigger = maskBigger << 1;
+		}
+		int bigger = n | maskBigger; // last bit to 1
+		bigger = bigger & ~(maskBigger >> 1); // previous bit to 0
+		s.append(bigger);
+	}
+	s.append("]");
+
+	return s.toString();
+
 }
+
+
+}
+
+/**
+Copyright 2014 Daniel Giribet <dani - calidos.cat>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/

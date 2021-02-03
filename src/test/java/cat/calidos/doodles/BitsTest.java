@@ -222,4 +222,13 @@ public void longestOneSequenceWithFlip() {
 
 }
 
+@Test @DisplayName("Next numbers in binary test")
+public void nextNumbersInBinaryTest() {
+
+	assertEquals("[1,4]", Bits.nextNumbersInBinary(2));
+	assertEquals("[3,6]", Bits.nextNumbersInBinary(5));
+	assertEquals("[11,14]", Bits.nextNumbersInBinary(13));
+
+}
+
 }
