@@ -161,6 +161,7 @@ public void balancedSearchTreeTest() {
 	assertEquals(expected, Tree.balancedSearchTree(a));
 
 	a = ArrayFrom.ints(1, 2, 3, 4, 5, 6, 7);
+	a = ArrayFrom.ints(1, 2, 3, 4, 5, 6, 7);
 	expected = new Tree<Integer>(4);
 	expected.left = new Tree<Integer>(2);
 	expected.left.left = new Tree<Integer>(1);
@@ -170,6 +171,33 @@ public void balancedSearchTreeTest() {
 	expected.right.right = new Tree<Integer>(7);
 
 	assertEquals(expected, Tree.balancedSearchTree(a));
+
+}
+
+
+@Test @DisplayName("List of nodes for each depth") 
+public void nodesInDepthTest() {
+
+	Tree<Integer> t = new Tree<Integer>(4);
+	t.left = new Tree<Integer>(2);
+	t.left.left = new Tree<Integer>(1);
+	t.left.right = new Tree<Integer>(3);
+	t.right = new Tree<Integer>(6);
+	t.right.left = new Tree<Integer>(5);
+	t.right.right = new Tree<Integer>(7);
+
+	List<LinkedList<Integer>> expected = new ArrayList<LinkedList<Integer>>(3);
+	expected.add(new LinkedList<Integer>(4));
+	LinkedList<Integer> level2 = new LinkedList<Integer>(2);
+	level2.next = new LinkedList<Integer>(6);
+	expected.add(level2);
+	LinkedList<Integer> level3 = new LinkedList<Integer>(1);
+	level3.next = new LinkedList<Integer>(3);
+	level3.next.next = new LinkedList<Integer>(5);
+	level3.next.next.next = new LinkedList<Integer>(7);
+	expected.add(level3);
+
+	assertEquals(expected, Tree.nodesInDepth(t));
 
 }
 

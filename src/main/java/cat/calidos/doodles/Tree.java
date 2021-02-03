@@ -229,20 +229,71 @@ public class Tree<T> {
 
 	}
 
+	// 4.3 list of depths: write an algorithm to create a linked list of all the nodes of each depth
+	// we have a list of all depths and each one has a list
+	// add root to the pending list
+	// set height = 0
+	// have a pending list
+	// while pending is not empty
+//	 	for each node, 
+//			we add the children to the nextHeight list
+//			we add the node to the current height linked list
+//		we add the list to the output
+//		pending = nextHeight
+//		increment height
+	// return map
+
+
+public static <T extends Comparable<? super T>> List<LinkedList<T>> nodesInDepth(Tree<T> t) {
+
+	List<LinkedList<T>> lists = new ArrayList<LinkedList<T>>();
+	List<Tree<T>> pending = new ArrayList<Tree<T>>();
+	pending.add(t);
+	while (!pending.isEmpty()) {
+
+		List<Tree<T>> nextPending = new ArrayList<Tree<T>>();
+		LinkedList<T> currentDepth = null;
+		LinkedList<T> currentDepthHead = null;
+		for (Tree<T> node: pending) {
+			if (node.left!=null) {
+				nextPending.add(node.left);
+			}
+			if (node.right!=null) {
+				nextPending.add(node.right);
+			}
+			LinkedList<T> currentNode = new LinkedList<T>(node.data);
+			if (currentDepthHead == null) {
+				currentDepth = currentNode;
+				currentDepthHead = currentNode;
+			} else {
+				currentDepthHead.next = currentNode;
+				currentDepthHead = currentNode;
+			}
+		};
+
+		pending = nextPending;
+		lists.add(currentDepth);
+
+	}
+
+	return lists;
+
+}
+
 
 	@Override
 	public String toString() {
 		return toString(new StringBuffer(), new StringBuffer());
 	}
 
-	
+
 	protected String toString(StringBuffer s, StringBuffer tab) {
 
 		tab.append(" ");
 		s.append(tab);
 		s.append("[");
 		s.append(data);
-		
+
 		if (left==null && right==null) {
 			if (children!=null && !children.isEmpty()) {
 				s.append(",\n");
