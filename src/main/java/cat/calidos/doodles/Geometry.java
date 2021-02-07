@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 public class Geometry {
@@ -40,26 +42,28 @@ public static Line lineWithMostPoints(Graph<Point> g) {
 	Map<Point, Integer> vectorCounts = new HashMap<Point, Integer>(vectors.size());
 	vectors.entrySet().forEach(e -> vectorCounts.put(e.getKey(), e.getValue().size()));
 
-Line max;
-int maxIntersections = 0;
-vectorCounts.entrySet().forEach(vc -> {
-if (maxIntersections<vc.getValue()) {
-	Iterator<Pair<Point, Point>> pointsWithThisVector = vectors.get(vc.getKey()).iterator();
-	int belongCounter = 0;
-	Line line = new Line(pointsWithThisVector.next().left, vc.getKey());
-	while (pointsWithThisVector.hasNext()) {
-		Pair<Point, Point> currentPair = pointsWithThisVector.next();
-		if (pointInLine(line, currentPair.left)) {
-			belongCounter++;
+	Line max = null;
+	int maxIntersections = 0;
+	for (Entry<Point, List<Pair<Point, Point>>> vc : vectors.entrySet()) {
+		if (maxIntersections < vc.getValue().size()) {
+			Iterator<Pair<Point, Point>> pointsWithThisVector = vectors.get(vc.getKey()).iterator();
+			int belongCounter = 0;
+			Line line = new Line(pointsWithThisVector.next().left, vc.getKey());
+			while (pointsWithThisVector.hasNext()) {
+				Pair<Point, Point> currentPair = pointsWithThisVector.next();
+				if (pointInLine(line, currentPair.left)) {
+					belongCounter++;
+				}
+			}
+			if (belongCounter > maxIntersections) {
+				maxIntersections = belongCounter;
+				max = line;
+			}
 		}
-}
-if (belongCounter>maxIntersections) {
-	max = line;
-}
-}
-});
+	}
 
-	return max; // max is empty if graph has zero or one nodes
+	return max; // max is empty if graph has zero or one node
+
 }
 
 
@@ -81,6 +85,7 @@ private static Map<Point, List<Pair<Point, Point>>> normalisedVectors(Graph<Poin
 				Point vector = vectorFrom(v, v2);
 				Point alignedVector = alignVector(vector);
 				List<Pair<Point, Point>> pointList;
+				//Optional<Point> containsVector = vectors.keySet().stream().filter(vec -> vec.equals(alignedVector)).findAny();
 				if (vectors.containsKey(alignedVector)) {
 					pointList = vectors.get(alignedVector);
 				} else {
@@ -97,41 +102,53 @@ private static Map<Point, List<Pair<Point, Point>>> normalisedVectors(Graph<Poin
 }
 
 
-private static Point vectorFrom(Point a, Point b) {
-	
-float x = b.x - a.x;
+public static Point vectorFrom(Point a, Point b) {
+
+	float x = b.x - a.x;
 	float y = b.y - a.y;
-	float mag = Math.sqrt(x*x+y*y);
-	
+	float mag = (float) Math.sqrt(x*x+y*y);
+
 	return new Point(x/mag, y/mag);	// we assume we're good with whatever precision
 
 }
 
+
 private static Point alignVector(Point v) {
-	
+
 	// positive, positive, leave alone
 	// negative, negative, make both positive
 	// negative, positive, leave alone
 	// positive, negative, -x, -y
 
-	if (v.x>=0.0 && v.y>=0.0) {
+	if (v.x >= 0.0 && v.y >= 0.0) {
 		return v;
-}
-if (v.x<=0.0 && v.y<=0.0) {
+	}
+	if (v.x <= 0.0 && v.y <= 0.0) {
+		return new Point(-v.x, -v.y);
+	}
+	if (v.x <= 0.0 && v.y >= 0.0) {
+		return v;
+	}
+	// if (v.x>=0.0 && v.y<=0.0) {
 	return new Point(-v.x, -v.y);
-}
-if (v.x<=0.0 && v.y>=0.0) {
-	return v;
-}
-if (v.x>=0.0 && v.y<=0.0) {
-	return new Point(-v.x, -v.y);
-}
+	// }
 
 }
+
 
 private static boolean pointInLine(Line l, Point p) {
-//(pointX-linePX)/vX = (pointY-linePY)/vY
-	return (p.x-l.x)/l.v.x == (p.y-l.y)/l.v.y;
+
+	boolean isInLine = false;
+	if (l.v.x==0) {
+		isInLine = (p.x-l.p.x)==0;
+	} else if (l.v.y==0) {
+		isInLine = (p.x-l.p.x)==0;
+	} else {
+		isInLine = (p.x-l.p.x)/l.v.x == (p.y-l.p.y)/l.v.y;
+	}
+
+	return isInLine;
+
 }
 
 

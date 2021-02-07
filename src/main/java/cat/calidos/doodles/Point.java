@@ -11,18 +11,50 @@ public float y;
 
 Point(float x, float y ) {
 
-	this.x = x;
-	this.y = y;
+	this.x = x==-0.0 ? (float)0.0 : x;
+	this.y = y==-0.0 ? (float)0.0 : y;
 
 }
 
 
 @Override
-public int compareTo(Point o) {
-	if (x==o.x && y==o.y) {
-		return 0;
+public boolean equals(Object obj) {
+
+	if (obj==null) {
+		return false;
 	}
-	return Math.sqrt(x*x+y*y)<Math.sqrt(o.x*o.x+o.y*o.y) ? -1 : 1;
+	try {
+		Point p = (Point)obj;
+		return this.toString().equals(p.toString());
+	} catch (ClassCastException e) {
+		return false;
+	}
+}
+
+
+@Override
+public int compareTo(Point o) {
+
+	int comparison = 0;
+	if (x!=o.x || y!=o.y) {
+		comparison = Math.sqrt(x*x+y*y)<Math.sqrt(o.x*o.x+o.y*o.y) ? -1 : 1;
+	}
+
+	return comparison;
+
+}
+
+
+@Override
+public String toString() {
+	return "["+x+","+y+"]";
+}
+
+
+
+@Override
+public int hashCode() {
+	return this.toString().hashCode();
 }
 
 

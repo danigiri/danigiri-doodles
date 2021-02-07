@@ -18,8 +18,36 @@ Pair(X l, Y r) {
 }
 
 
+@Override
+public boolean equals(Object obj) {
+
+	if (obj==null) {
+		return false;
+	}
+	try {
+		@SuppressWarnings("unchecked")
+		Pair<X, Y> p = (Pair<X, Y>)obj;
+		return (this.left==null && p.left==null) || (this.left.equals(p.left)) && 
+				(this.right==null && p.right==null) || (this.right.equals(p.right));
+	} catch (ClassCastException e) {
+		return false;
+	}
 }
 
+
+@Override
+public String toString() {
+	return "<"+left+","+right+">";
+}
+
+
+@Override
+public int hashCode() {
+	return this.toString().hashCode();
+}
+
+
+}
 
 /*
  *    Copyright 2021 Daniel Giribet

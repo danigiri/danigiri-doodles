@@ -18,6 +18,14 @@ Line(Point p, Point v) {
 }
 
 
+@Override
+public String toString() {
+	return "{p:"+p+",v:"+v+"}";
+}
+
+
+
+
 }
 
 
