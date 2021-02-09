@@ -28,7 +28,7 @@ private static boolean stringNotInSet(String s, Set<Integer>set) {	// cost O(N)
 		throw new NullPointerException("Null data");
 	}
 	int sLength = s.length();
-	
+
 	if (sLength==0) {
 		return true;
 	}
@@ -690,6 +690,100 @@ public static boolean isPalindromePermutation(String s) {
 	}
 
 	return evenCount <= 1;
+
+}
+
+
+//1.5 one away, given a two strings, write a function to check if they are one edit or zero 
+//edits away, edits are, char insert, replace insert or replace a char
+//hola, hola → true
+//hola, hogla → true
+//hola, ola → true
+//hola, thola → true
+//hola, hulo → false, two replaces
+//hola, hoa → true
+
+//we have two indexes and a difference counter
+//we iterate over them until the end or the difference counter >1
+//when we find a difference, we increment the counter
+//if we find a different char, we do not know if it's an insert, replace or delete
+//look at the following item in the OK string, is it the same as the different char?
+//assume delete and continue, otherwise
+//look at the following item in the faulty string:
+//if the following char is the same as the following one in the OK string, replace
+//if the following char is the same as the current char in the OK string, insert
+//ensure we check for out of bounds
+//we assume string length is O(k)
+//subsequent errors will stop the loop
+
+//case A: are both next chars equal? replace
+//hola
+//hoba
+//edge cases
+//last char? → we're good
+//hola
+//hob → return false, two changes
+
+//B: (del) are one of the current equal to the next one of the other? check both cases
+//hola
+//hoa
+//edge cases
+//hola
+//hol, will be out of the loop
+
+//C: (insert) the same as B, as current l is the same as next
+//hola
+//hoxla
+//edge cases
+//hola
+//holax, will be out of the loop
+
+//
+
+
+public static boolean maxOneChange(String a, String b) {
+
+	int lengthA = a.length();
+	int lengthB = b.length();
+
+	if (Math.abs(lengthA - lengthB) > 1) {
+		return false;
+	}
+
+	int changes = 0;
+	int i = 0;
+	int j = 0;
+	while (changes <= 1 && i < lengthA && j < lengthB) {
+
+		char currentA = a.charAt(i++);
+		char currentB = b.charAt(j++);
+		if (currentA != currentB) { 				// check the cases:
+			// last char
+			if (i == lengthA || j == lengthB) {		// a) diff is the last char
+				changes++;
+			} else {
+				// test for replace case, guaranteed to have at least one char
+				// for both strings
+				char nextA = a.charAt(i);
+				char nextB = b.charAt(j);
+				if (nextA == nextB) { 				// b) replace, increment but good to go
+					changes++;
+				} else { // check for delete or insert, good
+					if (currentA == nextB) {		// c) delete or insert on a
+						changes++;
+						i--;
+					} else if (currentB == nextA) {	// d) delete or insert on b
+						changes++;
+						j--;
+					} else {
+						changes += 2; 				// e) two changes, will trigger exit
+					}
+				}
+			}
+		}
+	}
+
+	return changes <= 1;
 
 }
 

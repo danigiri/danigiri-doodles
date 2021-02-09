@@ -224,6 +224,35 @@ public void palindromePermutationTest() {
 }
 
 
+@Test @DisplayName("Test max one change character in two strings")
+public void maxOneChangeTest() {
+	
+	assertFalse(Strings.maxOneChange("aaa", "a"));
+	assertTrue(Strings.maxOneChange("aaa", "aaa"));
+	assertTrue(Strings.maxOneChange("aaaa", "aaa"));
+	assertTrue(Strings.maxOneChange("aaa", "aaaa"));
+	assertTrue(Strings.maxOneChange("aaa", "aaab"));
+	assertTrue(Strings.maxOneChange("aaab", "aaa"));
+	assertTrue(Strings.maxOneChange("abcd", "axcd"));
+	assertTrue(Strings.maxOneChange("axcd", "abcd"));
+
+	assertTrue(Strings.maxOneChange("abcd", "abcx"));
+	assertTrue(Strings.maxOneChange("abcd", "abxcd"));
+	assertTrue(Strings.maxOneChange("abxcd", "abcd"));
+
+	assertTrue(Strings.maxOneChange("abcd", "acd"));
+	assertTrue(Strings.maxOneChange("acd", "abcd"));
+	assertTrue(Strings.maxOneChange("abcd", "bcd"));
+	assertTrue(Strings.maxOneChange("bcd", "abcd"));
+
+	assertTrue(Strings.maxOneChange("abcd", "abxcd"));
+	assertTrue(Strings.maxOneChange("abxcd", "abcd"));
+	assertTrue(Strings.maxOneChange("abcd", "xabcd"));
+	assertTrue(Strings.maxOneChange("xabcd", "abcd"));
+
+}
+
+
 
 }
 
