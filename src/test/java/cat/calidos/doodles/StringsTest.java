@@ -250,6 +250,9 @@ public void maxOneChangeTest() {
 	assertTrue(Strings.maxOneChange("abcd", "xabcd"));
 	assertTrue(Strings.maxOneChange("xabcd", "abcd"));
 
+	assertFalse(Strings.maxOneChange("abcd", "abxzd"));
+	assertFalse(Strings.maxOneChange("abxzd", "abcd"));
+
 }
 
 
