@@ -261,6 +261,24 @@ public LinkedList<T> reverse() {
 }
 
 
+public static <T extends Comparable<? super T>> LinkedList<T> reverse2(LinkedList<T> l) {
+
+	if (l == null) {
+		return null;
+	}
+
+	LinkedList<T> rev = new LinkedList<T>(l.data);
+	while (l.next != null) {
+		l = l.next;
+		LinkedList<T> next = new LinkedList<T>(l.data);
+		next.next = rev;
+		rev = next;
+	}
+
+	return rev;
+
+}
+
 }
 
 /**
