@@ -191,8 +191,8 @@ public void bloomTest2() {
 			falsePositives++;
 		}
 	}
-
-	assertTrue(falsePositives<(testSize/20));
+	System.err.println(bloom.length);
+	assertTrue(falsePositives<(bloom.length/15));
 
 }
 
@@ -222,6 +222,7 @@ public void longestOneSequenceWithFlip() {
 
 }
 
+
 @Test @DisplayName("Next numbers in binary test")
 public void nextNumbersInBinaryTest() {
 
@@ -230,5 +231,13 @@ public void nextNumbersInBinaryTest() {
 	assertEquals("[11,14]", Bits.nextNumbersInBinary(13));
 
 }
+
+
+@Test @DisplayName("How many bits to flip to convert one int into another")
+public void flipsToConvertTest() {
+	assertEquals(2, Bits.flipsToConvert(29, 15));
+}
+
+
 
 }

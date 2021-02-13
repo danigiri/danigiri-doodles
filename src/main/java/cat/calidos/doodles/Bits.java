@@ -384,6 +384,36 @@ public static String nextNumbersInBinary(int n) {
 }
 
 
+//5.6 write code to return the number of bits you would need to flip to convert
+//one integer another
+//29, 15, the result is 2
+
+//ok, 	11100
+//	10101
+//	 x  x → 2
+
+//we can go through all the bits of the two and do an xor, if the xor==1 we need to flip
+//otherwise we skip
+
+public static int flipsToConvert(int a, int b) {
+
+	int flips = 0;
+	int mask = 1;
+	while (mask!=0) {
+		int bitA = a & mask;
+		int bitB = b & mask;
+		if ((bitA ^ bitB) != 0) {
+			flips++;
+}
+		mask = mask<<1;
+}
+	
+	return flips;
+
+}
+
+
+
 }
 
 /**
