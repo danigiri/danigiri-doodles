@@ -1,18 +1,5 @@
-/**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
+// TREE . JAVA
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-*/
 package cat.calidos.doodles;
 
 import java.util.HashMap;
@@ -281,6 +268,81 @@ public static <T extends Comparable<? super T>> List<LinkedList<T>> nodesInDepth
 }
 
 
+// 4.4 check balanced, implement a function to check if a binary tree is balanced
+// a balanced tree is defined as a tree that both subtrees are equal or differ by one in height
+
+
+// let's see
+// single node: →
+// left and/or right
+// calculate depth for each
+// get the max of the two, as we could have a degenerate that is still balanced
+// increment one
+// return
+// the root call is special, checks the two heights and returns true or false
+
+
+public static <T> boolean isBalanced(Tree<T> t) {
+
+	int leftHeight = treeHeight(t.left);
+	int rightHeight = treeHeight(t.right);
+
+	return Math.abs(leftHeight - rightHeight) <= 1;
+
+}
+
+
+private static <T> int treeHeight(Tree<T> t) {
+
+	// base cases
+	if (t == null) {
+		return 0;
+	}
+	// recursive case
+	int leftHeight = treeHeight(t.left);
+	int rightHeight = treeHeight(t.right);
+	int height = (leftHeight > rightHeight) ? leftHeight : rightHeight;
+
+	return height + 1;
+
+}
+
+
+// this works but the exercise mentions any node, we can make this more straightforward
+// we calculate the height and return -1 if we are unbalanced
+public static <T> boolean isBalancedStrict(Tree<T> t) {
+	return isBalancedStrictRec(t) != -1;
+}
+
+
+// calculate height of left and right
+// if any of them is -1, return -1
+// otherwise, calculate difference between them, if diff is<=1, return the max of
+// the two, otherwise return -1
+private static <T> int isBalancedStrictRec(Tree<T> t) {
+
+	// base cases
+	if (t == null) {
+		return 0;
+	}
+	int leftHeight = treeHeight(t.left);
+	if (leftHeight == -1) {
+		return -1;
+	}
+	int rightHeight = treeHeight(t.right);
+	if (rightHeight == -1) {
+		return -1;
+	}
+	int diff = Math.abs(leftHeight - rightHeight);
+	if (diff > 1) {
+		return -1;
+	}
+
+	return Math.max(leftHeight, rightHeight)+1;
+
+}
+
+
 	@Override
 	public String toString() {
 		return toString(new StringBuffer(), new StringBuffer());
@@ -328,7 +390,7 @@ public static <T extends Comparable<? super T>> List<LinkedList<T>> nodesInDepth
 		return s.toString();
 		
 	}
-	
+
 	//FIXME: this doesn't seem to work for complex trees (see string prefixes test)
 	@Override
 	public boolean equals(Object o) {
@@ -372,3 +434,19 @@ public static <T extends Comparable<? super T>> List<LinkedList<T>> nodesInDepth
 	}
 	
 }
+
+/**
+Copyright 2014 Daniel Giribet <dani - calidos.cat>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/

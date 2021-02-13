@@ -4,7 +4,6 @@ package cat.calidos.doodles;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -13,8 +12,8 @@ import org.junit.jupiter.api.Test;
 import cat.calidos.doodles.builders.ArrayFrom;
 import cat.calidos.doodles.builders.ListFrom;
 
-
 public class TreeTest {
+
 
 @Test
 public void preorderTest() {
@@ -199,6 +198,52 @@ public void nodesInDepthTest() {
 
 	assertEquals(expected, Tree.nodesInDepth(t));
 
+}
+
+
+@Test @DisplayName("Is the tree balanced") 
+public void isBalancedTest() {
+
+	Tree<Integer> t = new Tree<Integer>(4);
+	assertTrue(Tree.isBalanced(t));
+
+	t.left = new Tree<Integer>(2);
+	assertTrue(Tree.isBalanced(t));
+
+	t.left.left = new Tree<Integer>(1);
+	t.left.right = new Tree<Integer>(3);
+	assertFalse(Tree.isBalanced(t));
+
+	t.right = new Tree<Integer>(6);
+	assertTrue(Tree.isBalanced(t));
+
+}
+
+
+@Test @DisplayName("Is the tree strictly balanced") 
+public void isBalancedStrictTest() {
+
+	Tree<Integer> t = new Tree<Integer>(4);
+	assertTrue(Tree.isBalancedStrict(t));
+
+	t.left = new Tree<Integer>(2);
+	assertTrue(Tree.isBalancedStrict(t));
+
+	t.left.left = new Tree<Integer>(1);
+	t.left.right = new Tree<Integer>(3);
+	assertFalse(Tree.isBalancedStrict(t));
+
+	t.right = new Tree<Integer>(6);
+	assertTrue(Tree.isBalancedStrict(t));
+
+	t = new Tree<Integer>(4);
+	t.left = new Tree<Integer>(2);
+	t.left.left = new Tree<Integer>(1);
+	t.left.right = new Tree<Integer>(3);
+	t.right = new Tree<Integer>(6);
+	t.right.left = new Tree<Integer>(5);
+	t.right.right = new Tree<Integer>(7);
+	assertTrue(Tree.isBalancedStrict(t));
 }
 
 

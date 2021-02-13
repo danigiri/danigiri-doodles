@@ -1,18 +1,5 @@
-/**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
+// LINKED LIST TEST . JAVA
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-*/
 package cat.calidos.doodles;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -111,6 +98,7 @@ public void kthElementTest() {
 public void reverseTest() {
 
 	LinkedList<String> l = new LinkedList<String>("a");
+	assertEquals(new LinkedList<String>("a"), l.reverse());
 	l.next = new LinkedList<String>("b");
 	l.next.next = new LinkedList<String>("c");
 
@@ -119,6 +107,24 @@ public void reverseTest() {
 	expected.next.next = new LinkedList<String>("a");
 
 	assertEquals(expected, l.reverse());
+
+}
+
+
+@Test @DisplayName("Reverse linked list test (impl 2)")
+public void reverse2Test() {
+
+	LinkedList<String> l = new LinkedList<String>("a");
+	assertEquals(new LinkedList<String>("a"), LinkedList.reverse2(l));
+	l.next = new LinkedList<String>("b");
+	l.next.next = new LinkedList<String>("c");
+
+	LinkedList<String> expected = new LinkedList<String>("c");
+	expected.next = new LinkedList<String>("b");
+	expected.next.next = new LinkedList<String>("a");
+
+	assertEquals(expected, LinkedList.reverse2(l));
+
 }
 
 
@@ -139,3 +145,19 @@ public void partitionListTest() {
 
 
 }
+
+/**
+Copyright 2014 Daniel Giribet <dani - calidos.cat>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
