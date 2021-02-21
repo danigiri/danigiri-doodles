@@ -420,11 +420,11 @@ private static int sumTimes(int k, int times) {
 		return k;
 	}
 	// recursive case
-	int half = k >> 1;
+	int half = times >> 1;
 	int halfSum = sumTimes(half, k);
 	int sum = halfSum << 1;
 	// now find out if we have to add k
-	int odd = k << 31;
+	int odd = times << 31;
 	if (odd != 0) {
 		sum += k;
 	}
