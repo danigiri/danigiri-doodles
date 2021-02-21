@@ -255,6 +255,17 @@ public void maxOneChangeTest() {
 
 }
 
+@Test @DisplayName("Test string compression")
+public void compressTest() {
+
+	assertEquals("abc", Strings.compress("abc"));
+	assertEquals("", Strings.compress(""));
+	assertEquals("abbc", Strings.compress("abbc"));
+	assertEquals("a4", Strings.compress("aaaa"));
+	assertEquals("ab3c", Strings.compress("abbbc"));
+	assertEquals("a2b3c", Strings.compress("aabbbc"));
+
+}
 
 
 }

@@ -897,4 +897,31 @@ if (candidatesQueue.size()<3) {
 
 */
 
+public static String compress(String s) {
+
+	boolean returnOriginal = true;
+	StringBuffer compressed = new StringBuffer();
+	char c;
+	int i = 0;
+	while (i < s.length()) {
+		c = s.charAt(i++);
+		compressed.append(c);
+		int same = 1;
+		while (i < s.length() && s.charAt(i) == c) {
+			same++;
+			i++;
+		}
+		if (same > 1) {
+			compressed.append(same);
+		}
+		if (returnOriginal && same > 2) {
+			returnOriginal = false;
+		}
+
+	}
+
+	return returnOriginal ? s : compressed.toString();
+
+}
+
 }
