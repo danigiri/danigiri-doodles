@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import cat.calidos.doodles.builders.ListFrom;
 
-
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,8 +20,20 @@ public class SearchTest {
 @Test @DisplayName("Find in Listy test")
 public void findInListyTest() {
 
-	List<Integer> l = ListFrom.ints(1, 2, 3, 4, 5, 5, 6, 7, 10);
+	var l = ListFrom.ints(1, 2, 3, 4, 5, 5, 6, 7, 10);
 	assertEquals(3, Search.findIn(l, 4));
+
+}
+
+@Test @DisplayName("Search in sparse array")
+public void locateSparseTest() {
+
+	var l = ListFrom.strings("a", "", "", "", "b", "", "", "c", "d", "", "ee");
+	assertEquals(-1, Search.locateSparse(l, "x"));
+	assertEquals(0, Search.locateSparse(l, "a"));
+	assertEquals(4, Search.locateSparse(l, "b"));
+	assertEquals(8, Search.locateSparse(l, "d"));
+	assertEquals(10, Search.locateSparse(l, "ee"));
 
 }
 

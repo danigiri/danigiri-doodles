@@ -56,10 +56,54 @@ private static int findInRec(List<Integer> l, int target, int lower, int current
 }
 
 
+public static int locateSparse(List<String> a, String s) {
+	return locateSparse(a, s, 0, a.size());
+}
+
+
+// end non inclusive
+private static int locateSparse(List<String> a, String s, int start, int end) {
+
+	if (end <= start) {
+		return -1;
+	}
+	if (Math.abs(start - end) == 1) {
+		if (a.get(start).equals(s)) {
+			return start;
+		}
+		return -1;
+	}
+	// look for the middle value that is not empty
+	int middle = ((end - start) / 2) + start;
+	while (middle < end && a.get(middle).equals("")) {
+		middle++;
+	}
+	if (middle == end) { // nothing on the right hand side of the search space
+		middle--;
+		while (middle > start && a.get(middle).equals("")) {
+			middle--;
+		}
+		return locateSparse(a, s, start, middle+1);
+	}
+	// we found a value middle element
+	String value = a.get(middle);
+	if (value.equals(s)) {
+		return middle;
+	}
+	if (s.compareTo(value) < 0) {
+		return locateSparse(a, s, start, middle);
+	} else {
+		return locateSparse(a, s, middle, end);
+	}
+
+}
+
+
+
 }
 
 /*
- *    Copyright 2020 Daniel Giribet
+ *    Copyright 2021 Daniel Giribet
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
