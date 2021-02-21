@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class Tree<T> {
@@ -433,6 +434,53 @@ private static <T> int isBalancedStrictRec(Tree<T> t) {
 		return this.toString().hashCode();
 	}
 	
+
+	public static <T> Optional<Tree<T>> commonAncestor(Tree<T> t, Tree<T> a, Tree<T> b) {
+
+		if (t == null) {
+			return Optional.empty();
+		}
+		if (t==a) {
+			return Optional.of(a);
+		}
+		if (t==b) {
+			return Optional.of(b);
+		}
+		var leftS = commonAncestor(t.left, a, b);
+		if (leftS.isPresent()) { // one found in the left
+			if (leftS.get() != a && leftS.get() != b) { // solved
+				return leftS;
+			}
+			if ((leftS.get() == a && findNode(t.right, b)) || (leftS.get() == b && findNode(t.right, a))) {
+				return Optional.of(t); // this is the common ancestor
+			}
+			return leftS; // common ancestor not found yet
+		}
+		var rightS = commonAncestor(t.right, a, b);
+		if (rightS.isPresent()) { // one found in the right
+			if (rightS.get() != a && rightS.get() != b) { // solved
+				return rightS;
+			}
+			if ((rightS.get() == a && findNode(t.left, b)) || (rightS.get() == b && findNode(t.left, a))) {
+				return Optional.of(t); // this is the common ancestor
+			}
+			return rightS; // common ancestor not found yet
+		}
+		return Optional.empty();
+
+	}
+
+	private static <T> boolean findNode(Tree<T> t, Tree<T> n) {
+		if (t == null) {
+			return false;
+		}
+		if (n == t) {
+			return true;
+		}
+		return findNode(t.left, n) || findNode(t.right, n);
+	}
+				
+
 }
 
 /**

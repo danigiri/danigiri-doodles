@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -244,6 +245,31 @@ public void isBalancedStrictTest() {
 	t.right.left = new Tree<Integer>(5);
 	t.right.right = new Tree<Integer>(7);
 	assertTrue(Tree.isBalancedStrict(t));
+
+}
+
+@Test @DisplayName("Find common ancestor test") 
+public void commonAncestorTest() {
+
+	var t = new Tree<Integer>(4);
+	t.left = new Tree<Integer>(2);
+	t.left.left = new Tree<Integer>(1);
+	t.left.right = new Tree<Integer>(3);
+	t.right = new Tree<Integer>(6);
+	t.right.left = new Tree<Integer>(5);
+	t.right.right = new Tree<Integer>(7);
+	assertTrue(Tree.isBalancedStrict(t));
+
+	var a = Tree.commonAncestor(t, t.right.left, t.right.right);
+	assertAll("check common ancestor",
+		() -> assertTrue(a.isPresent()),
+		() -> assertEquals(t.right, a.get())
+	);
+	var b = Tree.commonAncestor(t, t.left.left, t.right.right);
+	assertAll("check common ancestor",
+		() -> assertTrue(b.isPresent()),
+		() -> assertEquals(t, b.get())
+	);
 }
 
 
