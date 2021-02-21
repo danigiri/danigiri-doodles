@@ -5,12 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class StackQueueTest {
-
 
 
 @Test @DisplayName("Queue implemented with stacks test")
@@ -19,7 +17,7 @@ public void stackQueueTest() {
 	StackQueue<String> queue = new StackQueue<String>();
 	assertThrows(NullPointerException.class, () -> queue.pop());
 	assertTrue(queue.isEmpty());
-	
+
 	queue.push("a");
 	assertFalse(queue.isEmpty());
 	assertEquals("a", queue.pop());

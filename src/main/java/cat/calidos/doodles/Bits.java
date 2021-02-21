@@ -407,7 +407,7 @@ public static int flipsToConvert(int a, int b) {
 }
 		mask = mask<<1;
 }
-	
+
 	return flips;
 
 }
