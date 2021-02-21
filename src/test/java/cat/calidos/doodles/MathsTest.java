@@ -293,6 +293,23 @@ public void intToEnglishNegativeTest() {
 }
 
 
+@Test @DisplayName("Sum without a * test")
+public void sumRecTest() {
+
+	assertEquals(0, Maths.multiply(0, 12));
+	assertEquals(12, Maths.multiply(3, 4));
+
+	assertEquals(3*17, Maths.multiply(3, 17));
+	assertEquals(3*17, Maths.multiply(17, 3));
+	assertEquals(13*17, Maths.multiply(13, 17));
+	assertEquals(13*17, Maths.multiply(17, 13));
+
+	assertEquals(113*27, Maths.multiply(113, 27));
+	assertEquals(113*27, Maths.multiply(27, 113));
+
+}
+
+
 }
 /**
 Copyright 2016 Daniel Giribet <dani - calidos.cat>

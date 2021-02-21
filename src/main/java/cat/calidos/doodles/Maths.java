@@ -400,6 +400,37 @@ private static String toEnglishBase(int n) {
 
 }
 
+// 4.8 recursive multiply – write a function to multiply two positive integers without using *
+// you can use the other arithmetic operations: add, subtract, shift but minimise their usage
+
+// 23 * 11 = eleven times +23, too many +'s
+// times(n, k) == 2*times(n/2, k) + if (n%2==1) +k
+
+public static int multiply(int a, int b) {
+	return (a<b) ? sumTimes(b, a) : sumTimes(a, b);
+}
+
+
+private static int sumTimes(int k, int times) {
+
+	if (times == 0) {
+		return 0;
+	}
+	if (times == 1) {
+		return k;
+	}
+	// recursive case
+	int half = k >> 1;
+	int halfSum = sumTimes(half, k);
+	int sum = halfSum << 1;
+	// now find out if we have to add k
+	int odd = k << 31;
+	if (odd != 0) {
+		sum += k;
+	}
+	return sum;
+}
+
 
 }
 
