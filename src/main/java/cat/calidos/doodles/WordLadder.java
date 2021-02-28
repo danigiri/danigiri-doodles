@@ -25,7 +25,7 @@ public static int climb(String start, String end, List<String> dict) {
 	
 	// sort the dictionary and create a tree of prefixes (N*LOG(N))
 	List<String>sortedDict = Sorter.mergeSort(new ArrayList<String>(dict));
-	Tree<String>keyTree = WordBreak.buildKeyTree("", sortedDict);
+	Tree<String>keyTree = Words.buildKeyTree("", sortedDict);
 
 	// next create a graph of adjacencies
 	
