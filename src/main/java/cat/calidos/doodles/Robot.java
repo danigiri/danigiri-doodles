@@ -1,6 +1,9 @@
 package cat.calidos.doodles;
 
 import java.util.List;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class Robot {
@@ -296,4 +299,88 @@ private static boolean isValidStep(int x, int y, int r, int c, boolean[][] explo
 	return x < r && y < c && !explored[x][y] && !maze[x][y];
 }
 
+// 16.9 pond sizes, integer matrix representing a plot of land, value of zero is water
+// a pond is a region connected vertically, horizontally or diagonally
+// count the number of ponds
+
+// we need a map of all possible locations, O(k) access time
+// we also want a list of all possible locations, while possible locations not empty:
+// pop first element
+// is it possible locations?
+// no? skip
+// remove from possible locations
+// is it land?, skip
+// is it pond? move to recursive pond finder
+// recurse, while updating possible locations
+
+public static List<Integer> ponds(int[][] land) {
+
+	var ponds = new ArrayList<Integer>();
+	var possible = new HashSet<Pair<Integer, Integer>>();
+	var remaining = new LinkedList<Pair<Integer, Integer>>();
+	for (int i = 0; i < land.length; i++) {
+		for (int j = 0; j < land[i].length; j++) {
+			var p = new Pair<Integer, Integer>(i, j);
+			possible.add(p); // O(k)
+			remaining.push(p); // O(k)
+		}
+	}
+
+	while (!possible.isEmpty()) {
+		var c = remaining.pop(); // guaranteed to have at least one item
+		if (possible.contains(c)) {
+			if (land[c.left][c.right] == 0) {
+				int size = mapWater(land, c, possible); // it will be removed by this
+				ponds.add(size);
+			} else {
+				possible.remove(c);
+			}
+		}
+	}
+
+return ponds;
+
 }
+
+
+private static int mapWater(int[][] land, Pair<Integer, Integer> x, Set<Pair<Integer, Integer>> p) {
+	
+	if (!p.contains(x)) {
+		return 0;
+	}
+	p.remove(x);
+	if (land[x.left][x.right]>0) {
+			return 0;
+	}
+	int size = 1;
+	size += mapWater(land, new Pair<Integer, Integer>(x.left-1, x.right-1), p);
+	size += mapWater(land, new Pair<Integer, Integer>(x.left-1, x.right), p);
+	size += mapWater(land, new Pair<Integer, Integer>(x.left-1, x.right+1), p);
+	size += mapWater(land, new Pair<Integer, Integer>(x.left, x.right-1), p);
+	size += mapWater(land, new Pair<Integer, Integer>(x.left, x.right+1), p);
+	size += mapWater(land, new Pair<Integer, Integer>(x.left+1, x.right-1), p);
+	size += mapWater(land, new Pair<Integer, Integer>(x.left+1, x.right), p);
+	size += mapWater(land, new Pair<Integer, Integer>(x.left+1, x.right+1), p);
+
+	return size;
+
+}
+
+
+}
+
+/*
+ *    Copyright 2021 Daniel Giribet
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
