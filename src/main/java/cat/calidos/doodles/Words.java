@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class WordBreak {
+public class Words {
 
 
 /** Return true if 's' can be segmented into words present in 'dict'
@@ -39,7 +39,7 @@ public static boolean seg(final String s, final Set<String>dict) {
 
 	// sort the dictionary and create a tree of prefixes (N*LOG(N))
 	List<String>sortedDict = Sorter.mergeSort(new ArrayList<String>(dict));
-	Tree<String>keyTree = WordBreak.buildKeyTree("", sortedDict);
+	Tree<String>keyTree = Words.buildKeyTree("", sortedDict);
 
 	String matched = seg(s, keyTree);
 	return matched.length()==sLength;
@@ -102,7 +102,7 @@ public static Tree<String> buildKeyTree(String prefix, List<String>keys) {
 
 	// recursive cases 
 	while (keys.size()>0) {
-		List<String> subKeys = WordBreak.mmatch(keys);	// note keys has been consumed and is now smaller
+		List<String> subKeys = Words.mmatch(keys);	// note keys has been consumed and is now smaller
 		String k = subKeys.get(0);
 		subKeys.remove(0);
 		t.addChild(k, buildKeyTree(k, subKeys));		// induction

@@ -1,18 +1,5 @@
-/**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
+// WORDS TEST . JAVA
 
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-*/
 package cat.calidos.doodles;
 
 import static org.junit.Assert.*;
@@ -28,17 +15,17 @@ import org.junit.Test;
 import cat.calidos.doodles.builders.ListFrom;
 
 
-public class WordBreakTest {
+public class WordsTest {
 
 @Test(expected = NullPointerException.class)
 public void WordBreakTestNull() {
-	WordBreak.seg(null, new HashSet<String>());
+	Words.seg(null, new HashSet<String>());
 }
 
 
 @Test(expected = NullPointerException.class)
 public void WordBreakTestNull2() {
-	WordBreak.seg("", (Set<String>)null);
+	Words.seg("", (Set<String>)null);
 }
 
 
@@ -50,16 +37,16 @@ public void WordBreakBasicTest() {
 	dict.add("ab");
 	dict.add("xy");
 	dict.add("zw");
-	assertTrue(WordBreak.seg("aabxy", dict));
-	assertTrue(WordBreak.seg("xy", dict));
-	assertTrue(WordBreak.seg("xyaba", dict));
-	assertTrue(WordBreak.seg("aaaaaaa", dict));
-	assertFalse(WordBreak.seg("aaxaa", dict));
+	assertTrue(Words.seg("aabxy", dict));
+	assertTrue(Words.seg("xy", dict));
+	assertTrue(Words.seg("xyaba", dict));
+	assertTrue(Words.seg("aaaaaaa", dict));
+	assertFalse(Words.seg("aaxaa", dict));
 	
 	dict = new HashSet<String>(5);
 	dict.add("abc");
 	dict.add("abd");
-	assertTrue(WordBreak.seg("abcabdabd", dict));
+	assertTrue(Words.seg("abcabdabd", dict));
 	
 }
 
@@ -68,12 +55,12 @@ public void WordBreakBasicTest() {
 public void buildKeyTreeTest() {
 	
 	List<String> keys = ListFrom.strings();
-	Tree<String> t = WordBreak.buildKeyTree("", keys);
+	Tree<String> t = Words.buildKeyTree("", keys);
 	assertEquals("", t.data);
 	assertEquals(0, t.children.size());
 	
 	keys = ListFrom.strings("a", "b", "c");
-	t = WordBreak.buildKeyTree("", keys);
+	t = Words.buildKeyTree("", keys);
 	assertEquals("", t.data);
 	assertEquals(3, t.children.size());
 	assertTrue(t.hasChild("a"));
@@ -81,7 +68,7 @@ public void buildKeyTreeTest() {
 	assertTrue(t.hasChild("c"));
 
 	keys = ListFrom.strings("a", "ab", "c");
-	t = WordBreak.buildKeyTree("", keys);
+	t = Words.buildKeyTree("", keys);
 	assertEquals("", t.data);
 	assertEquals(2, t.children.size());
 	assertTrue(t.hasChild("a"));
@@ -89,7 +76,7 @@ public void buildKeyTreeTest() {
 	assertTrue(t.hasChild("c"));
 
 	keys = ListFrom.strings("a", "abc", "abd","e");
-	t = WordBreak.buildKeyTree("", keys);
+	t = Words.buildKeyTree("", keys);
 	assertEquals("", t.data);
 	assertEquals(2, t.children.size());
 	assertTrue(t.hasChild("a"));
@@ -102,7 +89,7 @@ public void buildKeyTreeTest() {
 									"c", "cde", "cdf",
 									"xy",
 									"zz");
-	t = WordBreak.buildKeyTree("", keys);
+	t = Words.buildKeyTree("", keys);
 	assertEquals(4, t.children.size());
 	assertTrue(t.hasChild("a"));
 	assertTrue( t.getChild("a").hasChild("b"));
@@ -120,36 +107,36 @@ public void buildKeyTreeTest() {
 @Test
 public void testMmatch() {
 	
-	assertNull(WordBreak.mmatch(null));
+	assertNull(Words.mmatch(null));
 	
 	List<String> l = ListFrom.strings("a");
 	List<String> r = ListFrom.strings("a");
-	assertEquals(r, WordBreak.mmatch(l));
+	assertEquals(r, Words.mmatch(l));
 
 	
 	l = ListFrom.strings("a", "c");
 	r = ListFrom.strings("a");
-	assertEquals(r, WordBreak.mmatch(l));
+	assertEquals(r, Words.mmatch(l));
 
 	l = ListFrom.strings("a", "ab");
 	r = ListFrom.strings("a", "b");
-	assertEquals(r, WordBreak.mmatch(l));
+	assertEquals(r, Words.mmatch(l));
 
 	l = ListFrom.strings("ab", "ac");
 	r = ListFrom.strings("a", "b", "c");
-	assertEquals(r, WordBreak.mmatch(l));	
+	assertEquals(r, Words.mmatch(l));	
 	
 	l = ListFrom.strings("a", "ab", "ac");
 	r = ListFrom.strings("a", "b", "c");
-	assertEquals(r, WordBreak.mmatch(l));
+	assertEquals(r, Words.mmatch(l));
 
 	l = ListFrom.strings("a", "ab", "xc");
 	r = ListFrom.strings("a", "b");
-	assertEquals(r, WordBreak.mmatch(l));
+	assertEquals(r, Words.mmatch(l));
 
 	l = ListFrom.strings("ab", "abc", "abd");
 	r = ListFrom.strings("ab", "c", "d");
-	assertEquals(r, WordBreak.mmatch(l));	
+	assertEquals(r, Words.mmatch(l));	
 
 }
 
@@ -157,24 +144,40 @@ public void testMmatch() {
 @Test
 public void testCommonPrefix() {
 	
-	assertEquals("", WordBreak.commonPrefix("", ""));
-	assertEquals("", WordBreak.commonPrefix("a", ""));
-	assertEquals("", WordBreak.commonPrefix("", "a"));
+	assertEquals("", Words.commonPrefix("", ""));
+	assertEquals("", Words.commonPrefix("a", ""));
+	assertEquals("", Words.commonPrefix("", "a"));
 	
-	assertEquals("a", WordBreak.commonPrefix("a", "a"));
-	assertEquals("a", WordBreak.commonPrefix("a", "ab"));
-	assertEquals("a", WordBreak.commonPrefix("ab", "a"));
+	assertEquals("a", Words.commonPrefix("a", "a"));
+	assertEquals("a", Words.commonPrefix("a", "ab"));
+	assertEquals("a", Words.commonPrefix("ab", "a"));
 
-	assertEquals("ab", WordBreak.commonPrefix("ab", "ab"));
-	assertEquals("ab", WordBreak.commonPrefix("abc", "ab"));
-	assertEquals("ab", WordBreak.commonPrefix("ab", "abc"));
+	assertEquals("ab", Words.commonPrefix("ab", "ab"));
+	assertEquals("ab", Words.commonPrefix("abc", "ab"));
+	assertEquals("ab", Words.commonPrefix("ab", "abc"));
 
-	assertEquals("ab", WordBreak.commonPrefix("abx", "abc"));
-	assertEquals("ab", WordBreak.commonPrefix("abc", "abx"));
+	assertEquals("ab", Words.commonPrefix("abx", "abc"));
+	assertEquals("ab", Words.commonPrefix("abc", "abx"));
 
-	assertEquals("", WordBreak.commonPrefix("ab", "xy"));
-	assertEquals("", WordBreak.commonPrefix("ab", "xab"));
+	assertEquals("", Words.commonPrefix("ab", "xy"));
+	assertEquals("", Words.commonPrefix("ab", "xab"));
 	
 }
 
 }
+
+/**
+ Copyright 2014 Daniel Giribet <dani - calidos.cat>
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
