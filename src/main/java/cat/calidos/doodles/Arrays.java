@@ -419,6 +419,54 @@ public static int mostLived(List<Integer> births, List<Integer> deaths, int K, i
 }
 
 
+// 16.1 given two arrays of integers, find a pair of values (one from each array) that you
+// can swap so the two arrays have the same sum
+// a: 4,1,2,1,1,2 and 	b:3,6,3,3
+// a: 11		b: 15
+// output 1 and 3
+// diff is 4
+// for each element in x, check if the sum is equal to 4,
+// 3 with 4, 3 with 1, found
+
+// a: 5, 2, 1, 3 = 11, b: 5, 3, 1, 3 = 12
+// diff is 4
+
+// sum all two arrays
+// look at the difference between sums
+// set x to be biggest array
+// set y to smallest array
+// for each element in x, subtract it to each element in y
+
+// brute force approach
+
+public static Pair<Integer, Integer> swapForSum(List<Integer> a, List<Integer> b) {
+
+	int sumA = 0;
+	int sumB = 0;
+	for (int i=0; i<a.size(); i++) {
+		sumA += a.get(i);
+	}
+	for (int j=0; j<b.size(); j++) {
+		sumB += b.get(j);
+	}
+	
+	int x = 0;
+	int y = 0;		
+	boolean found = false;
+	while (!found && x<a.size()) {
+		int currentA = a.get(x++);
+		y = 0;
+		while (!found && y<b.size()) {
+			int currentB = b.get(y++);
+			found = (sumA-currentA+currentB)==(sumB-currentB+currentA);
+		}
+	}
+		
+	return found ? new Pair<Integer, Integer>(a.get(--x), b.get(--y)) : null;
+	
+}
+	
+
 }
 
 /*

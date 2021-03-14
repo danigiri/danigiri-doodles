@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -212,6 +211,17 @@ public void findMostLivedYearTest() {
 	births = ArrayFrom.ints(1900, 1900, 1909, 1901);
 	deaths = ArrayFrom.ints(1910, 2000, 1910, 1911);
 	assertEquals(1909, Arrays.mostLived(births, deaths, numYears, startYear));
+
+}
+
+
+@Test @DisplayName("Find what integers to swap")
+public void swapForSumTest() {
+	
+	List<Integer> a = ArrayFrom.ints(4, 1, 2, 1, 1, 2);
+	List<Integer> b = ArrayFrom.ints(3, 6, 3, 3);
+	Pair<Integer, Integer> expected = new Pair<Integer, Integer>(4, 6);
+	assertEquals(expected, Arrays.swapForSum(a, b));
 
 }
 
