@@ -16,7 +16,10 @@
 package cat.calidos.doodles;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Words {
@@ -187,6 +190,113 @@ public static String commonPrefix(String a, String b) {
 	
 }
 
+
+
+// 16.20 implement an algorithm to return a list of matching words, given a sequence of digits
+// you are provided a list of valid words in any way you like
+/*
+
+	1	2	3
+		abc	def
+	4	5	6
+	ghi	jkl	mno
+	7	8	9
+	pqrs	tuv	wxyz
+		0
+
+*/
+// input 8733
+// output: tree, used
+/*
+tuv
+pqrs
+def
+def
+*/
+//
+// for each initial digit:
+// get word tree and call it with starting letter
+// given current root of tree
+// if we have no next elements
+// 	if current root has boolean to signal end of word, return word until then
+// if we have children
+// if we have next elements
+// recurse call with the intersection of possible letters and children
+// if we have no next elements, check boolean
+
+public static Set<String> keypad(Map<Character, Tree<Pair<Character, Boolean>>>w, LinkedList<Integer> keys) {
+
+	var options = new HashSet<String>();
+	int firstKey = keys.data;
+	translateKeypad(firstKey).forEach(c -> keypadWords(c, w.get(c), keys, new DLinkedList<Character>(c), options));
+
+	return options;
+
+} 
+
+private static List<Character> translateKeypad(int k) {
+	
+var l = new ArrayList<Character>();
+		char[][] chars = {	{}, 
+							{},
+							{'a', 'b', 'c'},
+							{'d', 'e', 'f'},
+							{'g', 'h', 'i'},
+							{'j', 'k', 'l'},
+							{'m', 'n', 'o'},
+							{'p', 'q', 'r', 's'},
+							{'t', 'u', 'v'},
+							{'x', 'y', 'z'}
+	};
+	for (int i=0; i<chars[k].length; i++) {
+		l.add(chars[k][i]);
+	}
+
+return l;
+
 }
+
+private static void keypadWords(char c, Tree<Pair<Character, Boolean>>w, DLinkedList<Integer> keys, LinkedList<Character> word, Set<String> options) {
+
+	if (keys==null) {	// we have no keys to process, check current word
+		if (w.data.right) {
+			var candidate = new StringBuffer();
+			word.stream().forEach(wordChar -> candidate.append(wordChar));
+			options.add(candidate.toString());
+		}
+	} else {		// keys left to process
+		var children = w.children;
+		if (!children.isEmpty()) {	// we cannot continue unless we have word children
+			int key = keys.data;
+			translateKeypad(key).forEach(ch ->{	// match children and chars
+				var child = children.entrySet().stream().filter(e -> e.getKey().equals(ch)).findAny();
+				if (child.isPresent()) {
+					word.add(ch);
+					keypadWords(ch, child.get().getValue(), keys.next, word, options);
+					word.removeLast();
+				}
+			});
+		}
+	}	
+
+}
+
+}
+
+/*
+ *    Copyright 2021 Daniel Giribet
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
 
 
