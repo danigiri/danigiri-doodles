@@ -268,6 +268,21 @@ public void compressTest() {
 }
 
 
+@Test @DisplayName("Test string compression")
+public void compress2Test() {
+
+	assertEquals("abc", Strings.compress2("abc"));
+	assertEquals("", Strings.compress2(""));
+	assertEquals("abbc", Strings.compress2("abbc"));
+	assertEquals("a4", Strings.compress2("aaaa"));
+	assertEquals("a1b4c2", Strings.compress2("abbbbcc"));
+
+}
+
+
+
+
+
 }
 
 /**

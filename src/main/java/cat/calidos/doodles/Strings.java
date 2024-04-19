@@ -924,4 +924,40 @@ public static String compress(String s) {
 
 }
 
+
+public static String compress2(String s) {
+	if (s == null) {
+}
+	var n = s.length();
+	if (n==0) {
+		return s;
+}
+	var out = new StringBuffer();
+	var outSize = 0;
+	var i = 0;
+	while (i<n && outSize<n) {
+		var c = s.charAt(i);
+		var z = 1;
+		while (++i<n && s.charAt(i)==c && outSize<n) {
+			z++;
+		}
+	out.append(c+(""+z));
+	outSize +=1+Strings.digits(z);
+}
+
+if (i==n && outSize < n) {
+	return out.toString();
+}
+return s;
+}
+
+public static int digits(int n) {
+	var size = 0;
+	while (n!=0) {
+		n = (int)Math.floor((n/10));
+		size++;
+}
+	return size;
+}
+
 }
