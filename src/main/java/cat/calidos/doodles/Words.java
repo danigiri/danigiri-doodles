@@ -17,9 +17,11 @@ package cat.calidos.doodles;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 public class Words {
@@ -224,7 +226,7 @@ def
 // recurse call with the intersection of possible letters and children
 // if we have no next elements, check boolean
 
-public static Set<String> keypad(Map<Character, Tree<Pair<Character, Boolean>>>w, LinkedList<Integer> keys) {
+public static Set<String> keypad(Map<Character, Tree<Pair<Character, Boolean>>>w, DLinkedList<Integer> keys) {
 
 	var options = new HashSet<String>();
 	int firstKey = keys.data;
@@ -256,12 +258,15 @@ return l;
 
 }
 
-private static void keypadWords(char c, Tree<Pair<Character, Boolean>>w, DLinkedList<Integer> keys, LinkedList<Character> word, Set<String> options) {
+private static void keypadWords(char c, Tree<Pair<Character, Boolean>>w, DLinkedList<Integer> keys, DLinkedList<Character> word, Set<String> options) {
 
 	if (keys==null) {	// we have no keys to process, check current word
 		if (w.data.right) {
 			var candidate = new StringBuffer();
-			word.stream().forEach(wordChar -> candidate.append(wordChar));
+			//word.stream().forEach(wordChar -> candidate.append(wordChar));
+			for (Iterator<Character> i =word.iterator(); i.hasNext(); ) {
+				candidate.append(i.next());
+			}
 			options.add(candidate.toString());
 		}
 	} else {		// keys left to process
@@ -271,7 +276,7 @@ private static void keypadWords(char c, Tree<Pair<Character, Boolean>>w, DLinked
 			translateKeypad(key).forEach(ch ->{	// match children and chars
 				var child = children.entrySet().stream().filter(e -> e.getKey().equals(ch)).findAny();
 				if (child.isPresent()) {
-					word.add(ch);
+					word.append(ch);
 					keypadWords(ch, child.get().getValue(), keys.next, word, options);
 					word.removeLast();
 				}

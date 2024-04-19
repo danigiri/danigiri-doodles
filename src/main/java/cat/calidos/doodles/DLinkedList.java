@@ -1,7 +1,8 @@
 package cat.calidos.doodles;
 
+import java.util.Iterator;
 
-public class DLinkedList<T> {
+public class DLinkedList<T>{
 
 public T data;
 public DLinkedList<T> prev;
@@ -69,6 +70,20 @@ public DLinkedList<T> remove() {
 }
 
 
+public DLinkedList<T> removeLast() {
+	DLinkedList<T> l = this;
+	while (l.next!= null) {
+		l = l.next;
+	}
+	if (l.prev==null) {
+		throw new IllegalArgumentException("we cannot remove last from a single element list");
+	}
+	l = l.prev;
+	l.next.prev = null;
+	l.next = null;
+	return l.prev;
+}
+
 public int length() {
 	int length = 1;
 		DLinkedList<T> p = this;
@@ -115,6 +130,25 @@ public String toString() {
 
 }
 
+public Iterator<T> iterator() {
+	DLinkedList<T> start = this;
+	return new Iterator<T>() {
+
+		private DLinkedList<T> l = start;
+		@Override
+		public boolean hasNext() {
+			return l.next!=null;
+		}
+
+		@Override
+		public T next() {
+			T d = l.data;
+			l = l.next;
+			return d;
+		}
+
+	};
+}
 
 }
 

@@ -62,7 +62,6 @@ public static <T> Set<Set<T>> allSubsets(Set<T> set) {
 
 }
 
-
 /*
  *    Copyright 2021 Daniel Giribet
  *

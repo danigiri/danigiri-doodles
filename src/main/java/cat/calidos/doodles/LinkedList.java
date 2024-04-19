@@ -22,6 +22,28 @@ public int length() {
 	return 1+next.length();
 }
 
+public LinkedList<T> add(T d) {
+	if (this.next != null) {
+		throw new IllegalArgumentException("should be adding to the end of a list"); 
+	}
+	this.next = new LinkedList<T>(d);
+	return this;
+}
+
+
+public LinkedList<T> removeLast() {
+	if (this.next== null) {
+		throw new IllegalArgumentException("cannot remove last from a single item list");
+	}
+	LinkedList<T> p = this;
+	LinkedList<T> i = p.next;
+	while (i!=null) {
+		p = i;
+		i = i.next;
+	}
+	p.next = null;
+	return this;
+}
 
 @Override
 public boolean equals(Object obj) {
