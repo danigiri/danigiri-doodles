@@ -925,6 +925,8 @@ public static String compress(String s) {
 }
 
 
+// abbb --> a1b3
+// ab --> b
 public static String compress2(String s) {
 	if (s == null) {
 }

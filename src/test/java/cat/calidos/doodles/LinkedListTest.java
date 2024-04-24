@@ -29,12 +29,12 @@ public void testLinkedList() {
 
 @Test
 public void nthToLastTest() {
-	
-	LinkedList<String> l = new LinkedList<String>("a");
+
+	var l = new LinkedList<String>("a");
 
 	assertNull(LinkedList.nthToLast(1, l));
 	assertEquals("a", LinkedList.nthToLast(0, l).data);
-	
+
 	l.next = new LinkedList<String>("b");
 	assertEquals("b", LinkedList.nthToLast(0, l).data);
 	assertEquals("a", LinkedList.nthToLast(1, l).data);
@@ -140,6 +140,23 @@ public void partitionListTest() {
 	expected = LinkedListFrom.ints(10, 5, 8, 5);
 	assertEquals(expected, LinkedList.partition(l, 5));
 
+}
+
+
+@Test @DisplayName("Linked list partition list test (2)")
+public void partitionList2Test() {
+
+	LinkedList<Integer> l = LinkedListFrom.ints(1, 2, 3, 4, 5);
+	LinkedList<Integer> expected = LinkedListFrom.ints(1,2, 3, 4, 5);
+	assertEquals(expected, LinkedList.partition2(l, 3));
+
+	LinkedList<Integer> l2 = LinkedListFrom.ints(1);
+	LinkedList<Integer> expected2 = LinkedListFrom.ints(1);
+	assertEquals(expected2, LinkedList.partition2(l2, 5));
+
+	LinkedList<Integer> l3 = LinkedListFrom.ints(5,4,3,2,1);
+	LinkedList<Integer> expected3 = LinkedListFrom.ints(2,1,5,4, 3);
+	assertEquals(expected3, LinkedList.partition2(l3, 3));
 
 }
 
@@ -147,7 +164,7 @@ public void partitionListTest() {
 }
 
 /**
-Copyright 2014 Daniel Giribet <dani - calidos.cat>
+Copyright 2024 Daniel Giribet <dani - calidos.cat>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
