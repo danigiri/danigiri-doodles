@@ -412,12 +412,26 @@ public static int flipsToConvert(int a, int b) {
 
 }
 
+// another version
+public static int bitDistance(int a, int b) {
+
+var d = 0;
+
+while (a!=0 || b!=0) {
+	d += ((a & 1) - (b & 1))!=0 ? 1 : 0;
+	a = a >>1;
+	b = b >>1;
+}
+
+return d;
+
+}
 
 
 }
 
 /**
-Copyright 2014 Daniel Giribet <dani - calidos.cat>
+Copyright 2024 Daniel Giribet <dani - calidos.cat>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

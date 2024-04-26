@@ -238,6 +238,14 @@ public void flipsToConvertTest() {
 	assertEquals(2, Bits.flipsToConvert(29, 15));
 }
 
+@Test @DisplayName("How many bits to flip to convert one int into another (2)")
+public void bitDistanceTest() {
+	assertEquals(2, Bits.bitDistance(29, 15));
+	assertEquals(1, Bits.bitDistance(2, 0));
+	assertEquals(0, Bits.bitDistance(15, 15));
+
+}
+
 
 
 }
