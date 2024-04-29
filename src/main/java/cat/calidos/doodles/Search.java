@@ -99,11 +99,110 @@ private static int locateSparse(List<String> a, String s, int start, int end) {
 }
 
 
+/*
+
+sparse search
+
+given a sparse sorted array of strings, write a method to find a given string and return the location
+
+["", "a", "", "", "b", "", "c","d"], "c" → 6
+
+we need to implement a binary search that takes into account the sparse behaviour
+when we land in a given place, if we are empty, we do not know if we have to go up or down
+can we always go in a given direction?
+
+size of example = 8
+middle = 4
+value of middle = b
+b is smaller than c
+middle = 8-4-=4, 4/2 + 4 = 6
+found
+
+let's add more sparsity
+
+["", "", "a", "", "", "", "b", "", "", "", "c","d"]
+size = 12
+range 0, 11
+
+middle = 11-0 /2 = 5+0 → 5
+value = a[5] = ""
+let's always go down
+i = 2, a[2] = "a"
+which is lower than 'c'
+new middle = 11-2 / 2 = 4 + 2 = 6
+which is by chance 'b', but it could well be "" and we're stuck in an infinite loop
+
+different strategy, look for both and decide which one is the best
+
+upper = size -1 or (size?)
+lower = 0
+middle = 11-0 /2 = 5+0 → 5
+value = a[5] = ""
+if we land on a value, we assume it's the down one, otherwise we look of it
+down a[2] = "a"
+up [6] = "b"
+
+we know for sure we are not in between these two, so we're either below down or above up
+if looking for<down → new range is lower ←→ down
+otherwise → new range is up ←→ upper
+
+
+let's see if we have ["", "", "a", "b"]
+size = 4
+lower = 0
+upper = 3
+middle will be 3-0 /1
+find a
+lower = 3
+upper = 3
+middle 3-3 / 2 = 0 +3 = 3 which is correct, we go for size
+
+*/
+
+
+public static <T extends Comparable<? super T>> int sparseFind(List<T> l, T v) {
+	if (v==null) {
+		return -1;
+}
+	return sparseFindRange(l, v, 0, l.size()-1);
+}
+
+public static <T extends Comparable<? super T>> int sparseFindRange(List<T> l, T v, int lower, int upper) {
+
+	if (upper <lower) {
+		// not found in this
+		return -1;
+}
+	int middle = ((upper-lower)/2) + lower;
+	int i = middle+1;
+	while (i>lower && l.get(--i)==null);
+	T lowerVal = l.get(i);
+
+	int j = middle-1;
+	while (j<upper && l.get(++j)==null);
+	T higherVal = l.get(j);
+	// now lower and higher value are either "" or have a value
+
+	// base cases first
+	int compareWithLow =  lowerVal == null ? 1 :  v.compareTo(lowerVal);
+	int compareWithHigh = higherVal == null ? -1 : v.compareTo(higherVal);
+	if (compareWithLow==0) {
+		return i;
+} else if (compareWithHigh==0) {
+	return j;
+} else if (compareWithLow>0) { // can be in higher range
+	return sparseFindRange(l, v, j+1, upper);
+} else { // can be in lower range
+	return sparseFindRange(l, v, lower,i-1);
+}
+
+}
+
 
 }
 
 /*
- *    Copyright 2021 Daniel Giribet
+ *    Copyright 2024 Daniel Giribet
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.

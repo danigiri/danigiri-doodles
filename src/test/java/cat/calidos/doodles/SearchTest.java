@@ -28,6 +28,7 @@ public void findInListyTest() {
 @Test @DisplayName("Search in sparse array")
 public void locateSparseTest() {
 
+	//                        0    1   2   3   4    5   6   7    8    9   10
 	var l = ListFrom.strings("a", "", "", "", "b", "", "", "c", "d", "", "ee");
 	assertEquals(-1, Search.locateSparse(l, "x"));
 	assertEquals(0, Search.locateSparse(l, "a"));
@@ -38,10 +39,27 @@ public void locateSparseTest() {
 }
 
 
+@Test @DisplayName("Search in sparse array")
+public void sparseFindTest() {
+
+	//
+	var l0 = ListFrom.strings("a", null, null, null, null, null);
+	assertEquals(0, Search.sparseFind(l0, "a"));
+
+	//                        0    1     2     3      4   5     6      7    8   9      10
+	var l1 = ListFrom.strings("a", null, null, null, "b", null, null, "c", "d", null, "ee");
+	assertEquals(-1, Search.sparseFind(l1, "x"));
+	assertEquals(0, Search.sparseFind(l1, "a"));
+	assertEquals(4, Search.sparseFind(l1, "b"));
+	assertEquals(8, Search.sparseFind(l1, "d"));
+	assertEquals(10, Search.sparseFind(l1, "ee"));
+
+}
+
 }
 
 /*
- *    Copyright 2020 Daniel Giribet
+ *    Copyright 2024 Daniel Giribet
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
