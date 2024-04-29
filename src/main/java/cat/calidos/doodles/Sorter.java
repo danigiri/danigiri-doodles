@@ -135,7 +135,7 @@ public class Sorter {
 	}
 	
 	
-	public static <X> Tree<X> bTree(final List<X>l) {
+	public static <X extends Comparable<? super X>> Tree<X> bTree(final List<X>l) {
 		if (l==null) {
 			return null;
 		}
@@ -147,7 +147,7 @@ public class Sorter {
 		
 	}
 	
-	public static <X> Tree<X> bTree(List<X>l, Tree<X> t) {
+	public static  <X extends Comparable<? super X>> Tree<X> bTree(List<X>l, Tree<X> t) {
 
 		// base cases
 		int lSize = l.size();
@@ -159,7 +159,7 @@ public class Sorter {
 		l.remove(0);
 		
 		// recursive case
-		if (((Comparable<Comparable<?>>)v).compareTo((Comparable<?>)t.data)<=0) {	// sorry
+		if (v.compareTo(t.data)<=0) {	// sorry
 			// left
 			if (t.left==null) {
 				t.left = new Tree<X>(v);

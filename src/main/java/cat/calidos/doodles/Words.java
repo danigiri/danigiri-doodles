@@ -226,6 +226,7 @@ def
 // recurse call with the intersection of possible letters and children
 // if we have no next elements, check boolean
 
+/*
 public static Set<String> keypad(Map<Character, Tree<Pair<Character, Boolean>>>w, DLinkedList<Integer> keys) {
 
 	var options = new HashSet<String>();
@@ -285,11 +286,12 @@ private static void keypadWords(char c, Tree<Pair<Character, Boolean>>w, DLinked
 	}	
 
 }
+*/
 
 }
 
 /*
- *    Copyright 2021 Daniel Giribet
+ *    Copyright 2024 Daniel Giribet
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.

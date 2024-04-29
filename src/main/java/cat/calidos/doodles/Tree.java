@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import cat.calidos.doodles.Stack;
 
-public class Tree<T> {
+
+public class Tree<T extends Comparable<? super T>> {
 
 public T						data;
 protected Map<String, Tree<T>>	children;
@@ -170,7 +172,7 @@ public boolean insertSorted(T d) { // O(logN)
 		data = d;
 		return true;
 	}
-	int compare = ((Comparable) d).compareTo(data);
+	int compare = d.compareTo(data);
 	// base case
 	if (compare == 0) {
 		return false;
@@ -204,7 +206,7 @@ public boolean insertSorted(T d) { // O(logN)
 //
 
 
-public static <T> Tree<T> balancedSearchTree(List<T> a) {
+public static <T extends Comparable<? super T>> Tree<T> balancedSearchTree(List<T> a) {
 
 	if (a == null) {
 		throw new NullPointerException("bad parameter");
@@ -217,7 +219,7 @@ public static <T> Tree<T> balancedSearchTree(List<T> a) {
 }
 
 
-private static <T> Tree<T> balancedSearchTreeRange(List<T> a, int start, int end) {
+private static <T extends Comparable<? super T>> Tree<T> balancedSearchTreeRange(List<T> a, int start, int end) {
 
 	int size = end - start;
 	if (size == 1) {
@@ -308,7 +310,7 @@ public static <T extends Comparable<? super T>> List<LinkedList<T>> nodesInDepth
 // the root call is special, checks the two heights and returns true or false
 
 
-public static <T> boolean isBalanced(Tree<T> t) {
+public static <T extends Comparable<? super T>> boolean isBalanced(Tree<T> t) {
 
 	int leftHeight = treeHeight(t.left);
 	int rightHeight = treeHeight(t.right);
@@ -318,7 +320,7 @@ public static <T> boolean isBalanced(Tree<T> t) {
 }
 
 
-private static <T> int treeHeight(Tree<T> t) {
+private static <T extends Comparable<? super T>> int treeHeight(Tree<T> t) {
 
 	// base cases
 	if (t == null) {
@@ -336,7 +338,7 @@ private static <T> int treeHeight(Tree<T> t) {
 
 // this works but the exercise mentions any node, we can make this more straightforward
 // we calculate the height and return -1 if we are unbalanced
-public static <T> boolean isBalancedStrict(Tree<T> t) {
+public static <T extends Comparable<? super T>> boolean isBalancedStrict(Tree<T> t) {
 	return isBalancedStrictRec(t) != -1;
 }
 
@@ -345,7 +347,7 @@ public static <T> boolean isBalancedStrict(Tree<T> t) {
 // if any of them is -1, return -1
 // otherwise, calculate difference between them, if diff is<=1, return the max of
 // the two, otherwise return -1
-private static <T> int isBalancedStrictRec(Tree<T> t) {
+private static <T extends Comparable<? super T>> int isBalancedStrictRec(Tree<T> t) {
 
 	// base cases
 	if (t == null) {
@@ -462,7 +464,7 @@ public int hashCode() {
 }
 
 
-public static <T> Optional<Tree<T>> commonAncestor(Tree<T> t, Tree<T> a, Tree<T> b) {
+public static <T extends Comparable<? super T>> Optional<Tree<T>> commonAncestor(Tree<T> t, Tree<T> a, Tree<T> b) {
 
 	if (t == null) {
 		return Optional.empty();
@@ -498,7 +500,7 @@ public static <T> Optional<Tree<T>> commonAncestor(Tree<T> t, Tree<T> a, Tree<T>
 }
 
 
-private static <T> boolean findNode(Tree<T> t, Tree<T> n) {
+private static <T extends Comparable<? super T>> boolean findNode(Tree<T> t, Tree<T> n) {
 	if (t == null) {
 		return false;
 	}
@@ -511,12 +513,12 @@ private static <T> boolean findNode(Tree<T> t, Tree<T> n) {
 
 // subtree: tree a is much bigger than tree b, get a function that returns true if tree b
 // can be found in tree a
-public static <T> boolean subtree(Tree<T> t, Tree<T> s) {
+public static <T extends Comparable<? super T>> boolean subtree(Tree<T> t, Tree<T> s) {
 	return subtree2(t, s, s);
 }
 
 
-public static <T> boolean subtree2(Tree<T> t, Tree<T> s, Tree<T> top) {
+public static <T extends Comparable<? super T>> boolean subtree2(Tree<T> t, Tree<T> s, Tree<T> top) {
 	// base cases
 	if (t == null && s == null) {
 		return true;
@@ -541,10 +543,11 @@ public static <T> boolean subtree2(Tree<T> t, Tree<T> s, Tree<T> top) {
 }
 
 
-// do a post-order traversal of a binary tree without recursion, and a singly linked list 
+// do a post-order traversal of a binary tree with a singly linked list
+
 
 public static <T extends Comparable<? super T>> LinkedList<T> postorder2(Tree<T> t) {
-	if (t==null) {
+	if (t == null) {
 		return null;
 	}
 	return postorder2WithList(t, null, null).left;
@@ -574,6 +577,55 @@ public static <T extends Comparable<? super T>> Pair<LinkedList<T>, LinkedList<T
 	return new Pair<LinkedList<T>, LinkedList<T>>(head, tail);
 }
 
+
+/*
+ * non recursive version of post-order, destroys the source tree
+ * 
+ * a / \ b c
+ * 
+ * we need a stack
+ * 
+ * a / \ b c —---------------
+ * 
+ * take the node remove left from the top node and push left on top
+ * 
+ * b/ – a \c —---------------
+ * 
+ * a \c —--------------- [b]
+ * 
+ * …
+ * 
+ * \c – a —--------------- [b, c, a]
+ * 
+ */
+
+
+public static <T extends Comparable<? super T>> LinkedList<T> postorder3(Tree<T> t) {
+	var s = new DLinkedList<Tree<T>>(t);
+	return Tree.postorder2WithStack(s, null);
+}
+
+
+public static <T extends Comparable<? super T>> LinkedList<T> postorder2WithStack(DLinkedList<Tree<T>> s, LinkedList<T> l) {
+	while (s!=null) {
+		Tree<T> top = s.data;
+		if (top.left == null && top.right == null) { // base case
+			var tail = new LinkedList<T>(top.data);
+			if (l != null) {
+				l.next = tail;
+			}
+			l = tail;
+			s = s.prev;
+		} else if (top.left != null) { // recursive cases
+			s.append(top.left);
+			top.left = null;
+		} else {
+			s.append(top.right);
+			top.right = null;
+		}
+	}
+	return l;
+}
 
 }
 
