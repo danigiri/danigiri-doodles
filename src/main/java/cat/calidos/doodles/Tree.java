@@ -515,7 +515,8 @@ public static <T> boolean subtree(Tree<T> t, Tree<T> s) {
 	return subtree2(t, s, s);
 }
 
-public static <T> boolean subtree2(Tree<T> t, Tree<T> s, Tree <T> top) {
+
+public static <T> boolean subtree2(Tree<T> t, Tree<T> s, Tree<T> top) {
 	// base cases
 	if (t == null && s == null) {
 		return true;
@@ -537,6 +538,40 @@ public static <T> boolean subtree2(Tree<T> t, Tree<T> s, Tree <T> top) {
 	}
 	// no subtree from current node, but some of the children may be entire subtrees
 	return subtree2(t.left, top, top) || subtree2(t.right, top, top); // induction
+}
+
+
+// do a post-order traversal of a binary tree without recursion, and a singly linked list 
+
+public static <T extends Comparable<? super T>> LinkedList<T> postorder2(Tree<T> t) {
+	if (t==null) {
+		return null;
+	}
+	return postorder2WithList(t, null, null).left;
+}
+
+
+public static <T extends Comparable<? super T>> Pair<LinkedList<T>, LinkedList<T>> postorder2WithList(Tree<T> t,
+		LinkedList<T> head, LinkedList<T> tail) {
+	if (t.left != null) {
+		Pair<LinkedList<T>, LinkedList<T>> p = postorder2WithList(t.left, head, tail);
+		head = p.left;
+		tail = p.right;
+	}
+	if (t.right != null) {
+		Pair<LinkedList<T>, LinkedList<T>> p = postorder2WithList(t.right, head, tail);
+		head = p.left;
+		tail = p.right;
+	}
+	var c = new LinkedList<T>(t.data);
+	if (head == null) {
+		head = c;
+		tail = c;
+	} else {
+		tail.next = c;
+		tail = c;
+	}
+	return new Pair<LinkedList<T>, LinkedList<T>>(head, tail);
 }
 
 
