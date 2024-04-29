@@ -280,10 +280,24 @@ public void compress2Test() {
 }
 
 
+
+@Test @DisplayName("Test remove char from string")
+public void removeTest() {
+
+	assertEquals("", Strings.remove("", 'a'));
+	assertEquals("abcde", Strings.remove("abcde", 'x'));
+	assertEquals("", Strings.remove("aaaaaa", 'a'));
+	assertEquals("acde", Strings.remove("abcde", 'b'));
+	assertEquals("bc", Strings.remove("abc", 'a'));
+	assertEquals("ab", Strings.remove("abc", 'c'));
+
+}
+
+
 }
 
 /**
-Copyright 2014 Daniel Giribet <dani - calidos.cat>
+Copyright 2024 Daniel Giribet <dani - calidos.cat>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
