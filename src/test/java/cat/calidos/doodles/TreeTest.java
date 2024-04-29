@@ -70,7 +70,8 @@ public void postorderTest() {
 }
 
 
-@Test @DisplayName("Postorder 2 test")
+@Test
+@DisplayName("Postorder 2 test")
 public void postorder2Test() {
 
 	var t = new Tree<Integer>(1);
@@ -86,6 +87,31 @@ public void postorder2Test() {
 	assertEquals(list, Tree.postorder2(t));
 
 }
+
+
+@Test
+@DisplayName("Postorder 3 test")
+public void postorder3Test() {
+
+	var t0 = new Tree<Integer>(1);
+	t0.addLeft(2);
+	t0.addRight(3);
+	assertEquals(LinkedListFrom.ints(2, 3, 1), Tree.postorder3(t0));
+
+	var t = new Tree<Integer>(1);
+	t.addLeft(new Tree<Integer>(2));
+	t.getLeft().addLeft(new Tree<Integer>(3));
+	t.getLeft().addRight(new Tree<Integer>(4));
+
+	t.addRight(new Tree<Integer>(5));
+	t.getRight().addLeft(new Tree<Integer>(6));
+	t.getRight().addRight(new Tree<Integer>(7));
+
+	LinkedList<Integer> list = LinkedListFrom.ints(3, 4, 2, 6, 7, 5, 1);
+	assertEquals(list, Tree.postorder3(t));
+
+}
+
 
 @Test
 public void insertSortedTest() {

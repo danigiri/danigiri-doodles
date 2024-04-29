@@ -47,11 +47,19 @@ public void addAll(Map<String, Tree<T>> c) {
 }
 
 
+public Tree<T> addLeft(T d) {
+	return addLeft(new Tree<T>(d));
+}
+
+
 public Tree<T> addLeft(Tree<T> t) {
 	this.left = t;
 	return t;
 }
 
+public Tree<T> addRight(T d) {
+	return addRight(new Tree<T>(d));
+}
 
 public Tree<T> addRight(Tree<T> t) {
 	this.right = t;
@@ -579,11 +587,11 @@ public static <T extends Comparable<? super T>> Pair<LinkedList<T>, LinkedList<T
 
 
 /*
- * non recursive version of post-order, destroys the source tree
+ * non recursive version of post-order with a single linked list, destroys the source tree
  * 
  * a / \ b c
  * 
- * we need a stack
+ * we need a stack (dlinkedlist here)
  * 
  * a / \ b c —---------------
  * 
@@ -602,25 +610,37 @@ public static <T extends Comparable<? super T>> Pair<LinkedList<T>, LinkedList<T
 
 public static <T extends Comparable<? super T>> LinkedList<T> postorder3(Tree<T> t) {
 	var s = new DLinkedList<Tree<T>>(t);
-	return Tree.postorder2WithStack(s, null);
+	return Tree.postorder3WithStack(s, null).left;
 }
 
 
-public static <T extends Comparable<? super T>> LinkedList<T> postorder2WithStack(DLinkedList<Tree<T>> s, LinkedList<T> l) {
-	while (s!=null) {
-		Tree<T> top = s.data;
+public static <T extends Comparable<? super T>> Pair<LinkedList<T>, LinkedList<T>> postorder3WithStack(
+		DLinkedList<Tree<T>> s, Pair<LinkedList<T>, LinkedList<T>> l) {
+	while (s != null) {
+		Tree<T> top = s.data; // peek()
 		if (top.left == null && top.right == null) { // base case
 			var tail = new LinkedList<T>(top.data);
 			if (l != null) {
-				l.next = tail;
+				l.right.next = tail;
+			} else {
+				l = new Pair<LinkedList<T>, LinkedList<T>>(tail, tail);
 			}
-			l = tail;
-			s = s.prev;
+			l.right = tail;
+			s = s.prev; // pop()
+			if (s != null) {
+				s.next = null;
+			}
 		} else if (top.left != null) { // recursive cases
-			s.append(top.left);
+			var newTop = new DLinkedList<Tree<T>>(top.left);
+			newTop.prev = s; // push()
+			s.next = newTop;
+			s = newTop;
 			top.left = null;
 		} else {
-			s.append(top.right);
+			var newTop = new DLinkedList<Tree<T>>(top.right);
+			newTop.prev = s; // push()
+			s.next = newTop;
+			s = newTop;
 			top.right = null;
 		}
 	}
