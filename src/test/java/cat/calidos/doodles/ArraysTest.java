@@ -3,7 +3,9 @@ package cat.calidos.doodles;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,8 @@ import cat.calidos.doodles.builders.ArrayFrom;
 public class ArraysTest {
 
 
-@Test @DisplayName("Rotate in place")
+@Test
+@DisplayName("Rotate in place")
 public void testRotateInPlace() {
 
 	List<Integer> a = ArrayFrom.ints(1, 2, 3, 4);
@@ -26,7 +29,7 @@ public void testRotateInPlace() {
 
 	a = ArrayFrom.ints(1, 2, 3, 4);
 	Arrays.rotateInPlace(a, 4);
-	assertEquals(ArrayFrom.ints(1, 2, 3, 4),  a);
+	assertEquals(ArrayFrom.ints(1, 2, 3, 4), a);
 
 	a = ArrayFrom.ints(1, 2, 3, 4);
 	Arrays.rotateInPlace(a, 2);
@@ -35,61 +38,46 @@ public void testRotateInPlace() {
 }
 
 
-@Test @DisplayName("Tic tac toe winner")
+@Test
+@DisplayName("Tic tac toe winner")
 public void testTicTacToe() {
 
-	Character[][] board = {	{null, null, null},
-							{null, null, null},
-							{null, null, null}
-	};
+	Character[][] board = { { null, null, null }, { null, null, null }, { null, null, null } };
 	assertTrue(Arrays.ticTacToeWinner(board).isEmpty());
 
 
-	Character[][] board2 = {{'a', null, null},
-							{null,'b',  null},
-							{null, null, 'a'}
-	};
+	Character[][] board2 = { { 'a', null, null }, { null, 'b', null }, { null, null, 'a' } };
 	assertTrue(Arrays.ticTacToeWinner(board2).isEmpty());
 
-	Character[][] board3 = {{'a', null, null},
-							{'b', 'b',  'b'},
-							{null,null, 'a'}
-	};
+	Character[][] board3 = { { 'a', null, null }, { 'b', 'b', 'b' }, { null, null, 'a' } };
 	assertEquals('b', Arrays.ticTacToeWinner(board3).get());
 
-	Character[][] board4 = {{'a', null, 'b'},
-							{'a', 'b',  'b'},
-							{null,null, 'b'}
-	};
+	Character[][] board4 = { { 'a', null, 'b' }, { 'a', 'b', 'b' }, { null, null, 'b' } };
 	assertEquals('b', Arrays.ticTacToeWinner(board4).get());
 
 }
 
 
-@Test @DisplayName("Tic tac toe diagonals winner")
+@Test
+@DisplayName("Tic tac toe diagonals winner")
 public void testTicTacToeDiagonals() {
 
-	Character[][] board = {	{'b', null, 'b'},
-							{null, 'b', null},
-							{null, 'a', 'b'}
-	};
+	Character[][] board = { { 'b', null, 'b' }, { null, 'b', null }, { null, 'a', 'b' } };
 	assertEquals('b', Arrays.ticTacToeWinner(board).get());
 
 
-	Character[][] board2 = {	{'a', null, 'b'},
-								{null, 'b', null},
-								{'b', null, 'a'}
-	};
+	Character[][] board2 = { { 'a', null, 'b' }, { null, 'b', null }, { 'b', null, 'a' } };
 	assertEquals('b', Arrays.ticTacToeWinner(board2).get());
 
 }
 
 
-@Test @DisplayName("Min distance test")
+@Test
+@DisplayName("Min distance test")
 public void minDistanceTest() {
 
 	List<Integer> a = ArrayFrom.ints(1, 2, 3, 4, 66);
-	List<Integer> b = ArrayFrom.ints(9, 6 ,7);
+	List<Integer> b = ArrayFrom.ints(9, 6, 7);
 	assertEquals(2, Arrays.smallestDiff(a, b));
 
 	a = ArrayFrom.ints(1);
@@ -111,7 +99,8 @@ public void minDistanceTest() {
 }
 
 
-@Test @DisplayName("Magic index test")
+@Test
+@DisplayName("Magic index test")
 public void magicIndexTest() {
 
 	List<Integer> a = ArrayFrom.ints(0);
@@ -135,10 +124,11 @@ public void magicIndexTest() {
 }
 
 
-@Test @DisplayName("Find element in rotated sorted array")
+@Test
+@DisplayName("Find element in rotated sorted array")
 public void findInRotatedArrayTest() {
 
-	//							  	 0  1  2  3  4  5  6   7  8
+	// 0 1 2 3 4 5 6 7 8
 	List<Integer> a = ArrayFrom.ints(3, 4, 5, 6, 7, 9, 11, 1, 2);
 	assertTrue(Arrays.findInRotatedArray(a, 8).isEmpty());
 	assertTrue(Arrays.findInRotatedArray(a, 0).isEmpty());
@@ -153,10 +143,11 @@ public void findInRotatedArrayTest() {
 }
 
 
-@Test @DisplayName("Find element in rotated sorted array that rotated to perfectly sorted")
+@Test
+@DisplayName("Find element in rotated sorted array that rotated to perfectly sorted")
 public void findInRotatedArrayTest2() {
 
-	//			 	   0  1  2  3  4  5  6  7  8
+	// 0 1 2 3 4 5 6 7 8
 	List<Integer> a = ArrayFrom.ints(1, 2, 3, 4, 5, 6, 7, 9, 11);
 	assertTrue(Arrays.findInRotatedArray(a, 8).isEmpty());
 	assertTrue(Arrays.findInRotatedArray(a, 0).isEmpty());
@@ -174,10 +165,11 @@ public void findInRotatedArrayTest2() {
 }
 
 
-@Test @DisplayName("Find element in rotated sorted array that rotated to perfectly sorted")
+@Test
+@DisplayName("Find element in rotated sorted array that rotated to perfectly sorted")
 public void findInRotatedArrayTest3() {
 
-	//								 0  1   2  3  4  5  6  7  8
+	// 0 1 2 3 4 5 6 7 8
 	List<Integer> a = ArrayFrom.ints(9, 11, 3, 3, 3, 3, 3, 6, 7);
 	assertTrue(Arrays.findInRotatedArray(a, 8).isEmpty());
 	assertTrue(Arrays.findInRotatedArray(a, 0).isEmpty());
@@ -187,14 +179,13 @@ public void findInRotatedArrayTest3() {
 	assertEquals(8, Arrays.findInRotatedArray(a, 7).get());
 
 	int ambiguous = Arrays.findInRotatedArray(a, 3).get();
-	assertAll("ambiguous position",
-		() ->assertTrue(ambiguous<=6),
-		() ->assertTrue(ambiguous>=2)
-	);
+	assertAll("ambiguous position", () -> assertTrue(ambiguous <= 6), () -> assertTrue(ambiguous >= 2));
 
 }
 
-@Test @DisplayName("Find most lived year")
+
+@Test
+@DisplayName("Find most lived year")
 public void findMostLivedYearTest() {
 
 	int numYears = 101;
@@ -215,32 +206,46 @@ public void findMostLivedYearTest() {
 }
 
 
-@Test @DisplayName("Find what integers to swap")
+@Test
+@DisplayName("Find what integers to swap")
 public void swapForSumTest() {
-	
+
 	List<Integer> a = ArrayFrom.ints(4, 1, 2, 1, 1, 2);
 	List<Integer> b = ArrayFrom.ints(3, 6, 3, 3);
-	Pair<Integer, Integer> expected = new Pair<Integer, Integer>(4, 6);
+	var expected = new Pair<Integer, Integer>(4, 6);
 	assertEquals(expected, Arrays.swapForSum(a, b));
 
+}
+
+
+@Test
+@DisplayName("Find pairs of integers adding to a value")
+public void findPairsOfSumTest() {
+	List<Integer> a = ArrayFrom.ints(1, 2, 3, 4, 5, 2, -1);
+	var expected = new HashSet<Pair<Integer, Integer>>();
+	expected.add(new Pair<Integer, Integer>(1, 3));
+	expected.add(new Pair<Integer, Integer>(2, 2));
+	expected.add(new Pair<Integer, Integer>(5, -1));
+
+	Set<Pair<Integer, Integer>> out = Arrays.findPairsOfSum(a, 4);
+	assertTrue(out.stream().filter(e -> !out.contains(e) && !out.contains(new Pair<Integer, Integer>(e.right, e.left)))
+			.findAny().isEmpty());
 }
 
 
 }
 
 /*
- *    Copyright 2020 Daniel Giribet
+ * Copyright 2024 Daniel Giribet
  *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
