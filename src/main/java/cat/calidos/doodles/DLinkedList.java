@@ -84,6 +84,7 @@ public DLinkedList<T> removeLast() {
 	return l.prev;
 }
 
+
 public int length() {
 	int length = 1;
 		DLinkedList<T> p = this;
