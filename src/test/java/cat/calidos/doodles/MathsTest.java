@@ -293,7 +293,7 @@ public void intToEnglishNegativeTest() {
 }
 
 
-@Test @DisplayName("Sum without a * test")
+@Test @DisplayName("Multiply without a * test")
 public void sumRecTest() {
 
 	assertEquals(0, Maths.multiply(0, 12));
@@ -309,10 +309,61 @@ public void sumRecTest() {
 
 }
 
+@Test @DisplayName("Add test")
+public void addTest() {
+
+	assertEquals(0, Maths.add(0, 0));
+	assertEquals(12, Maths.add(0, 12));
+	assertEquals(-1, Maths.add(0, -1));
+	assertEquals(0, Maths.add(1, -1));
+	assertEquals(14, Maths.add(7, 7));
+	assertEquals(-14, Maths.add(-7, -7));
+	assertEquals(111, Maths.add(133, -22));
 
 }
-/**
-Copyright 2016 Daniel Giribet <dani - calidos.cat>
+
+@Test @DisplayName("Substract test")
+public void substrac2tTest() {
+
+	assertEquals(0, Maths.subtract2(0, 0));
+	assertEquals(1, Maths.subtract2(3, 2));
+	assertEquals(-3, Maths.subtract2(1, 4));
+
+}
+
+@Test @DisplayName("Multiply without a * test (2)")
+public void multiply2Test() {
+
+	assertEquals(0, Maths.multiply2(0, 0));
+	assertEquals(0, Maths.multiply2(0, 12));
+	assertEquals(12, Maths.multiply2(3, 4));
+
+	assertEquals(3*17, Maths.multiply2(3, 17));
+	assertEquals(3*17, Maths.multiply2(17, 3));
+	assertEquals(13*17, Maths.multiply2(13, 17));
+	assertEquals(13*17, Maths.multiply2(17, 13));
+
+	assertEquals(113*27, Maths.multiply2(113, 27));
+	assertEquals(113*27, Maths.multiply2(27, 113));
+
+}
+
+
+@Test @DisplayName("Divide without a / test")
+public void divideTest() {
+	assertThrows(ArithmeticException.class, () -> Maths.divide(10, 0));
+	assertThrows(ArithmeticException.class, () -> Maths.divide(0, 0));
+	assertEquals(1,Maths.divide(1, 1));
+	assertEquals(2,Maths.divide(2, 1));
+	assertEquals(2,Maths.divide(7, 3));
+	assertEquals(2,Maths.divide(100, 50));
+
+}
+
+
+}
+/*
+Copyright 2024 Daniel Giribet <dani - calidos.cat>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

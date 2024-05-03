@@ -233,6 +233,33 @@ public void findPairsOfSumTest() {
 }
 
 
+@Test
+@DisplayName("Given an array, return all possible subarrays")
+public void getSublistsTest() {
+	List<Integer> a = ArrayFrom.ints(1, -2, 3, 4);
+	var e = new HashSet<List<Integer>>();
+	e.add(a);
+	e.add(ArrayFrom.ints(1, -2, 3));
+	e.add(ArrayFrom.ints(1, -2));
+	e.add(ArrayFrom.ints(-2));
+	e.add(ArrayFrom.ints(1));
+	e.add(ArrayFrom.ints(-2, 3));
+	e.add(ArrayFrom.ints(3));
+	e.add(ArrayFrom.ints(-2, 3, 4));
+	e.add(ArrayFrom.ints(3, 4));
+	e.add(ArrayFrom.ints(4));
+	assertEquals(e, Arrays.getSublists(a));
+}
+
+
+@Test
+@DisplayName("Find largest contiguous sum over an integer array")
+public void findLargestSum() {
+	List<Integer> a = ArrayFrom.ints(2, -8, 3, -2, 4, -10);
+	assertEquals(5, Arrays.largestSum(a));
+}
+
+
 }
 
 /*

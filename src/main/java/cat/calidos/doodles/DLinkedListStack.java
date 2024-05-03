@@ -34,6 +34,13 @@ public boolean isEmpty() {
 }
 
 
+public T pook() {
+	var v = peek();
+	pop();
+	return v;
+}
+
+
 }
 
 /*

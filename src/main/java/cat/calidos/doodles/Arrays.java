@@ -509,10 +509,10 @@ public static Set<Pair<Integer, Integer>> findPairsOfSum(List<Integer> a, int v)
  */
 
 
-public static int largestSum(DLinkedList<Integer> l) {
+public static int largestSum(List<Integer> l) {
 	int largest = 0;
-	Set<DLinkedList<Integer>> s = getSublists(l);
-	for (DLinkedList<Integer> c : s) {
+	Set<List<Integer>> s = getSublists(l);
+	for (List<Integer> c : s) {
 		int sum = 0;
 		for (int e : c) {
 			sum += e;
@@ -525,19 +525,23 @@ public static int largestSum(DLinkedList<Integer> l) {
 }
 
 
-public static <X> Set<DLinkedList<X>> getSublists(List<X> l) {
+public static <X> Set<List<X>> getSublists(List<X> l) {
 	var p = new HashSet<List<X>>();
-	var s = new DLinkedListStack<List<X>>();
+	var s = new java.util.Stack<List<X>>();
 	s.push(l);
 	while (!s.isEmpty()) {
-		List<X> top = s.peek();
-		s.pop();
-		p.add(top);
-		List<X> left = top.remove(0);
-		
-		s.add(left);
-		List<X> right = top.removeLast();
-		s.add(right);
+		List<X> top = s.pop();
+		if (!top.isEmpty()) {
+			p.add(top);
+			var left = new ArrayList<X>();
+			left.addAll(top);
+			left.remove(0);
+			s.push(left);
+			var right = new ArrayList<X>();
+			right.addAll(top);
+			right.removeLast();
+			s.push(right);
+		}
 	}
 	return p;
 }
@@ -546,16 +550,16 @@ public static <X> Set<DLinkedList<X>> getSublists(List<X> l) {
 }
 
 /*
-	 * Copyright 2024 Daniel Giribet
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
-	 * except in compliance with the License. You may obtain a copy of the License at
-	 *
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software distributed under the
-	 * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-	 * either express or implied. See the License for the specific language governing permissions
-	 * and limitations under the License.
-	 */
+ * Copyright 2024 Daniel Giribet
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
 

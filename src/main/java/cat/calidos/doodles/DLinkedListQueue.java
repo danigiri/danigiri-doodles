@@ -1,6 +1,7 @@
 package cat.calidos.doodles;
 
 import java.util.Iterator;
+import java.util.List;
 
 public class DLinkedListQueue<T> implements Iterable<T> {
 
@@ -9,14 +10,14 @@ protected DLinkedList<T>	first	= null;
 protected DLinkedList<T>	last	= null;
 
 public boolean isEmpty() {
-	return first==null;
+	return first == null;
 }
 
 
 public DLinkedListQueue<T> addFirst(T d) {
 	var head = new DLinkedList<T>(d);
 	if (isEmpty()) {
-		last = head;		
+		last = head;
 	} else {
 		first.prev = head;
 	}
@@ -24,10 +25,12 @@ public DLinkedListQueue<T> addFirst(T d) {
 	return this;
 }
 
-public DLinkedListQueue<T> removeFirst(T d) {
+
+public DLinkedListQueue<T> removeFirst() {
 	first = first.next;
 	return this;
 }
+
 
 public DLinkedListQueue<T> enqueue(T d) {
 	var tail = new DLinkedList<T>(d);
@@ -40,10 +43,17 @@ public DLinkedListQueue<T> enqueue(T d) {
 	return this;
 }
 
+
 public DLinkedListQueue<T> dequeue() {
 	last = last.prev;
 	return this;
 }
+
+
+public DLinkedListQueue<T> removeLast() {
+	return dequeue();
+}
+
 
 public T head() {
 	if (isEmpty()) {
@@ -51,6 +61,7 @@ public T head() {
 	}
 	return first.data;
 }
+
 
 public T tail() {
 	if (isEmpty()) {
@@ -60,22 +71,31 @@ public T tail() {
 }
 
 
+public DLinkedListQueue<T> clone() {
+	var out = new DLinkedListQueue<T>();
+	this.forEach(e -> out.enqueue(e));
+	return out;
+}
+
 
 @Override
 public Iterator<T> iterator() {
 	return new Iterator<T>() {
-		DLinkedList<T> current = first;
-		@Override
-		public boolean hasNext() {
-			return current.next !=null;
-		}
 
-		@Override
-		public T next() {
-			T v = current.data;
-			current = current.next;
-			return v;
-		}
+	DLinkedList<T> current = first;
+
+	@Override
+	public boolean hasNext() {
+		return current.next != null;
+	}
+
+
+	@Override
+	public T next() {
+		T v = current.data;
+		current = current.next;
+		return v;
+	}
 
 	};
 }
