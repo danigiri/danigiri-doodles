@@ -361,6 +361,25 @@ public void divideTest() {
 }
 
 
+@Test @DisplayName("Mathematical expression test")
+public void expressionTest() {
+
+	assertEquals(1, Maths.evaluateExpression("1"));
+	assertEquals(2, Maths.evaluateExpression("1+1"));
+	assertEquals(0, Maths.evaluateExpression("1-1"));
+	assertEquals(6, Maths.evaluateExpression("1+2+3"));
+
+	assertEquals(1, Maths.evaluateExpression("(1)"));
+	assertEquals(3, Maths.evaluateExpression("(1)+2"));
+	assertEquals(9, Maths.evaluateExpression("(1+2)*3"));
+
+	assertEquals(1, Maths.evaluateExpression("((1))"));
+	assertEquals(18, Maths.evaluateExpression("((1+2)*2)*3"));
+	assertEquals(13, Maths.evaluateExpression("1+((2*2)*3)"));
+
+}
+
+
 }
 /*
 Copyright 2024 Daniel Giribet <dani - calidos.cat>

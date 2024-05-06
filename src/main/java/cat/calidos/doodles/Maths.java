@@ -448,10 +448,10 @@ public static int add(int a, int b) {
 }
 
 /*
- * p=0
- * n=-1
+ * p=0 n=-1
  * 
  */
+
 
 public static int subtract2(int p, int n) {
 	// p is positive, n is negative
@@ -500,6 +500,95 @@ public static int divide(int n, int d) {
 		div++;
 	}
 	return isNegative ? -div : div;
+}
+
+
+/*
+ * 
+ * given an arithmetic expression '(' '+', '-', and '*', calculate the outcome
+ * 
+ * /—-------| | | V | [digit] -/ | | <stack digit on operand stack> V [operation]
+ * 
+ * 
+ * if digit → add digit to operand stack if operand -> add operand to stack if ( → stack and rec(,
+ * add return to stack if ) -> consume stack until finding (, consume it and return
+ * 
+ * 
+ * (1-2)*3
+ * 
+ * 2 - 1 ( —---, —---
+ * 
+ * consume stack
+ * 
+ * 3 -1 * —---, —---
+ * 
+ * ((1-2)*3)+1
+ * 
+ * 
+ * - 3 ( 1 ( —---, —---
+ * 
+ * 
+ * 
+ * 
+ */
+
+
+public static int evaluateExpression(String e) {
+	var operands = new Stack<Integer>();
+	var ops = new Stack<Character>();
+	evaluateExpression(e, 0, operands, ops);
+	return operands.pop();
+}
+
+
+public static int evaluateExpression(String e, int i, Stack<Integer> operands, Stack<Character> ops) {
+
+	while (i < e.length()) {
+		char c = e.charAt(i);
+		if (c == '(') {
+			ops.push(c);
+			i = evaluateExpression(e, i + 1, operands, ops);
+		} else if (c == ')') {
+			// this means we have a complete evaluable expression in the stack until we find a
+			// stacked '('
+			consumeExpression(operands, ops);
+			ops.pop(); // remove the '('
+			return i;
+		} else if (c == '+' || c == '-' || c == '*') {
+			ops.push(c);
+		} else {
+			var val = 0;
+			while (i < e.length() && "0123456789".contains(String.valueOf(e.charAt(i)))) {
+				val = val * 10 + Integer.parseInt(String.valueOf(e.charAt(i++)));
+			}
+			operands.push(val);
+			i--;
+		}
+		i++;
+	}
+	consumeExpression(operands, ops);
+	return i;
+}
+
+
+public static void consumeExpression(Stack<Integer> operands, Stack<Character> ops) {
+	// we consume until we finish the stack or find a "(", which we pop out
+	while (!ops.isEmpty() && !ops.peek().equals('(')) {
+		var val = 0;
+		char op = ops.pop();
+		int left = operands.pop();
+		int right = operands.pop();
+		if (op == '+') {
+			val = left + right;
+		} else if (op == '-') {
+			val = left - right;
+		} else if (op == '*') {
+			val = left * right;
+		} else {
+			throw new UnsupportedOperationException("Incorrect operation");
+		}
+		operands.push(val);
+	}
 }
 
 

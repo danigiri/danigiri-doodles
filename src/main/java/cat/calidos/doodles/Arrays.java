@@ -539,7 +539,7 @@ public static <X> Set<List<X>> getSublists(List<X> l) {
 			s.push(left);
 			var right = new ArrayList<X>();
 			right.addAll(top);
-			right.removeLast();
+			right.remove(right.size()-1);
 			s.push(right);
 		}
 	}
