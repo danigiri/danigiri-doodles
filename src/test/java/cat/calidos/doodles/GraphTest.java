@@ -1,18 +1,3 @@
-/**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-*/
 package cat.calidos.doodles;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,38 +21,38 @@ private static Graph<String>	expectedY;
 
 @BeforeEach
 public void setup() {
-	
+
 	expectedX = new Graph<String>("a");
 	expectedX.addEdge("a", "b");
 	expectedX.addEdge("a", "c");
 	expectedX.addEdge("c", "d");
 	// expectedX:
-	//		a ->b
-	//		  ->c -\
-	//		        -> d
-	
+	// a ->b
+	// ->c -\
+	// -> d
+
 	expectedY = new Graph<String>("a");
 	expectedY.addEdge("a", "b");
 	expectedY.addEdge("a", "c");
 	expectedY.addEdge("a", "d");
 	// expectedY:
-	//		a ->b
-	//		| ->c
-	//		|       -> d
-	//		\ -----/
-	
+	// a ->b
+	// | ->c
+	// | -> d
+	// \ -----/
+
 }
 
 
 @Test
 public void depthFirstFindTest() {
-	
+
 	Graph<String> g = new Graph<String>("a");
 	Queue<String> p = QueueFrom.strings("a");
 	assertEquals(p, g.depthFirstFind("a", "a"));
-	
+
 	g.addEdge("a", "b");
-	p = QueueFrom.strings("a","b");
+	p = QueueFrom.strings("a", "b");
 	assertEquals(p, g.depthFirstFind("a", "b"));
 
 	g.addEdge("b", "c");
@@ -106,10 +91,10 @@ public void depthFirstSearchTest() {
 
 	g.addEdge("a", "d");
 	// g:
-	//		a ->b
-	//		| ->c -\
-	//		|       => d
-	//		\ -----/
+	// a ->b
+	// | ->c -\
+	// | => d
+	// \ -----/
 
 	s = g.depthFirstSearch();
 	assertTrue(s.equals(expectedX) || s.equals(expectedY));
@@ -119,7 +104,7 @@ public void depthFirstSearchTest() {
 
 @Test
 public void breadthFirstFindTest() {
-	
+
 	Graph<String> g = new Graph<String>("a");
 	Queue<String> p = QueueFrom.strings("a");
 	assertEquals(p, g.breadthFirstFind("a", "a"));
@@ -135,29 +120,29 @@ public void breadthFirstFindTest() {
 	p = QueueFrom.strings("a", "c", "d");
 	assertEquals(p, g.breadthFirstFind("a", "d"));
 
-	// now we do two variants and regardless of path taken we always find 
+	// now we do two variants and regardless of path taken we always find
 	// breadth-first route
 	g = new Graph<String>("a");
 	g.addEdge("a", "b");
-		g.addEdge("b", "d");
-		g.addEdge("b", "e");
-		g.addEdge("b", "h");		// route 1 (breadth-first)
+	g.addEdge("b", "d");
+	g.addEdge("b", "e");
+	g.addEdge("b", "h"); // route 1 (breadth-first)
 	g.addEdge("a", "c");
-		g.addEdge("c", "f");
-		g.addEdge("c", "g");
-			g.addEdge("g", "h");	// route 2
+	g.addEdge("c", "f");
+	g.addEdge("c", "g");
+	g.addEdge("g", "h"); // route 2
 	p = QueueFrom.strings("a", "b", "h");
 	assertEquals(p, g.breadthFirstFind("a", "h"));
 
 	g = new Graph<String>("a");
 	g.addEdge("a", "b");
-		g.addEdge("b", "d");
-		g.addEdge("b", "e");
-			g.addEdge("e", "h");	// route 1
+	g.addEdge("b", "d");
+	g.addEdge("b", "e");
+	g.addEdge("e", "h"); // route 1
 	g.addEdge("a", "c");
-		g.addEdge("c", "f");
-		g.addEdge("c", "g");
-			g.addEdge("c", "h");	// route 2 (breadth-first)
+	g.addEdge("c", "f");
+	g.addEdge("c", "g");
+	g.addEdge("c", "h"); // route 2 (breadth-first)
 	p = QueueFrom.strings("a", "c", "h");
 	assertEquals(p, g.breadthFirstFind("a", "h"));
 
@@ -166,7 +151,7 @@ public void breadthFirstFindTest() {
 
 @Test
 public void breadthFirstSearchTest() {
-	
+
 	Graph<String> g = new Graph<String>("a");
 	Graph<String> s = g.breadthFirstSearch();
 	assertEquals(g, s);
@@ -185,10 +170,10 @@ public void breadthFirstSearchTest() {
 
 	g.addEdge("a", "d");
 	// g:
-	//		a ->b
-	//		| ->c -\
-	//		|       => d
-	//		\ -----/
+	// a ->b
+	// | ->c -\
+	// | => d
+	// \ -----/
 
 	s = g.breadthFirstSearch();
 	assertEquals(expectedY, s);
@@ -225,8 +210,35 @@ public void areConnected2Test() {
 
 }
 
+@Test
+public void hasRouteDFSTest() {
 
-@Test @DisplayName("Build order test")
+	assertTrue(Graph.hasRouteDFS(expectedX, "a", "a"));
+	assertTrue(Graph.hasRouteDFS(expectedX, "a", "d"));
+	assertTrue(Graph.hasRouteDFS(expectedX, "c", "d"));
+
+	assertFalse(Graph.hasRouteDFS(expectedX, "b", "d"));
+	assertFalse(Graph.hasRouteDFS(expectedX, "d", "a"));
+
+}
+
+
+@Test
+public void hasRouteBFSTest() {
+
+	assertTrue(Graph.hasRouteBFS(expectedX, "a", "a"));
+	assertTrue(Graph.hasRouteBFS(expectedX, "a", "d"));
+	assertTrue(Graph.hasRouteBFS(expectedX, "c", "d"));
+
+	assertFalse(Graph.hasRouteBFS(expectedX, "b", "d"));
+	assertFalse(Graph.hasRouteBFS(expectedX, "d", "a"));
+
+}
+
+
+
+@Test
+@DisplayName("Build order test")
 public void buildOrderTest() {
 
 	// projects: a, b, c, d, e, f
@@ -239,43 +251,44 @@ public void buildOrderTest() {
 	Graph<String> graph = new Graph<String>();
 
 	List<String> artifacts = ListFrom.strings("a", "b", "c", "d", "e", "f");
-	List<String> sources 		= ListFrom.strings("a", "f", "b", "f", "d");
-	List<String> destinations 	= ListFrom.strings("d", "b", "d", "a", "c");
+	List<String> sources = ListFrom.strings("a", "f", "b", "f", "d");
+	List<String> destinations = ListFrom.strings("d", "b", "d", "a", "c");
 
 	List<String> order = graph.buildOrder(artifacts, sources, destinations);
 	assertNotNull(order);
-	//System.err.println(order);
+	// System.err.println(order);
 	assertTrue(order.contains("e"));
-	order.remove("e");	// could be in any location
+	order.remove("e"); // could be in any location
 	assertEquals(ListFrom.strings("c", "d", "a", "b", "f"), order);
 
 	List<String> order2 = graph.buildOrder(artifacts, destinations, sources);
 	assertNotNull(order2);
-	//System.err.println(order2);
+	// System.err.println(order2);
 	assertTrue(order2.contains("e"));
-	order2.remove("e");	// could be in any location
+	order2.remove("e"); // could be in any location
 	assertEquals(ListFrom.strings("f", "a", "b", "d", "c"), order2);
 
 }
 
 
-@Test @DisplayName("Build order test loop exception")
+@Test
+@DisplayName("Build order test loop exception")
 @Disabled
 public void buildOrderLoopTest() {
 
 	Graph<String> graph = new Graph<String>();
 
 	List<String> artifacts = ListFrom.strings("a", "b", "c", "d", "e", "f");
-	List<String> sources 		= ListFrom.strings("a", "f", "b", "f", "d", "c");
-	List<String> destinations 	= ListFrom.strings("d", "b", "d", "a", "c", "a");
+	List<String> sources = ListFrom.strings("a", "f", "b", "f", "d", "c");
+	List<String> destinations = ListFrom.strings("d", "b", "d", "a", "c", "a");
 
 	assertThrows(StackOverflowError.class, () -> graph.buildOrder(artifacts, destinations, sources));
 
 }
 
 
-
-@Test @DisplayName("Build order test 2")
+@Test
+@DisplayName("Build order test 2")
 public void buildOrderTes2t() {
 
 	// projects: a, b, c, d, e, f
@@ -288,65 +301,79 @@ public void buildOrderTes2t() {
 	Graph<String> graph = new Graph<String>();
 
 	List<String> artifacts = ListFrom.strings("a", "b", "c", "d", "e", "f");
-	List<String> sources 		= ListFrom.strings("a", "f", "b", "f", "d");
-	List<String> destinations 	= ListFrom.strings("d", "b", "d", "a", "c");
+	List<String> sources = ListFrom.strings("a", "f", "b", "f", "d");
+	List<String> destinations = ListFrom.strings("d", "b", "d", "a", "c");
 
 	List<String> order = graph.buildOrder2(artifacts, sources, destinations);
 	assertNotNull(order);
-	//System.err.println(order);
+	// System.err.println(order);
 	assertTrue(order.contains("e"));
-	order.remove("e");	// could be in any location
+	order.remove("e"); // could be in any location
 	assertEquals(ListFrom.strings("f", "a", "b", "d", "c"), order);
 
 	List<String> order2 = graph.buildOrder2(artifacts, destinations, sources);
 	assertNotNull(order2);
-	//System.err.println(order2);
+	// System.err.println(order2);
 	assertTrue(order2.contains("e"));
-	order2.remove("e");	// could be in any location
+	order2.remove("e"); // could be in any location
 	assertEquals(ListFrom.strings("c", "d", "a", "b", "f"), order2);
 
 }
 
 
-@Test @DisplayName("Build order test loop exception")
+@Test
+@DisplayName("Build order test loop exception")
 public void buildOrder2LoopTest() {
 
 	Graph<String> graph = new Graph<String>();
 
 	List<String> artifacts = ListFrom.strings("a", "b", "c", "d", "e", "f");
-	List<String> sources 		= ListFrom.strings("a", "f", "b", "f", "d", "c");
-	List<String> destinations 	= ListFrom.strings("d", "b", "d", "a", "c", "a");
+	List<String> sources = ListFrom.strings("a", "f", "b", "f", "d", "c");
+	List<String> destinations = ListFrom.strings("d", "b", "d", "a", "c", "a");
 
 	assertThrows(RuntimeException.class, () -> graph.buildOrder2(artifacts, sources, destinations));
 
 }
 
 
-
-//@Test
-//public void asListTest() {
-//	
-//	Graph<String> g = new Graph<String>("a");
-//	List<String> l  = ListFrom.strings("a");
-//	assertEquals(l, g.asList());
+// @Test
+// public void asListTest() {
 //
-//	g.addEdge("a","b");
-//	l  = ListFrom.strings("a", "b");
-//	assertEquals(l, g.asList());
-//	
-//	g.getConnectedNode("b").connectTo("c");
-//	l  = ListFrom.strings("a", "b", "c");
-//	assertEquals(l, g.asList());
-//	
-//}
+// Graph<String> g = new Graph<String>("a");
+// List<String> l = ListFrom.strings("a");
+// assertEquals(l, g.asList());
 //
-//@Test(expected = RuntimeException.class)
-//public void asListTestCycle() {
-//	Graph<String> g = new Graph<String>("a");
-//	g.connectTo("b");
-//	g.getConnectedNode("b").connectTo(g);
-//	g.asList();
+// g.addEdge("a","b");
+// l = ListFrom.strings("a", "b");
+// assertEquals(l, g.asList());
 //
-//}
+// g.getConnectedNode("b").connectTo("c");
+// l = ListFrom.strings("a", "b", "c");
+// assertEquals(l, g.asList());
+//
+// }
+//
+// @Test(expected = RuntimeException.class)
+// public void asListTestCycle() {
+// Graph<String> g = new Graph<String>("a");
+// g.connectTo("b");
+// g.getConnectedNode("b").connectTo(g);
+// g.asList();
+//
+// }
 
 }
+
+/*
+ * Copyright 2014 Daniel Giribet <dani - calidos.cat>
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
