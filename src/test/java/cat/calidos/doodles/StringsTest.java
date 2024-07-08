@@ -302,6 +302,17 @@ public void reverseWordsTest() {
 	assertEquals("a b 1 2", Strings.reverseWords("a b 1 2"));
 } 
 
+
+@Test @DisplayName("Test longest ordered abecedary")
+public void longestOrderedLettersListTest() {
+
+    assertEquals("aehrsty", Strings.longestOrderedLetters("aretheyhere", "yestheyarehere"));
+    String result = Strings.longestOrderedLetters("loopingisfunbutdangerous", "lessdangerousthancoding");
+	assertEquals("abcdefghilnoprstu", result);
+    assertEquals("acefghilmnoprstuy", Strings.longestOrderedLetters("inmanylanguages", "theresapairoffunctions"));
+
+}
+
 }
 
 /**

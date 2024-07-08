@@ -1023,6 +1023,51 @@ private static String listToWord(java.util.LinkedList<Character> l) {
 	return l.stream().map(c -> c.toString()).collect(Collectors.joining(""));
 }
 
+
+class ValuePair {
+
+public int			left;
+public boolean[]	right;
+
+public ValuePair(int v1, boolean[] v2) {
+	this.left = v1;
+	this.right = v2;
+}
+}
+
+public static String longestOrderedLetters(String s1, String s2) {
+
+	var chars = new boolean[26];
+	ValuePair v = Strings.stringToCharEntries(s1, chars, 26);
+	chars = v.right;
+	int left = v.left;
+	v = Strings.stringToCharEntries(s2, chars, left);
+	var s = new StringBuffer();
+	int zero = (int) 'a';
+	for (int i = 0; i < v.right.length; i++) {
+		if (v.right[i] == true) {
+			s.append((char) (i + zero));
+		}
+	}
+	return s.toString();
+
+}
+
+
+private static ValuePair stringToCharEntries(String s, boolean chars[], int left) {
+	var i = 0;
+	int zero = (int) 'a';
+	while (left > 0 && i < s.length()) {
+		var position = ((int) s.charAt(i)) - zero;
+		if (chars[position] != true) {
+			chars[position] = true;
+			left--;
+		}
+		i++;
+	}
+	return (new Strings()).new ValuePair(left, chars);
+}
+
 }
 
 /*
