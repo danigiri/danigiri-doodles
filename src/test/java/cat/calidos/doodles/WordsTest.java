@@ -53,12 +53,12 @@ public void WordBreakBasicTest() {
 
 @Test
 public void buildKeyTreeTest() {
-	
+
 	List<String> keys = ListFrom.strings();
 	Tree<String> t = Words.buildKeyTree("", keys);
 	assertEquals("", t.data);
 	assertEquals(0, t.children.size());
-	
+
 	keys = ListFrom.strings("a", "b", "c");
 	t = Words.buildKeyTree("", keys);
 	assertEquals("", t.data);
@@ -167,7 +167,7 @@ public void testCommonPrefix() {
 }
 
 /**
- Copyright 2014 Daniel Giribet <dani - calidos.cat>
+ Copyright 2024 Daniel Giribet <dani - calidos.cat>
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.

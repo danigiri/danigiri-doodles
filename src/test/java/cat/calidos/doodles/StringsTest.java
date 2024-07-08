@@ -280,7 +280,6 @@ public void compress2Test() {
 }
 
 
-
 @Test @DisplayName("Test remove char from string")
 public void removeTest() {
 
@@ -293,6 +292,15 @@ public void removeTest() {
 
 }
 
+
+@Test @DisplayName("Test reverse words")
+public void reverseWordsTest() {
+	assertEquals("", Strings.reverseWords(""));
+	assertEquals("a", Strings.reverseWords("a"));
+	assertEquals("ab", Strings.reverseWords("ba"));
+	assertEquals("ab 12", Strings.reverseWords("ba 21"));
+	assertEquals("a b 1 2", Strings.reverseWords("a b 1 2"));
+} 
 
 }
 

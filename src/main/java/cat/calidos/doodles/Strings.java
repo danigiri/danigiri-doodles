@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Strings {
 
@@ -958,6 +959,69 @@ public static StringBuffer removeWithBuffer(StringBuffer b, String s, char c, in
 	return removeWithBuffer(b, s, c, n, i);
 }
 
+
+public static String reverseWords(final String original) {
+  /*
+    I am in two states, skipping blanks or reading a word
+    if reading, add to the beggining of current word
+    if find space or end, append current word
+    
+    "123 321"
+    s="321 ",
+    skipping = true, false
+    current = null, [3,2,1]
+    c = 1
+    
+    "123"
+    s=""
+    skipping = true
+    current = null, 
+    
+    
+  */
+	var s = new StringBuffer(original.length());
+	char[] chars = original.toCharArray();
+	var skipping = true;
+	java.util.LinkedList<Character> current = null;
+	var i = 0;
+	while (i < chars.length) {
+		char c = chars[i++];
+		if (skipping) {
+			if (Strings.isSpace(c)) {
+				s.append(c);
+			} else {
+				current = new java.util.LinkedList<Character>();
+				current.addFirst(c);
+				skipping = false;
+			}
+		} else {
+			if (Strings.isSpace(c)) { // append reversed word
+				s.append(Strings.listToWord(current));
+				s.append(c);
+				current = null;
+				skipping = true;
+			} else { // append at the beginning
+				current.addFirst(c);
+			}
+		}
+	}
+	// check if the end and need to append the last
+	if (current != null) {
+		s.append(Strings.listToWord(current));
+	}
+	return s.toString();
+
+}
+
+
+private static boolean isSpace(char c) {
+	return c == ' ' || c == '\t';
+}
+
+
+private static String listToWord(java.util.LinkedList<Character> l) {
+	return l.stream().map(c -> c.toString()).collect(Collectors.joining(""));
+}
 
 }
 
