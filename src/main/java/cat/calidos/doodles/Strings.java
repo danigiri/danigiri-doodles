@@ -1024,6 +1024,8 @@ private static String listToWord(java.util.LinkedList<Character> l) {
 }
 
 
+// given two strings, return the longest possible string of unique ordered a-z chars, appearing in either of the
+// strings
 class ValuePair {
 
 public int			left;

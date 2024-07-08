@@ -380,6 +380,15 @@ public void expressionTest() {
 }
 
 
+@Test @DisplayName("Sum of digits test")
+public void sumOfDigitsTest() {
+	assertEquals(0, Maths.sumOfDigits(0));
+	assertEquals(7, Maths.sumOfDigits(7));
+	assertEquals(1, Maths.sumOfDigits(10));
+	assertEquals(2, Maths.sumOfDigits(128));
+}
+
+
 }
 /*
 Copyright 2024 Daniel Giribet <dani - calidos.cat>

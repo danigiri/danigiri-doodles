@@ -592,6 +592,33 @@ public static void consumeExpression(Stack<Integer> operands, Stack<Character> o
 }
 
 
+/*
+
+given a positive integer, return the integer that is the sum of its digits, down to a single digit
+  128 --> 11 --> 2 
+  0 --> 0
+  10 --> 1
+
+  while result is >9, call
+  we can do recursive, if current is <=9 --> return
+  if not aggregate and call
+
+ */
+
+
+ public static int sumOfDigits(int n) {
+  if (n<=9) {
+    return n;
+  }
+  var c = 0;
+  while (n!=0) {
+    c += n % 10;
+    n /= 10;
+  }
+  return sumOfDigits(c);
+ }
+
+
 }
 
 /*
