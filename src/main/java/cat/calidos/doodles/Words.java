@@ -193,6 +193,115 @@ public static String commonPrefix(String a, String b) {
 }
 
 
+/*
+Given a string s and a dictionary of strings wordDict, add spaces in s to construct 
+a sentence where each word is a valid dictionary word. Return all such possible sentences in any order.
+
+Note that the same word in the dictionary may be reused multiple times in the segmentation.
+
+if sentence is not valid, return null or empty set
+
+
+Example 1:
+
+Input: s = "catsanddog", wordDict = ["cat","cats","and","sand","dog"]
+Output: ["cats and dog","cat sand dog"]
+Example 2:
+
+Input: s = "pineapplepenapple", wordDict = ["apple","pen","applepen","pine","pineapple"]
+Output: ["pine apple pen apple","pineapple pen apple","pine applepen apple"]
+Explanation: Note that you are allowed to reuse a dictionary word.
+Example 3:
+
+Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+Output: []
+
+
+naive approach 1:
+iterate over characters and keep a list of dict candidates, once match found, create output candidate, recurse, continue
+
+
+less naive approach 2:
+
+have ongoing candidate as input
+
+look at current index in input and current index in dictionary
+
+
+return a set of candidates
+
+
+approach 3:
+
+input: catsanddoc
+ongoing candidate "cats "
+current word "an"
+index: 6
+look for current word in map
+if exists --> append to ongoing -> recurse
+if not exists increment index
+
+
+solution: ""
+current word: "cat"
+index 3
+two branches --> recurse with increased index and no change to candidate
+the other branch is add word to solution, clear current word, and increase index
+return both branches as a list
+
+c --> match 0 match 1, no match 2, 3, 4
+
+output = ""
+c --> "c" + f(1,)
+
+
+c->a->t->END
+       ->s
+a->n->d->END
+s->a-n->d->END
+
+ */
+
+/*"
+ex 1:
+input: "A", dict: []
+
+ex 2:
+"AB", ["A", "B"] --> ["A B"]
+
+ */
+
+
+public static List<String> sentenceFromDict(String s, List<String> dict) {
+	var dictSet = new HashSet<String>(dict.size());
+	dictSet.addAll(dict);
+	return Words.sentenceFromDictTestRec("", "", 0, 0, s, dictSet);
+
+}
+
+// may not be correct, see tests
+private static List<String> sentenceFromDictTestRec(String sol, String current, int i, int matched, String s, Set<String> dict) {
+
+	// end of string, no solution, double check again for 'correct solutions'
+	if (i > s.length() - 1) { //
+		var phrase = new ArrayList<String>();
+		if (matched==s.length()) {
+			phrase.add(sol);
+		}
+		return phrase;
+	}
+	current += s.charAt(i); //
+	List<String> candidatesMatch = new ArrayList<String>();
+	if (dict.contains(current)) { // current word is candidate for solution
+		var solMatch = sol.isEmpty() ? current : sol + " " + current; //
+		candidatesMatch = Words.sentenceFromDictTestRec(solMatch, "", i + 1, matched+(current.length()), s, dict);
+	}
+	var candidatesNoMatch = Words.sentenceFromDictTestRec(sol, current, i + 1, matched, s, dict);
+	candidatesNoMatch.addAll(candidatesMatch);
+
+	return candidatesNoMatch;
+}
+
 
 // 16.20 implement an algorithm to return a list of matching words, given a sequence of digits
 // you are provided a list of valid words in any way you like

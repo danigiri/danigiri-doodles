@@ -161,6 +161,26 @@ public void testCommonPrefix() {
 
 	assertEquals("", Words.commonPrefix("ab", "xy"));
 	assertEquals("", Words.commonPrefix("ab", "xab"));
+
+}
+
+
+@Test
+public void sentenceFromDictTest() {
+
+	List<String> dict0 = ListFrom.strings();
+	assertEquals(ListFrom.strings(), Words.sentenceFromDict("A", dict0));
+
+	List<String> dict1 = ListFrom.strings("A", "B");
+	assertEquals(ListFrom.strings("A B"), Words.sentenceFromDict("AB", dict1));
+
+	List<String> dict2 = ListFrom.strings("cat","cats","and","sand","dog");
+	assertEquals(ListFrom.strings("cats and dog","cat sand dog"), Words.sentenceFromDict("catsanddog", dict2));
+
+//	List<String> dict3 = ListFrom.strings("apple","pen","applepen","pine","pineapple");
+//	List<String> res = Words.sentenceFromDict("pineapplepenapple", dict3);
+//	assertEquals(ListFrom.strings("pine apple pen apple","pineapple pen apple","pine applepen apple"), res);
+
 	
 }
 
