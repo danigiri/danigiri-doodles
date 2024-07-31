@@ -402,6 +402,17 @@ public void sumDigitPowTest() {
 }
 
 
+@Test
+@DisplayName("to romannumerals test")
+public void toRomanNumeralsTest() {
+	assertEquals("I", Maths.toRomanNumberals(1));
+	assertEquals("IV", Maths.toRomanNumberals(4));
+	assertEquals("VI", Maths.toRomanNumberals(6));
+	assertEquals("LXXXIX", Maths.toRomanNumberals(89));
+	assertEquals("CDXCVIII", Maths.toRomanNumberals(498));
+	assertEquals("CMLXXXIV", Maths.toRomanNumberals(984));
+}
+
 }
 /*
 Copyright 2024 Daniel Giribet <dani - calidos.cat>

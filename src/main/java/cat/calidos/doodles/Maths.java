@@ -665,6 +665,97 @@ decrement exponential
 		return num;
 	}
  
+	/*
+	 * Create a function taking a positive integer between 1 and 3999 (both included) as its
+	 * parameter and returning a string containing the Roman Numeral representation of that integer.
+	 * Modern Roman numerals are written by expressing each digit separately starting with the
+	 * leftmost digit and skipping any digit with a value of zero. There cannot be more than 3
+	 * identical symbols in a row.
+	 * 
+	 * In Roman numerals:
+	 * 
+	 * 1990 is rendered: 1000=M + 900=CM + 90=XC; resulting in MCMXC. 2008 is written as 2000=MM,
+	 * 8=VIII; or MMVIII. 1666 uses each Roman symbol in descending order: MDCLXVI.
+	 * 
+	 * Symbol Value I 1 V 5 X 10 L 50 C 100 D 500 M 1,000
+	 * 
+	 * let's try a recursive approach first get a stack of digits starting from the right get number
+	 * at the top substract values from the table until it's zero append those values pop and
+	 * recurse
+	 */
+
+
+	public static String toRomanNumberals(int n) { // 4
+		var digits = new Stack<Integer>();
+		var base = 0;
+		while (n > 0) { // 4>0
+			var c = n % 10; // c = 4
+			c = base == 0 ? c : c * base; // c = 10
+			digits.push(c); // [1, 10]
+			n = n / 10; // n = 1, 0
+			base = base == 0 ? 10 : base * 10; // 100
+		}
+		return toRomanNumeralsR(new StringBuffer(), digits).toString();
+	}
+
+
+	private static StringBuffer toRomanNumeralsR(StringBuffer b, Stack<Integer> digits) {
+		if (digits.isEmpty()) { // [1,10]
+			return b;
+		}
+		int current = digits.pop(); // 10
+		toRomanNumeralsTable(b, current);
+		return toRomanNumeralsR(b, digits);
+	}
+
+
+	private static void toRomanNumeralsTable(StringBuffer out, int digit) {
+		// this is a single digit, which is guaranteed to end in zero
+		// order is important
+		while (digit > 0) {
+			if (digit < 4) {
+				out.append("I");
+				digit--;
+			} else if (digit == 4) { // exception
+				out.append("IV");
+				digit = 0;
+			} else if (digit == 9) {
+				out.append("IX");
+				digit = 0;
+			} else if (digit < 10) {
+				out.append("V");
+				digit -= 5;
+			} else if (digit >= 40 && digit < 50) { // exception
+				out.append("XL");
+				digit -= 40;
+			} else if (digit < 50) {
+				out.append("X");
+				digit -= 10;
+			} else if (digit >= 90 && digit < 100) { // exception
+				out.append("XC");
+				digit -= 90;
+			} else if (digit < 100) {
+				out.append("L");
+				digit -= 50;
+			} else if (digit >= 400 && digit < 500) { // exception
+				out.append("CD");
+				digit -= 400;
+			} else if (digit < 500) {
+				out.append("C");
+				digit -= 100;
+			} else if (digit >= 900 && digit < 1000) {
+				out.append("CM");
+				digit -= 900;
+			} else if (digit < 1000) {
+				out.append("D");
+				digit -= 500;
+			} else {
+				out.append("M");
+				digit -= 1000;
+			}
+		}
+	}
+	
 }
 
 /*
