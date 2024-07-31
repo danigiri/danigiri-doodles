@@ -2,8 +2,10 @@
 
 package cat.calidos.doodles;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
@@ -619,6 +621,50 @@ given a positive integer, return the integer that is the sum of its digits, down
  }
 
 
+ /*
+ The number  89 is the first integer with more than one digit that fulfills the propertyof this sum returning
+ the same number:  89=8^1+9^2
+ 
+ The next number in having this property is 135
+ See this property again: 135=1^1+3^2+5^3
+
+do a while between the two ranges
+have an expoential starting with number of digits
+divide / 10
+decrement exponential
+
+
+*/
+ 
+
+	public static List<Long> sumDigitPow(long a, long b) { // 1 10
+		var out = new ArrayList<Long>(); // []
+		for (long i = a; i <= b; i++) { // i=1
+			var current = i;
+			var exp = numberOfDigits(current);
+			var sum = 0;
+			while (current > 0) {
+				sum += Math.pow(current % 10, exp);
+				current = current / 10;
+				exp--;
+			}
+			if (sum == i) {
+				out.add(i);
+			}
+		}
+		return out;
+	}
+
+
+	private static int numberOfDigits(long n) { // 1
+		var num = 0;
+		while (n != 0) { // 1 +
+			num++;
+			n = n / 10;
+		}
+		return num;
+	}
+ 
 }
 
 /*

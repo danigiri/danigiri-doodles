@@ -32,8 +32,6 @@ public void hotelRoomsTest() {
 
 	expected = List.of(1,2,3);
 	assertEquals(expected, Rooms.hotelRooms(reservations));
-
-
 }
 
 

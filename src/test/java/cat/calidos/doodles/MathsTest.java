@@ -3,6 +3,9 @@ package cat.calidos.doodles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
@@ -386,6 +389,16 @@ public void sumOfDigitsTest() {
 	assertEquals(7, Maths.sumOfDigits(7));
 	assertEquals(1, Maths.sumOfDigits(10));
 	assertEquals(2, Maths.sumOfDigits(128));
+}
+
+
+@Test @DisplayName("89 = 8^1+9^2 test")
+public void sumDigitPowTest() {
+	List<Long> v = Maths.sumDigitPow(1, 10);
+	List<Long> e =java.util.Arrays.stream(new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9}).boxed().collect(Collectors.toList());
+	assertEquals(e, v);
+	v = Maths.sumDigitPow(10, 150);
+	e =java.util.Arrays.stream(new long[] {89,135}).boxed().collect(Collectors.toList());
 }
 
 
