@@ -428,6 +428,45 @@ return d;
 }
 
 
+
+/*
+ * 
+ * The rgb function is incomplete. Complete it so that passing in RGB decimal values will result in
+ * a hexadecimal representation being returned. Valid decimal values for RGB are 0 - 255. Any values
+ * that fall out of that range must be rounded to the closest valid value. Always return 6 chars
+ * 
+ * Examples (input --> output):
+ * 
+ * 255, 255, 255 --> "FFFFFF" 255, 255, 300 --> "FFFFFF" 0, 0, 0 --> "000000" 148, 0, 211 -->
+ * "9400D3"
+ * 
+ * approach: first round into range, once rounded into range, convert to hex
+ * 
+ */
+
+
+public static String rgb(int r, int g, int b) {
+	return colorToHex(r) + colorToHex(g) + colorToHex(b);
+}
+
+
+private static String colorToHex(int c) {
+	if (c < 0) {
+		c = 0;
+	} else if (c > 255) {
+		c = 255;
+	}
+	var lowerByte = c & 15;
+	var higherByte = (c & 240) >> 4;
+	return byteToHex(higherByte) + byteToHex(lowerByte);
+}
+
+
+private static String byteToHex(int c) {
+	final String[] t = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" };
+	return t[c];
+}
+
 }
 
 /**

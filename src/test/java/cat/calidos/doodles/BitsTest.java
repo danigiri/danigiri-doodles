@@ -238,6 +238,7 @@ public void flipsToConvertTest() {
 	assertEquals(2, Bits.flipsToConvert(29, 15));
 }
 
+
 @Test @DisplayName("How many bits to flip to convert one int into another (2)")
 public void bitDistanceTest() {
 	assertEquals(2, Bits.bitDistance(29, 15));
@@ -247,5 +248,32 @@ public void bitDistanceTest() {
 }
 
 
+@Test @DisplayName("RGB conversion test")
+public void rgbTest() {
+	assertEquals("000000", Bits.rgb(0, 0, 0));
+	assertEquals("010203", Bits.rgb(1, 2, 3));
+	assertEquals("FFFFFF", Bits.rgb(255, 255, 255));
+	assertEquals("FEFDFC", Bits.rgb(254, 253, 252));
+	assertEquals("00FF7D", Bits.rgb(-20, 275, 125));
+}
+
 
 }
+
+
+
+/**
+Copyright 2024 Daniel Giribet <dani - calidos.cat>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
