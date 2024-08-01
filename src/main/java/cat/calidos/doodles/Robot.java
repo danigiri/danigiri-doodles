@@ -1,8 +1,11 @@
 package cat.calidos.doodles;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -413,6 +416,69 @@ public static boolean isTenMinWalk(char[] walk) {
 	}
 
 	return x == 0 && y == 0;
+}
+
+
+/*
+ * a man was given directions to go from one point to another. The directions were "NORTH", "SOUTH",
+ * "WEST", "EAST". Clearly "NORTH" and "SOUTH" are opposite, "WEST" and "EAST" too. Going to one
+ * direction and coming back the opposite direction right away is a needless effort. ["NORTH",
+ * "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"]. You can immediately see that going "NORTH"
+ * and immediately "SOUTH" is not reasonable, better stay to the same place! So the task is to give
+ * to the man a simplified version of the plan. A better plan in this case is simply: ["WEST"]
+ * 
+ * In ["NORTH", "SOUTH", "EAST", "WEST"], the direction "NORTH" + "SOUTH" is going north and coming
+ * back right away. The path becomes ["EAST", "WEST"], now "EAST" and "WEST" annihilate each other,
+ * therefore, the final result is [].
+ * 
+ * In ["NORTH", "EAST", "WEST", "SOUTH", "WEST", "WEST"], "NORTH" and "SOUTH" are not directly
+ * opposite but they become directly opposite after the reduction of "EAST" and "WEST" so the whole
+ * path is reducible to ["WEST", "WEST"].
+ * 
+ * approach 1: iterate until no reductions are possible, return
+ * 
+ * approach 2: use a queue and a counter of the number of objects [] --> n,e,w --> reduce, n, s -->
+ * reduce, [],w , w while input if height >=2, inspect and reduce add to top
+ * 
+ * once finished, return the queue as array
+ * 
+ */
+
+
+public static String[] dirReduc(String[] arr) {
+	var directions = new HashMap<String, Integer>(4);
+	directions.put("NORTH", 1);
+	directions.put("SOUTH", -1);
+	directions.put("WEST", 10);
+	directions.put("EAST", -10);
+
+	Deque<String> steps = new LinkedList<String>();
+	var height = 0;
+	for (int i = 0; i < arr.length; i++) {
+		height = simplifyDirections(steps, height, directions);
+		steps.offerLast(arr[i]);
+		height++;
+	}
+	height = simplifyDirections(steps, height, directions); // may have to reduce last
+															// addition/offer
+	return steps.toArray(new String[height]);
+}
+
+
+private static Integer simplifyDirections(Deque<String> steps, int height, Map<String, Integer> directions) {
+	if (height >= 2) {
+		String top = steps.peekLast();
+		steps.removeLast();
+		String prev = steps.peekLast();
+		steps.removeLast();
+		if (directions.get(top) + directions.get(prev) != 0) { // we did not simplify
+			steps.offerLast(prev);
+			steps.offerLast(top);
+		} else { // we simplified
+			height -= 2;
+		}
+	}
+	return height;
 }
 
 }

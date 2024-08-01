@@ -2,6 +2,7 @@
 
 package cat.calidos.doodles;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
@@ -135,14 +136,24 @@ public class RobotTest {
 			() -> assertTrue(ponds.contains(1))
 		);
 
-}
+	}
+
+
+	@Test
+	@DisplayName("SImplify directions test")
+	public void testSimpleDirReduc() {
+		assertArrayEquals("\"NORTH\", \"SOUTH\", \"SOUTH\", \"EAST\", \"WEST\", \"NORTH\", \"WEST\"",
+			new String[] { "WEST" },
+			Robot.dirReduc(new String[] { "NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST" }));
+		assertArrayEquals("\"NORTH\",\"SOUTH\",\"SOUTH\",\"EAST\",\"WEST\",\"NORTH\"", new String[] {},
+			Robot.dirReduc(new String[] { "NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH" }));
+	}
 
 
 }
-
 
 /**
- Copyright 2015 Daniel Giribet <dani - calidos.cat>
+ Copyright 2024 Daniel Giribet <dani - calidos.cat>
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
