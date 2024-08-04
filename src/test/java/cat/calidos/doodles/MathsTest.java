@@ -413,6 +413,15 @@ public void toRomanNumeralsTest() {
 	assertEquals("CMLXXXIV", Maths.toRomanNumberals(984));
 }
 
+
+
+@Test
+@DisplayName("bouncing ball test")
+public void test1() {
+	assertEquals(3, Maths.bouncingBall(3.0, 0.66, 1.5));
+	assertEquals(15, Maths.bouncingBall(30.0, 0.66, 1.5));
+}
+
 }
 /*
 Copyright 2024 Daniel Giribet <dani - calidos.cat>
