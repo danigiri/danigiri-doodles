@@ -1070,6 +1070,37 @@ private static ValuePair stringToCharEntries(String s, boolean chars[], int left
 	return (new Strings()).new ValuePair(left, chars);
 }
 
+
+/*
+ * 
+ * convert a string to a new string where each character in the new string is "(" if that character
+ * appears only once in the original string, or ")" if that character appears more than once in the
+ * original string. Ignore capitalization when determining if a character is a duplicate. *
+ */
+static String encode(String word) {
+	var appearances = new HashMap<Character, Integer>();
+	for (int i = 0; i < word.length(); i++) {
+		var character = Character.toLowerCase(word.charAt(i));
+		var count = appearances.get(character);
+		if (count != null) {
+			appearances.put(character, ++count);
+		} else {
+			appearances.put(character, 1);
+		}
+	}
+
+	var encoded = new StringBuilder();
+	for (int i = 0; i < word.length(); i++) {
+		var character = Character.toLowerCase(word.charAt(i));
+		if (appearances.get(character)>1) {
+			encoded.append(")");
+		} else {
+			encoded.append("(");
+		}
+	}
+	return encoded.toString();
+}
+
 }
 
 /*

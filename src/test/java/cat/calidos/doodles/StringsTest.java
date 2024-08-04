@@ -306,12 +306,20 @@ public void reverseWordsTest() {
 @Test @DisplayName("Test longest ordered abecedary")
 public void longestOrderedLettersListTest() {
 
-    assertEquals("aehrsty", Strings.longestOrderedLetters("aretheyhere", "yestheyarehere"));
-    String result = Strings.longestOrderedLetters("loopingisfunbutdangerous", "lessdangerousthancoding");
+	assertEquals("aehrsty", Strings.longestOrderedLetters("aretheyhere", "yestheyarehere"));
+	String result = Strings.longestOrderedLetters("loopingisfunbutdangerous", "lessdangerousthancoding");
 	assertEquals("abcdefghilnoprstu", result);
-    assertEquals("acefghilmnoprstuy", Strings.longestOrderedLetters("inmanylanguages", "theresapairoffunctions"));
+	assertEquals("acefghilmnoprstuy", Strings.longestOrderedLetters("inmanylanguages", "theresapairoffunctions"));
 
 }
+
+
+@Test
+@DisplayName("Test encode onto )('s")
+public void encodeTest() {
+	assertEquals(")()())()(()()(", Strings.encode("Prespecialized"));
+}
+
 
 }
 
