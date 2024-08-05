@@ -422,6 +422,17 @@ public void test1() {
 	assertEquals(15, Maths.bouncingBall(30.0, 0.66, 1.5));
 }
 
+
+@Test
+@DisplayName("time readable test")
+public void makeTimeReadableTest() {
+	assertEquals("00:00:00", Maths.makeTimeReadable(0));
+	assertEquals("00:00:05", Maths.makeTimeReadable(5));
+	assertEquals("00:01:00", Maths.makeTimeReadable(60));
+	assertEquals("23:59:59", Maths.makeTimeReadable(86399));
+	assertEquals("99:59:59", Maths.makeTimeReadable(359999));
+}
+
 }
 /*
 Copyright 2024 Daniel Giribet <dani - calidos.cat>

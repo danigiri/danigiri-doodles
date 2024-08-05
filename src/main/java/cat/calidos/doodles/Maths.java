@@ -805,7 +805,22 @@ decrement exponential
 		}
 		return 0;
 	}
-	
+
+	/*
+	 * takes a non-negative integer (seconds) as input and returns the time in a human-readable
+	 * format (HH:MM:SS) HH = hours, padded to 2 digits, range: 00 - 99 MM = minutes, padded to 2
+	 * digits, range: 00 - 59 SS = seconds, padded to 2 digits, range: 00 - 59 The maximum time
+	 * never exceeds 359999 (99:59:59)
+	 */
+
+
+	public static String makeTimeReadable(int seconds) {
+		var h = seconds / 3600;
+		var m = (seconds - h * 3600) / 60;
+		var s = seconds - (h * 3600) - (m * 60);
+		return (h > 9 ? "" : "0") + Integer.toString(h) + ":" + (m > 9 ? "" : "0") + Integer.toString(m) + ":"
+				+ (s > 9 ? "" : "0") + Integer.toString(s);
+	}	
 }
 
 /*
