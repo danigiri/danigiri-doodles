@@ -481,6 +481,80 @@ private static Integer simplifyDirections(Deque<String> steps, int height, Map<S
 	return height;
 }
 
+
+/*
+Given an n x n array, return the array elements arranged from outermost elements to the middle element, traveling clockwise.
+
+  array = [[1,2,3],
+           [4,5,6],
+           [7,8,9]]
+  snail(array) #=> [1,2,3,6,9,8,7,4,5]
+  For better understanding, please follow the numbers of the next array consecutively:
+
+  array = [[1,2,3],
+           [8,9,4],
+           [7,6,5]]
+  snail(array) #=> [1,2,3,4,5,6,7,8,9]
+
+  let's move through the array using a pair of variables to increment dx, dy, 
+  deltas = [[+1,0],[0,+1],[-1,0],[0,-1]]    
+  and aof variables to start and end, x0, y0, and those we need to match, also in an array
+  start = [ [0,0],  [w-1,1],  [w-1,h-1],[0,h-2]]
+  end = [   [w-1,0],[w-1,h-1],[0,h-1],  [0,1]]
+
+   0,0   1,0    2,0   3,0  
+    1     2      3     4
+    
+   0,1   1,1    2,1   3,1 
+    12    13     14    5
+
+   0,2   1,2    2,2   3,2
+    11    16     15    6
+                        
+   0,3   1,3    2,3   3,3 
+    10    9      8     7
+                     
+  and then 
+  we can also do four loops and use recursivity
+*/
+
+
+public static int[] snail(int[][] array) {
+	var w = array.length; // 4
+	var h = array[0].length; // 4
+	return snailR(new ArrayList<Integer>(), array, 0, 0, w - 1, 0, w - 1, h - 1, 0, h - 1, w, h).stream()
+			.mapToInt(Integer::intValue).toArray();
+}
+
+
+public static List<Integer> snailR(List<Integer> a, int[][] array, int x0, int y0, int x1, int y1, int x2, int y2,
+		int x3, int y3, int w, int h) {
+
+	// base cases
+	if (w == 0 || h == 0) {
+		return a;
+	}
+
+	// right -->
+	for (int i = x0; i < w; i++) { // i=0;i<
+		a.add(array[y0][i]); //
+	}
+	// down V
+	for (int i = y1 + 1; i < h; i++) { //
+		a.add(array[i][x1]); //
+	}
+	// left <--
+	for (int i = x2 - 1; i > array[0].length - w - 1; i--) {
+		a.add(array[y2][i]); //
+	}
+	// up ^
+	for (int i = y3 - 1; i > array.length - h; i--) { //
+		a.add(array[i][x3]); //
+	}
+	return snailR(a, array, x0 + 1, y0 + 1, x1 - 1, y1 + 1, x2 - 1, y2 - 1, x3 + 1, y3 - 1, w - 1, h - 1); // recursive
+																											// case
+}
+
 }
 
 /*

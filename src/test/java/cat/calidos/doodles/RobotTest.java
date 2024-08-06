@@ -149,6 +149,16 @@ public class RobotTest {
 			Robot.dirReduc(new String[] { "NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH" }));
 	}
 
+	@Test
+	@DisplayName("Snail walk test")
+	public void testSnail() {
+		int[][] array = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+		int[] r = { 1, 2, 3, 6, 9, 8, 7, 4, 5 };
+		assertArrayEquals(r, Robot.snail(array));
+		int[][] array2 = { { 1} };
+		int[] r1 = { 1 };
+		assertArrayEquals(r1, Robot.snail(array2));
+	}
 
 }
 
