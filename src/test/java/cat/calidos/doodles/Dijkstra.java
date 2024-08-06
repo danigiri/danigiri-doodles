@@ -176,13 +176,13 @@ public static int longestSlideDown(int[][] pyramid) {
 
 private static void decreaseKey(PriorityQueue<String> q, String id) {
 	var removed = new ArrayList<String>();
-	while (!q.isEmpty() && !q.peek().equals(id)) {
+	while (!q.peek().equals(id)) {
 		removed.add(q.remove());
 	}
 	// found, we remove and reinsert
-	if (!q.isEmpty()) {
+	//if (!q.isEmpty()) {
 		q.remove();
-	} 
+	//} 
 	q.add(id);// this will use the new distance
 	removed.stream().forEach(v -> q.add(v));
 }

@@ -303,6 +303,46 @@ private static List<String> sentenceFromDictTestRec(String sol, String current, 
 }
 
 
+/*
+ * 
+ * Complete the function scramble(str1, str2) that returns true if a portion of str1 characters can
+ * be rearranged to match str2, otherwise returns false.
+ * 
+ * Notes:
+ * 
+ * Only lower case letters will be used (a-z). No punctuation or digits will be included.
+ * Performance needs to be considered. Examples
+ * 
+ * scramble('rkqodlw', 'world') ==> True scramble('cedewaraaossoqqyt', 'codewars') ==> True
+ * scramble('katas', 'steak') ==> False
+ * 
+ * given a-z, we will use char ints in an array count the number of occurences in str2 go through
+ * str1, decrement, we should have no >0's in the count
+ * 
+ * 
+ */
+
+
+public static boolean scramble(String str1, String str2) {
+	var counts = new int[26];
+	for (int i = 0; i < 26; i++) {
+		counts[i] = 0;
+	}
+	for (int i = 0; i < str2.length(); i++) {
+		counts[(int) str2.charAt(i) - (int) 'a'] += 1;
+	}
+	for (int i = 0; i < str1.length(); i++) {
+		counts[(int) str1.charAt(i) - (int) 'a'] -= 1;
+	}
+	var i = 0;
+	var missing = false;
+	while (i < 26 && !missing) {
+		missing = counts[i++] > 0;
+	}
+	return !missing;
+}
+
+
 // 16.20 implement an algorithm to return a list of matching words, given a sequence of digits
 // you are provided a list of valid words in any way you like
 /*

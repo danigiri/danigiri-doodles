@@ -184,6 +184,21 @@ public void sentenceFromDictTest() {
 	
 }
 
+
+@Test
+public void scrambleTest() {
+
+	assertTrue(Words.scramble("rkqodlw", "world"));
+	assertFalse(Words.scramble("katas", "steak"));
+	assertFalse(Words.scramble("scriptjavx", "javascript"));
+	assertTrue(Words.scramble("scriptingjava", "javascript"));
+	assertTrue(Words.scramble("scriptsjava", "javascripts"));
+	assertFalse(Words.scramble("javscripts", "javascript"));
+	assertTrue(Words.scramble("aabbcamaomsccdd", "commas"));
+	assertTrue(Words.scramble("commas", "commas"));
+	assertTrue(Words.scramble("sammoc", "commas"));
+}
+
 }
 
 /**
