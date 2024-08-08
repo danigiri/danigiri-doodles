@@ -926,6 +926,126 @@ decrement exponential
 		int i = s.indexOf("-");
 		return (i >= 0) ? digits.get(s.substring(0, i)) + digits.get(s.substring(i + 1)) : digits.get(s);
 	}
+
+	
+	/*
+	 n=7, k=3 => means 7 people in a circle
+one every 3 is eliminated until one remains
+[1,2,3,4,5,6,7] - initial sequence
+[1,2,4,5,6,7] => 3 is counted out
+[1,2,4,5,7] => 6 is counted out
+[1,4,5,7] => 2 is counted out
+[1,4,5] => 7 is counted out
+[1,4] => 5 is counted out
+[4] => 1 counted out, 4 is the last element - the survivor!
+
+	n=7, k = 10
+	[1*,2,3,4,5,6,7] --> del 3
+	[1,2,4*,5,6,7] --> del 7
+	[1*,2,4,5,6] --> del 6
+	[1*,2,4,5] --> del 2 
+	[1,4*,5] --> del 4 
+	[1,5*] --> del 1 
+	[5]
+	 */
+	
+class CircularNode {
+
+public CircularNode prev;
+public CircularNode next;
+public int		val;
+
+public CircularNode(int val) {
+	this.val = val;
+	this.prev = this;
+	this.next = this;
+}
+
+
+public CircularNode(int val, CircularNode prev, CircularNode next) {
+	this.prev = prev;
+	this.next = next;
+	this.val = val;
+}
+
+
+public boolean isSingleNode() {
+	return this.prev == this.next && this.prev == this;
+}
+
+
+public CircularNode insertNext(int val) {
+	var prevNext = this.next;
+	var n = new CircularNode(val, this, prevNext);
+	this.next = n;
+	return n;
+}
+
+
+public CircularNode insertPrev(int val) {
+	var prevPrev = this.prev;
+	var n = new CircularNode(val, prevPrev, this);
+	this.prev = n;
+	return n;
+}
+
+
+public CircularNode remove() {
+	var prevPrev = this.prev;
+	var prevNext = this.next;
+	prevPrev.next = prevNext;
+	prevNext.prev = prevPrev;
+	return prevPrev;
+	//return prevNext;
+}
+
+public int size() {
+	var size = 0;
+	var n = this.next;
+	while (n!=this) {
+		size++;
+		n = n.next;
+	}
+	return size;
+}
+
+@Override
+public String toString() {
+	var s = new StringBuffer();
+	s.append("["+val+"]");
+	var n = this.next;
+	while (n!=this) {
+		s.append(","+n.val);
+		n = n.next;
+	} 
+	return s.toString();
+}
+
+
+}
+
+
+public static int josephusSurvivor(final int n, int k) {
+	// System.out.println("N="+n+",K="+k+"-------------------------------");
+	var q = (new Maths()).new CircularNode(1);
+	for (var i = 2; i <= n; i++) { // [1],2],3],4],5],6],7]
+		q = q.insertNext(i);
+	} // at the end of the loop, q points to the last element and not the first
+	var remaining = n;
+	while (!q.isSingleNode()) {
+		// System.out.print("remaining="+remaining+", size="+q.size());
+		var skipped = 0;
+		for (var skipping = k; skipping > 0; skipping--) { // as we are always one previous, we skip k elements
+			q = q.next;
+			skipped++;
+		}
+		// System.out.println(", skipped="+skipped+", removing="+q.val);
+		q = q.remove(); // points to the previous element
+		remaining--;
+	}
+	return q.val;
+}
+
 }
 
 /*

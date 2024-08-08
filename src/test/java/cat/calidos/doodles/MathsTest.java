@@ -444,6 +444,40 @@ public void parseWordsToIntTest() {
 }
 
 
+@Test
+public void josephusSurvivorTest() {
+	assertEquals(4, Maths.josephusSurvivor(7, 3));
+	// 1 2 3 4 5 6 7
+	/*
+	n=7, k = 10
+	[1*,2,3,4,5,6,7] --> del 3
+	[1,2,4*,5,6,7] --> del 7
+	[1*,2,4,5,6] --> del 6
+	[1*,2,4,5] --> del 2 
+	[1,4*,5] --> del 4 
+	[1,5*] --> del 1 
+	[5]
+	*/ 
+	assertEquals(5, Maths.josephusSurvivor(7, 10));
+	
+	/*
+	n=6, k=8
+	[1*,2,3,4,5,6] -> del 2 (c=0, pos = 1) (8%6=2), r=6 --> 1 hop	, 6%8
+	[1,3*,4,5,6] -> del 5   (c=1, pos = 3) (8%5=3), r=5 --> 2 hops
+	[1,3,4,6*] -> del 4     (c=3, pos = 2) (8%4=0), r=4 --> 3 hops
+	[1,3,6*] -> del 6       (c=2, pos = 2) (8%3=1), r=3 --> 3 hops
+	[1*,3] -> del 3         (c=0, pos = 1) (8%2=0), r=2 --> 1 hop
+	[1]
+
+	 */
+	assertEquals(1, Maths.josephusSurvivor(6, 8));
+	assertEquals(10, Maths.josephusSurvivor(11, 19));
+	assertEquals(28, Maths.josephusSurvivor(40, 3));
+	assertEquals(13, Maths.josephusSurvivor(14, 2));
+	// assertEquals(15, Maths.josephusSurvivor(344, 4756));
+
+}
+
 }
 /*
  * Copyright 2024 Daniel Giribet <dani - calidos.cat>
