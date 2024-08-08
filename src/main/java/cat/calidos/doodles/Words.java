@@ -343,6 +343,46 @@ public static boolean scramble(String str1, String str2) {
 }
 
 
+/*
+
+Given strings s1, s2, and s3, find whether s3 is formed by an interleaving of s1 and s2.
+
+An interleaving of two strings s and t is a configuration where s and t are divided into n and m 
+substrings
+ respectively, such that:
+
+s = s1 + s2 + ... + sn
+t = t1 + t2 + ... + tm
+|n - m| <= 1
+The interleaving is s1 + t1 + s2 + t2 + s3 + t3 + ... or t1 + s1 + t2 + s2 + t3 + s3 + ...
+Note: a + b is the concatenation of strings a and b.
+
+ */
+public static boolean interleaving(String s1, String s2, String s3) {
+	return interleavingR(s1, s2, 0, 0, s3, 0, s1.length(), s2.length(), s3.length());
+}
+
+
+public static boolean interleavingR(String s1, String s2, int index1, int index2, String s3, int index3, int s1Length, int s2Length, int s3Length) {
+	// base cases
+	if (s1Length - index1 + s2Length - index2 != s3Length - index3) { // invariant, remaining lengths
+		return false;
+	}
+	if (index3 == s3Length) { // we reached the end
+		return true;
+	}
+	// recursive cases
+	var left = false;
+	var right = false;
+	if (index1<s1Length && s1.charAt(index1) == s3.charAt(index3)) {
+		left = interleavingR(s1, s2, index1 + 1, index2, s3, index3 + 1, s1Length, s2Length, s3Length);
+	}
+	if (!left && index2<s2Length && s2.charAt(index2) == s3.charAt(index3)) {
+		right = interleavingR(s1, s2, index1, index2 + 1, s3, index3 + 1, s1Length, s2Length, s3Length);
+	}
+	return left || right;
+}
+
 // 16.20 implement an algorithm to return a list of matching words, given a sequence of digits
 // you are provided a list of valid words in any way you like
 /*

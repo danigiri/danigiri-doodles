@@ -187,7 +187,6 @@ public void sentenceFromDictTest() {
 
 @Test
 public void scrambleTest() {
-
 	assertTrue(Words.scramble("rkqodlw", "world"));
 	assertFalse(Words.scramble("katas", "steak"));
 	assertFalse(Words.scramble("scriptjavx", "javascript"));
@@ -197,6 +196,20 @@ public void scrambleTest() {
 	assertTrue(Words.scramble("aabbcamaomsccdd", "commas"));
 	assertTrue(Words.scramble("commas", "commas"));
 	assertTrue(Words.scramble("sammoc", "commas"));
+}
+
+@Test
+public void interleavingTest() {
+	assertTrue(Words.interleaving("", "", ""));
+	assertTrue(Words.interleaving("a", "", "a"));
+	assertTrue(Words.interleaving("", "a", "a"));
+	assertFalse(Words.interleaving("", "", "a"));
+	assertTrue(Words.interleaving("a", "b", "ab"));
+	assertTrue(Words.interleaving("a", "b", "ba"));
+	assertTrue(Words.interleaving("b", "a", "ab"));
+	assertTrue(Words.interleaving("b", "a", "ba"));
+	assertTrue(Words.interleaving("aaaz", "aabax", "aabaaaazx"));
+	assertFalse(Words.interleaving("aaaza", "aabax", "aaabaaaazx"));
 }
 
 }
