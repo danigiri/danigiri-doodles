@@ -432,6 +432,18 @@ public void makeTimeReadableTest() {
 	assertEquals("99:59:59", Maths.makeTimeReadable(359999));
 }
 
+
+@Test
+public void parseWordsToIntTest() {
+	assertEquals(1, Maths.parseWordsToInt("one"));
+	assertEquals(20, Maths.parseWordsToInt("twenty"));
+	assertEquals(21, Maths.parseWordsToInt("twenty-one"));
+	assertEquals(246, Maths.parseWordsToInt("two hundred and forty-six"));
+	assertEquals(200001, Maths.parseWordsToInt("two hundred thousand and one"));
+	assertEquals(783919, Maths.parseWordsToInt("seven hundred eighty-three thousand nine hundred and nineteen"));
+}
+
+
 }
 /*
  * Copyright 2024 Daniel Giribet <dani - calidos.cat>

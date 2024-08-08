@@ -820,7 +820,112 @@ decrement exponential
 		var s = seconds - (h * 3600) - (m * 60);
 		return (h > 9 ? "" : "0") + Integer.toString(h) + ":" + (m > 9 ? "" : "0") + Integer.toString(m) + ":"
 				+ (s > 9 ? "" : "0") + Integer.toString(s);
-	}	
+	}
+	
+	/*
+	 * 
+	 * convert a string into an integer. The strings simply represent the numbers in words.
+	 * Examples:
+	 * 
+	 * "one" => 1 "twenty" => 20 "two hundred forty-six" => 246
+	 * "seven hundred eighty-three thousand nine hundred and nineteen" => 783919 Additional Notes:
+	 * 
+	 * The minimum number is "zero" (inclusively) The maximum number, which must be supported is 1
+	 * million (inclusively) The "and" in e.g. "one hundred and twenty-four" is optional, in some
+	 * cases it's present and in others it's not All tested numbers are valid, you don't need to
+	 * validate them
+	 * 
+	 * val = 0 cases, start from right digit, mag=X --> val+=digit*mag newmag, newmag>mag -->
+	 * mag=100 newmag, newmag<=mag --> newmag*100
+	 * 
+	 */
+
+
+	public static int parseWordsToInt(String numStr) {
+
+		var digits = new HashMap<String, Integer>();
+		digits.put("zero", 0);
+		digits.put("one", 1);
+		digits.put("two", 2);
+		digits.put("three", 3);
+		digits.put("four", 4);
+		digits.put("five", 5);
+		digits.put("six", 6);
+		digits.put("seven", 7);
+		digits.put("eight", 8);
+		digits.put("nine", 9);
+		digits.put("ten", 10);
+		digits.put("eleven", 11);
+		digits.put("twelve", 12);
+		digits.put("thirteen", 13);
+		digits.put("fourteen", 14);
+		digits.put("fifteen", 15);
+		digits.put("sixteen", 16);
+		digits.put("seventeen", 17);
+		digits.put("eighteen", 18);
+		digits.put("nineteen", 19);
+		digits.put("twenty", 20);
+		digits.put("thirty", 30);
+		digits.put("forty", 40);
+		digits.put("fifty", 50);
+		digits.put("sixty", 60);
+		digits.put("seventy", 70);
+		digits.put("eighty", 80);
+		digits.put("ninety", 90);
+		digits.put("hundred", 100);
+		digits.put("thousand", 1000);
+		digits.put("million", 1000000);
+
+		var value = 0;
+		var mag = 1;
+		List<String> words = stringToWords(numStr);
+		for (var i = words.size() - 1; i >= 0; i--) {
+			var w = words.get(i);
+			if (w.equals("and")) {
+				continue;
+			}
+			var current = wordToNumber(w, digits);
+			if (current < 100) {
+				value += current * mag;
+			} else if (current > mag) {
+				mag = current;
+			} else { // hundred thousand
+				mag = mag * current;
+			}
+		}
+
+		return value;
+	}
+
+
+	public static List<String> stringToWords(String s) {
+		var words = new ArrayList<String>();
+		StringBuffer w = null;
+		for (int i = 0; i < s.length(); i++) {
+			var c = s.charAt(i);
+			if (c == ' ') {
+				if (w != null) {
+					words.add(w.toString());
+					w = null;
+				}
+			} else {
+				if (w == null) {
+					w = new StringBuffer();
+				}
+				w.append(c);
+			}
+		}
+		if (w != null) { // last word
+			words.add(w.toString());
+		}
+		return words;
+	}
+
+
+	public static int wordToNumber(String s, Map<String, Integer> digits) {
+		int i = s.indexOf("-");
+		return (i >= 0) ? digits.get(s.substring(0, i)) + digits.get(s.substring(i + 1)) : digits.get(s);
+	}
 }
 
 /*
