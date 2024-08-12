@@ -975,22 +975,24 @@ public boolean isSingleNode() {
 
 
 public CircularNode insertNext(int val) {
-	var prevNext = this.next;
-	var n = new CircularNode(val, this, prevNext);
+	CircularNode n = null;
+	if (isSingleNode()) {
+		n = new CircularNode(val, this, this);
+		this.prev = n;
+	} else {
+		n = new CircularNode(val, this, this.next);
+		this.next.prev = n;
+	}
 	this.next = n;
 	return n;
 }
 
 
-public CircularNode insertPrev(int val) {
-	var prevPrev = this.prev;
-	var n = new CircularNode(val, prevPrev, this);
-	this.prev = n;
-	return n;
-}
-
-
 public CircularNode remove() {
+	var wasTwoNodes = this.next == this.prev;
+	if (wasTwoNodes) {
+		return new CircularNode(this.next.val);
+	}
 	var prevPrev = this.prev;
 	var prevNext = this.next;
 	prevPrev.next = prevNext;
@@ -1026,24 +1028,39 @@ public String toString() {
 
 
 public static int josephusSurvivor(final int n, int k) {
-	// System.out.println("N="+n+",K="+k+"-------------------------------");
 	var q = (new Maths()).new CircularNode(1);
-	for (var i = 2; i <= n; i++) { // [1],2],3],4],5],6],7]
+	for (var i = 2; i <= n; i++) {
 		q = q.insertNext(i);
 	} // at the end of the loop, q points to the last element and not the first
 	var remaining = n;
 	while (!q.isSingleNode()) {
-		// System.out.print("remaining="+remaining+", size="+q.size());
 		var skipped = 0;
-		for (var skipping = k; skipping > 0; skipping--) { // as we are always one previous, we skip k elements
+		for (var skipping = k%remaining; skipping > 0; skipping--) { // as we are always one previous, we skip k elements
 			q = q.next;
 			skipped++;
 		}
-		// System.out.println(", skipped="+skipped+", removing="+q.val);
 		q = q.remove(); // points to the previous element
 		remaining--;
 	}
 	return q.val;
+}
+
+
+/* double every other int (in streams for fun) */
+public static int[] doubleEveryOther(int[] a) {
+	var even = new java.util.HashSet<Boolean>(1);
+	even.add(true);
+	return java.util.Arrays.stream(a).map(e -> {
+		var v = even.contains(true) ? e : e * 2;
+		if (even.contains(true)) {
+			even.remove(true);
+			even.add(false);
+		} else {
+			even.remove(false);
+			even.add(true);
+		}
+		return v;
+	}).toArray();
 }
 
 }

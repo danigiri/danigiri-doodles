@@ -465,18 +465,26 @@ public void josephusSurvivorTest() {
 	[1*,2,3,4,5,6] -> del 2 (c=0, pos = 1) (8%6=2), r=6 --> 1 hop	, 6%8
 	[1,3*,4,5,6] -> del 5   (c=1, pos = 3) (8%5=3), r=5 --> 2 hops
 	[1,3,4,6*] -> del 4     (c=3, pos = 2) (8%4=0), r=4 --> 3 hops
-	[1,3,6*] -> del 6       (c=2, pos = 2) (8%3=1), r=3 --> 3 hops
-	[1*,3] -> del 3         (c=0, pos = 1) (8%2=0), r=2 --> 1 hop
-	[1]
-
+	[1,3,6*] -> del 1       
+	[3*, 6] -> del 6        
+	[3]
 	 */
-	assertEquals(1, Maths.josephusSurvivor(6, 8));
+	assertEquals(3, Maths.josephusSurvivor(6, 8));
 	assertEquals(10, Maths.josephusSurvivor(11, 19));
 	assertEquals(28, Maths.josephusSurvivor(40, 3));
 	assertEquals(13, Maths.josephusSurvivor(14, 2));
-	// assertEquals(15, Maths.josephusSurvivor(344, 4756));
-
+	assertEquals(10, Maths.josephusSurvivor(10, 1));
+	assertEquals(15, Maths.josephusSurvivor(344, 4756));
 }
+
+
+@Test
+public void doubleEveryOtherTest() {
+	assertArrayEquals(new int[] { 1, 4, 3, 8 }, Maths.doubleEveryOther(new int[] { 1, 2, 3, 4 }));
+	assertArrayEquals(new int[] { 1, 38, 6, 4, 12, -6 }, Maths.doubleEveryOther(new int[] { 1, 19, 6, 2, 12, -3 }));
+	assertArrayEquals(new int[] {-1000, 3306, 210, 0, 1}, Maths.doubleEveryOther(new int[] {-1000, 1653, 210, 0, 1}));
+}
+
 
 }
 /*
