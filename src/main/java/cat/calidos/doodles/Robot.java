@@ -3,6 +3,7 @@ package cat.calidos.doodles;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.IntStream;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
@@ -554,6 +555,79 @@ public static List<Integer> snailR(List<Integer> a, int[][] array, int x0, int y
 	return snailR(a, array, x0 + 1, y0 + 1, x1 - 1, y1 + 1, x2 - 1, y2 - 1, x3 + 1, y3 - 1, w - 1, h - 1); // recursive
 																											// case
 }
+
+
+/*
+ * create a NxN spiral with a given size. For example, spiral with size 5 should look like this:
+ * 
+ * 00000 ....0 000.0 0...0 00000
+ * 
+ * first we init to zero let's create a static direction then let's create a direction move counter
+ * finishing condition: when all direction move counts are zero
+ * 
+ */
+
+class RowCol {
+
+public int	row	= 0;
+public int	col	= 0;
+
+RowCol(int r, int c) {
+	this.row = r;
+	this.col = c;
+}
+
+@Override
+public String toString() {
+	// TODO Auto-generated method stub
+	return "{r:"+row+",c:"+col+"}";
+}
+
+}
+
+public static int[][] spiralize(int size) {
+	int[][] rows = new int[size][size]; // defaults to zero
+	if (size>0) {
+		var t = new Robot();
+		var dirs = new RowCol[] { t.new RowCol(0, 1), t.new RowCol(1, 0), t.new RowCol(0, -1), t.new RowCol(-1, 0) };
+		rows = spiralizeR(rows, 0, 0, dirs, 0);
+	}
+	return rows;
+}
+
+
+public static int[][] spiralizeR(int[][] s, int r, int c, RowCol[] dirs, int dir) {
+	s[r][c] = 1; // invariant, this is always valid
+	if (spiralizeNeedToTurn(s, r, c, dirs, dir)) {
+		dir = (dir+1) % 4;
+		if (spiralizeIsFinished(s, r, c, dirs, dir)) {
+			return s;
+		}
+	}
+	return spiralizeR(s, r+dirs[dir].row, c+dirs[dir].col, dirs, dir);
+}
+
+
+private static boolean spiralizeIsFinished(int[][] s, int r, int c, RowCol[] dirs, int dir) {
+	var rd = r+dirs[dir].row+dirs[(dir+1)%4].row;
+	var cd = c+dirs[dir].col+dirs[(dir+1)%4].col;
+	return s[rd][cd] == 1 || spiralizeNeedToTurn(s, r, c, dirs, dir);
+}
+
+
+private static boolean spiralizeNeedToTurn(int[][] s, int r, int c, RowCol[] dirs, int dir) {
+	if (r==0 && dir==0) { // first row
+		return c==s.length-1;
+	} else if (c==s.length-1 && dir==1) { // first col
+		return r==s.length-1;
+	} else if (r==s.length-1 && dir==2) { // first row back
+		return c==0;
+	} else { // look two ahead for a 1
+		return s[r+(dirs[dir].row)*2][c+(dirs[dir].col)*2]==1;
+	}
+}
+
+
 
 }
 

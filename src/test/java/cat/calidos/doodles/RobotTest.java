@@ -149,6 +149,7 @@ public class RobotTest {
 			Robot.dirReduc(new String[] { "NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH" }));
 	}
 
+	
 	@Test
 	@DisplayName("Snail walk test")
 	public void testSnail() {
@@ -159,6 +160,81 @@ public class RobotTest {
 		int[] r1 = { 1 };
 		assertArrayEquals(r1, Robot.snail(array2));
 	}
+
+
+@Test
+@DisplayName("Spiralize test")
+public void testSpiralize() {
+	/*
+	 
+	 */
+	assertArrayEquals(new int[][] { { 1, 1, 1, 1, 1 },	// 0
+									{ 0, 0, 0, 0, 1 },	// 1
+									{ 1, 1, 1, 0, 1 },	// 2
+									{ 1, 0, 0, 0, 1 },	// 3
+									{ 1, 1, 1, 1, 1 } },// 4
+	Robot.spiralize(5));
+
+	int[][] spiral = Robot.spiralize(8);
+	for (int i=0; i<spiral.length; i++) {
+		for (int j=0;j<spiral.length; j++) {
+			System.out.print(spiral[i][j]+",");
+		}
+		System.out.println();
+	}
+	
+	/*
+		7, 7, 7, 5 
+		5, 3, 3, 1
+		0, 0, 0, 0
+
+		0 --> 10
+		9 --> 10
+		2 --> 
+
+
+	9, 9, 9, 7
+	7, 5, 5, 3
+	3, 1, 0, 0,
+	
+		0       4		  9
+	0	1 1 1 1 1 1 1 1 1 1 0  	-> 10
+	1	0 0 0 0 0 0 0 0 0 1    	-> 1
+	2	1 1 1 1 1 1 1 1 0 1    	-> 9
+	3	1 0 0 0 0 0 0 1 0 1    	-> 3
+    4   1 0 1 1 1 1 0 1 0 1 4  	-> 7
+    5   1 0 1 0 0 1 0 1 0 1		-> 5
+    6   1 0 1 0 0 0 0 1 0 1		-> 4
+    7   1 0 1 1 1 1 1 1 0 1		-> 8
+    8   1 0 0 0 0 0 0 0 0 1		-> 2
+    9	1 1 1 1 1 1 1 1 1 1 9	-> 10
+
+total: 10+1+9+3+7+5+4+8+2+10 = 59 for size 10
+
+	0	1 1 1 1 1 1 1 1 1 1 0  	-> 10
+    9	1 1 1 1 1 1 1 1 1 1 9	-> 10
+	2	1 1 1 1 1 1 1 1 0 1    	-> 9
+    7   1 0 1 1 1 1 1 1 0 1		-> 8
+    4   1 0 1 1 1 1 0 1 0 1 4  	-> 7
+    5   1 0 1 0 0 1 0 1 0 1		-> 5
+    6   1 0 1 0 0 0 0 1 0 1		-> 4
+	3	1 0 0 0 0 0 0 1 0 1    	-> 3
+    8   1 0 0 0 0 0 0 0 0 1		-> 2
+	1	0 0 0 0 0 0 0 0 0 1    	-> 1
+                          
+                          
+	 */
+	// 39 for size 8
+	assertArrayEquals(new int[][] {	{ 1, 1, 1, 1, 1, 1, 1, 1 }, // 0
+									{ 0, 0, 0, 0, 0, 0, 0, 1 }, // 1
+									{ 1, 1, 1, 1, 1, 1, 0, 1 }, // 2
+									{ 1, 0, 0, 0, 0, 1, 0, 1 }, // 3
+									{ 1, 0, 1, 0, 0, 1, 0, 1 }, // 4
+									{ 1, 0, 1, 1, 1, 1, 0, 1 }, // 5
+									{ 1, 0, 0, 0, 0, 0, 0, 1 }, // 6
+									{ 1, 1, 1, 1, 1, 1, 1, 1 } },//7
+			spiral);
+}
 
 }
 
