@@ -42,7 +42,7 @@ public void WordBreakBasicTest() {
 	assertTrue(Words.seg("xyaba", dict));
 	assertTrue(Words.seg("aaaaaaa", dict));
 	assertFalse(Words.seg("aaxaa", dict));
-	
+
 	dict = new HashSet<String>(5);
 	dict.add("abc");
 	dict.add("abd");
@@ -212,8 +212,23 @@ public void interleavingTest() {
 	assertFalse(Words.interleaving("aaaza", "aabax", "aaabaaaazx"));
 }
 
+
+@Test
+public void top3Test() {
+	List<String> 
+	/*actual = Words.top3("a a a  b  c c  d d d d  e e e e e");
+	assertEquals(List.of("e", "d", "a"), actual);
+
+	actual = Words.top3("e e e e DDD ddd DdD: ddd ddd aa aA Aa, bb cc cC e e e");
+	assertEquals(List.of("e", "ddd", "aa"), actual);
+*/
+	actual = Words.top3("'a 'A 'a' a'A' a'a'!");
+	assertTrue(actual.equals(List.of("'a", "a'a'", "'a'")) || actual.equals(List.of("a'a'","'a", "'a'")));
+	
+//	assertThat(TopWords.top3("'a 'A 'a' a'A' a'a'!")).isIn(List.of("'a", "a'a'", "'a'")
 }
 
+}
 /**
  Copyright 2024 Daniel Giribet <dani - calidos.cat>
 

@@ -383,6 +383,90 @@ public static boolean interleavingR(String s1, String s2, int index1, int index2
 	return left || right;
 }
 
+
+/*
+ * given a string of text (possibly with punctuation and line-breaks), returns an array of the top-3
+ * most occurring words, in descending order of the number of occurrences.
+ * 
+ * Assumptions:
+ * 
+ * - A word is a string of letters (A to Z) optionally containing one or more apostrophes (') in
+ * ASCII. - Apostrophes can appear at the start, middle or end of a word ('abc, abc', 'abc', ab'c
+ * are all valid) - Any other characters (e.g. #, \, / , . ...) are not part of a word and should be
+ * treated as whitespace. - Matches should be case-insensitive, and the words in the result should
+ * be lowercased. - Ties may be broken arbitrarily. - If a text contains fewer than three unique
+ * words, then either the top-2 or top-1 words should be returned, or an empty array if a text
+ * contains no words.
+ * 
+ * we keep a map of word --> count we accumulate the current word we sort it and return the topmost
+ * words
+ * 
+ */
+
+
+public static List<String> top3(String s) {
+	var counts = new java.util.HashMap<String, Integer>();
+	var i = 0;
+	while (i < s.length()) {
+		var b = new StringBuffer();
+		i = readWord(s, b, i);
+		if (!b.isEmpty()) {
+			var current = b.toString().toLowerCase();
+			if (!isAllQuotes(current)) {
+				var count = counts.get(current);
+				counts.put(current, count == null ? 1 : count + 1);
+			}
+		}
+	}
+	String[] words = counts.keySet().toArray(new String[0]);
+	java.util.Arrays.sort(words, (a,b) -> (counts.get(b)).compareTo(counts.get(a)));
+	var top = new java.util.ArrayList<String>(3);
+	i = 0;
+	for (var j = 0; j<Math.min(3, words.length);j++) {
+		top.add(words[j]);
+	}
+	return top;
+}
+
+
+// returns the index and the word is stored in the stringBuffer
+private static int readWord(String s, StringBuffer b, int i) {
+	var isWhitespace = true;
+	char c = ' ';
+	while (isWhitespace && i < s.length()) {
+		c = s.charAt(i);
+		isWhitespace = !isWordChar(c);
+		i++;
+	}
+	while (!isWhitespace && i < s.length()) {
+		b.append(c);
+		c = s.charAt(i);
+		isWhitespace = !isWordChar(c);
+		i++;
+	}
+	if (!isWhitespace && i == s.length()) { // last char
+		b.append(c);
+	}
+	return i;
+}
+
+
+private static boolean isAllQuotes(String s) {
+	for (var i = 0; i<s.length();i++) {
+		if (s.charAt(i)!='\'') {
+			return false;
+		}
+	}
+	return true;
+}
+
+
+private static boolean isWordChar(char c) {
+	var cInt = (int) c;
+	return (c == '\'' || ((int) 'a' <= cInt && cInt <= (int) 'z') || ((int) 'A' <= cInt && cInt <= (int) 'Z'));
+}
+
+
 // 16.20 implement an algorithm to return a list of matching words, given a sequence of digits
 // you are provided a list of valid words in any way you like
 /*
