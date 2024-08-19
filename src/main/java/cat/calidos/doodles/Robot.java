@@ -560,10 +560,13 @@ public static List<Integer> snailR(List<Integer> a, int[][] array, int x0, int y
 /*
  * create a NxN spiral with a given size. For example, spiral with size 5 should look like this:
  * 
- * 00000 ....0 000.0 0...0 00000
- * 
- * first we init to zero let's create a static direction then let's create a direction move counter
- * finishing condition: when all direction move counts are zero
+ * 11111
+ * 00001
+ * 11101
+ * 10001
+ * 11111
+	we advance in a direction, find if we have to turn, then turn
+	we know when we finished as we have to do two turns in a row or we have something to our right
  * 
  */
 
