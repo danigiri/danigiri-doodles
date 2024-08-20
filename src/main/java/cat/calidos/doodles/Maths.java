@@ -1063,6 +1063,100 @@ public static int[] doubleEveryOther(int[] a) {
 	}).toArray();
 }
 
+
+/*
+ * return 0 if number is not interesting, 1 if the number + 2 is interesting, and 2 if it's
+ * interesting
+ * 
+ * Interesting numbers are 3-or-more digit numbers that meet one or more of the following criteria:
+ * - Any digit followed by all zeros: 100, 90000 - Every digit is the same number: 1111 - The digits
+ * are sequential, incementing†: 1234 - The digits are sequential, decrementing‡: 4321 - The digits
+ * are a palindrome: 1221 or 73837 - The digits match one of the values in the awesomePhrases array
+ * (provided as an extra parameter, can be empty)
+ * 
+ * † For incrementing sequences, 0 should come after 9, and not before 1, as in 7890. ‡ For
+ * decrementing sequences, 0 should come after 1, and not before 9, as in 3210.
+ * 
+ * strategy: look for number in the awesome array look for >=100 convert to digit array reset all
+ * criteria create digit array for the palindrome calculation while any criteria match - calculate
+ * criteria
+ * 
+ * palindrome length of 1221 =4, n/4 h=2 while i<h stack up, when i>=h, unstack, if stack empty -->
+ * palindrome 73837, n=5, n/5, h=2, 7,3, if n %2 ==1 and i=h --> skip
+ * 
+ * call for number+2
+ * 
+ */
+
+
+public static int isInteresting(int number, int[] awesomePhrases) {
+
+	var isInteresting = isInterestingR(number, awesomePhrases);
+	if (!isInteresting) {
+		return isInterestingR(number + 1, awesomePhrases) || isInterestingR(number + 2, awesomePhrases)? 1 : 0;
+	}
+	return 2;
+}
+
+
+public static boolean isInterestingR(int number, int[] awesomePhrases) {
+	if (number < 100) {
+		return false;
+	}
+	var found = false;
+	var i = 0;
+	while (!found && i < awesomePhrases.length) {
+		found = awesomePhrases[i++] == number;
+	}
+	if (found) {
+		return true;
+	}
+
+	var digits = new java.util.LinkedList<Integer>();
+	var n = 0;
+	while (number > 0) {
+		digits.add(number % 10);
+		number = number / 10;
+		n++;
+	}
+	// 12345, --> 5,4,3,2,1, so we remove the last to iterate
+
+
+	// handle the first digit
+	int digit = digits.removeLast();
+	var allZeros = true;
+	int sameNumber = digit;
+	int incrementing = digit;
+	int decrementing = digit;
+	var palindrome = new java.util.Stack<Integer>();
+	i = 1;
+	palindrome.push(digit);
+
+	while (!digits.isEmpty()
+			&& (allZeros || digit == sameNumber || incrementing != -1 || decrementing != -1 || palindrome != null)) {
+		digit = digits.removeLast();
+		allZeros = allZeros && digit == 0;
+		sameNumber = sameNumber == digit ? digit : -1;
+		incrementing = incrementing != -1 && (incrementing + 1) % 10 == digit ? digit : -1;
+		// 7890 --> 7+1 == 8, 8+1 == 9, 9+1 == 10%0 == 0, ok
+		if (decrementing !=-1) {
+			decrementing = decrementing - 1 < 0 ? 9 : decrementing - 1;
+			decrementing = decrementing == digit ? digit : -1;
+		}
+		if (i < n / 2) {
+			palindrome.push(digit);
+		} else if (n % 2 == 1 && i == n / 2) {
+			// skip
+		} else if (palindrome != null) {
+			var prev = palindrome.pop();
+			palindrome = prev == digit ? palindrome : null;
+		}
+		i++;
+	}
+
+	return allZeros || digit == sameNumber || incrementing != -1 || decrementing != -1 || palindrome != null;
+}
+
 }
 
 /*

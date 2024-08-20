@@ -325,6 +325,7 @@ public void addTest() {
 
 }
 
+
 @Test @DisplayName("Substract test")
 public void substrac2tTest() {
 
@@ -333,6 +334,7 @@ public void substrac2tTest() {
 	assertEquals(-3, Maths.subtract2(1, 4));
 
 }
+
 
 @Test @DisplayName("Multiply without a * test (2)")
 public void multiply2Test() {
@@ -485,6 +487,24 @@ public void doubleEveryOtherTest() {
 	assertArrayEquals(new int[] {-1000, 3306, 210, 0, 1}, Maths.doubleEveryOther(new int[] {-1000, 1653, 210, 0, 1}));
 }
 
+
+@Test
+public void isInterestingNumberTest() {
+
+	assertEquals(2, Maths.isInteresting(121, new int[] { 1337, 256 }));
+	assertEquals(2, Maths.isInteresting(1221, new int[] { 1337, 256 }));
+	assertEquals(2, Maths.isInteresting(1234567890, new int[] { 1337, 256 }));
+	assertEquals(2, Maths.isInteresting(901, new int[] { 1337, 256 }));
+	assertEquals(2, Maths.isInteresting(1234, new int[] { 1337, 256 }));
+	assertEquals(2, Maths.isInteresting(123, new int[] { 1337, 256 }));
+	assertEquals(0, Maths.isInteresting(3, new int[] { 1337, 256 }));
+	assertEquals(1, Maths.isInteresting(1336, new int[] { 1337, 256 }));
+	assertEquals(2, Maths.isInteresting(1337, new int[] { 1337, 256 }));
+	assertEquals(0, Maths.isInteresting(11208, new int[] { 1337, 256 }));
+	assertEquals(1, Maths.isInteresting(11209, new int[] { 1337, 256 }));
+	assertEquals(2, Maths.isInteresting(11211, new int[] { 1337, 256 }));
+
+}
 
 }
 /*
