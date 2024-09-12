@@ -467,6 +467,74 @@ private static boolean isWordChar(char c) {
 }
 
 
+/*
+ * 
+ * code strips all text that follows any of a set of comment markers passed in. Any whitespace at
+ * the end of the line should also be stripped out.
+ * 
+ * Example:
+ * 
+ * Given an input string of:
+ * 
+ * apples, pears # and 
+ * bananas grapes bananas !apples 
+ * 
+ * The output expected would be:
+ * 
+ * apples, pears
+ * grapes bananas
+ * 
+ * Strategy create a set of comment symbols look for them also store the last time we had a
+ * non-whitespace, non-comment strip from last time to end
+ * 
+ * i am in these possible states VALID SKIPPING
+ * 
+ * first we create a list of sentences, without the comments
+ * 
+ */
+
+public static String stripComments(String text, String[] commentSymbols) {
+	var symbols = new java.util.HashSet<Character>(commentSymbols.length);
+	for (String symbol : commentSymbols) {
+		symbols.add(symbol.charAt(0));
+	}
+	var i = 0;
+	var n = text.length();
+	var out = new StringBuffer();
+	var sentence = new StringBuffer();
+	var sentences = new java.util.ArrayList<String>();
+	var skipping = false;
+	while (i < n) {
+		var c = text.charAt(i++);
+		if (!skipping) {
+			if (symbols.contains(c)) {
+				skipping = true;
+			} else if (c != '\n') {
+				sentence.append(c);
+			}
+		}
+		if (c == '\n') {
+			skipping = false;
+			sentences.add(sentence.toString());
+			sentence = new StringBuffer();
+		}
+	}
+	sentences.add(sentence.toString());
+	sentences.forEach(s -> {
+		var index = s.length();
+		while (index > 0 && s.charAt(index - 1) == ' ') {
+			index--;
+		}
+		if (index != 0) {
+			out.append(s.substring(0, index));
+		}
+		out.append('\n');
+	});
+	out.deleteCharAt(out.length() - 1); // delete last \n
+	return out.toString();
+}
+
+
 // 16.20 implement an algorithm to return a list of matching words, given a sequence of digits
 // you are provided a list of valid words in any way you like
 /*

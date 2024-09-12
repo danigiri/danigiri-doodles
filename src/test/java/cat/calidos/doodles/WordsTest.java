@@ -4,12 +4,10 @@ package cat.calidos.doodles;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import cat.calidos.doodles.builders.ListFrom;
@@ -215,18 +213,24 @@ public void interleavingTest() {
 
 @Test
 public void top3Test() {
-	List<String> 
-	/*actual = Words.top3("a a a  b  c c  d d d d  e e e e e");
+
+	List<String> actual = Words.top3("a a a  b  c c  d d d d  e e e e e");
 	assertEquals(List.of("e", "d", "a"), actual);
 
 	actual = Words.top3("e e e e DDD ddd DdD: ddd ddd aa aA Aa, bb cc cC e e e");
 	assertEquals(List.of("e", "ddd", "aa"), actual);
-*/
 	actual = Words.top3("'a 'A 'a' a'A' a'a'!");
 	assertTrue(actual.equals(List.of("'a", "a'a'", "'a'")) || actual.equals(List.of("a'a'","'a", "'a'")));
-	
-//	assertThat(TopWords.top3("'a 'A 'a' a'A' a'a'!")).isIn(List.of("'a", "a'a'", "'a'")
+
 }
+
+
+@Test
+public void stripCommentsTest() {
+	assertEquals("a\n b\nc", Words.stripComments("a \n b \nc", new String[] {}));
+	assertEquals("a\nc\nd", Words.stripComments("a #b\nc\nd $e f g", new String[] { "#", "$" }));
+}
+
 
 }
 /**
