@@ -1101,6 +1101,34 @@ static String encode(String word) {
 	return encoded.toString();
 }
 
+
+/*
+
+	letters 2
+	numbers 0
+	a, b
+	letters 
+	
+
+ */
+public static java.util.List<String> alphabetLetters(int total,
+		boolean lowercase) {
+	char[] asciiLetters = new char[26];
+	var index = 0;
+	var start = lowercase ? 'a' : 'A';
+	var end = lowercase ? 'z' : 'Z';
+	for (char c = start; c <= end; c++) {
+		asciiLetters[index++] = c;
+	}
+	List<String> out = new ArrayList<String>(total);
+	for (var i=0;i<total;i++) {
+		out.add(String.valueOf(asciiLetters[i]));
+	}
+
+	return out;
+}
+
+
 }
 
 /*

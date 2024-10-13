@@ -490,7 +490,12 @@ public void doubleEveryOtherTest() {
 
 @Test
 public void isInterestingNumberTest() {
-
+	
+	assertEquals(1, Maths.isInteresting(3208, new int[] { 1337, 256 }));
+	assertEquals(2, Maths.isInteresting(3210, new int[] { 1337, 256 }));
+	assertEquals(1, Maths.isInteresting(109, new int[] { 1337, 256 }));
+	assertEquals(1, Maths.isInteresting(1232, new int[] { 1337, 256 }));
+	assertEquals(2, Maths.isInteresting(4567, new int[] { 1337, 256 }));
 	assertEquals(2, Maths.isInteresting(121, new int[] { 1337, 256 }));
 	assertEquals(2, Maths.isInteresting(1221, new int[] { 1337, 256 }));
 	assertEquals(2, Maths.isInteresting(1234567890, new int[] { 1337, 256 }));
@@ -504,6 +509,18 @@ public void isInterestingNumberTest() {
 	assertEquals(1, Maths.isInteresting(11209, new int[] { 1337, 256 }));
 	assertEquals(2, Maths.isInteresting(11211, new int[] { 1337, 256 }));
 
+}
+
+
+@Test
+public void test_0_10() {
+  test(0, 10, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29);
+}
+
+
+private void test(int skip, int limit, int... expect) {
+	int[] found = Maths.primeStream().skip(skip).limit(limit).toArray();
+	assertArrayEquals(expect, found);
 }
 
 }

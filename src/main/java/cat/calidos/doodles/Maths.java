@@ -1139,10 +1139,7 @@ public static boolean isInterestingR(int number, int[] awesomePhrases) {
 		sameNumber = sameNumber == digit ? digit : -1;
 		incrementing = incrementing != -1 && (incrementing + 1) % 10 == digit ? digit : -1;
 		// 7890 --> 7+1 == 8, 8+1 == 9, 9+1 == 10%0 == 0, ok
-		if (decrementing !=-1) {
-			decrementing = decrementing - 1 < 0 ? 9 : decrementing - 1;
-			decrementing = decrementing == digit ? digit : -1;
-		}
+		decrementing = decrementing !=-1 && decrementing-1==digit ? digit : -1;
 		if (i < n / 2) {
 			palindrome.push(digit);
 		} else if (n % 2 == 1 && i == n / 2) {
@@ -1156,6 +1153,40 @@ public static boolean isInterestingR(int number, int[] awesomePhrases) {
 
 	return allZeros || digit == sameNumber || incrementing != -1 || decrementing != -1 || palindrome != null;
 }
+
+
+public static IntStream primeStream() {
+	var current = new java.util.concurrent.atomic.AtomicInteger(0);
+
+	return IntStream.generate(() -> {
+		var c = current.get();
+		while (!isPrime(c)) {
+			c++;
+		}
+		current.set(c+1);
+		return c;
+	});
+}
+
+
+private static boolean isPrime(int number) {
+	if (number <= 1) {
+		return false;
+	}
+	if (number <= 3) {
+		return true;
+	}
+	if (number % 2 == 0 || number % 3 == 0) {
+		return false;
+	}
+	for (var i = 5; i * i <= number; i += 6) {
+		if (number % i == 0 || number % (i + 2) == 0) {
+			return false;
+		}
+	}
+	return true;
+}
+
 
 }
 
