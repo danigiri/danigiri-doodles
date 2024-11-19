@@ -1,27 +1,21 @@
 {
-  "name": "typescript-doodles",
+  "name": "typescript",
   "version": "1.0.0",
-  "main": "main.ts",
+  "main": "index.js",
   "scripts": {
-    "start": "npx tsx ./main.ts",
-    "test": ""
+    "build": "tsc",
+    "dev": "node --env-file=.env --watch -r ts-node/register main.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Daniel Giribet",
+  "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
     "@types/chai": "^5.0.1",
-    "@types/mocha": "^10.0.9",
     "@types/node": "^22.9.1",
-    "@typescript-eslint/eslint-plugin": "^8.15.0",
-    "@typescript-eslint/parser": "^8.15.0",
     "chai": "^5.1.2",
-    "cross-env": "^7.0.3",
-    "eslint": "^9.15.0",
-    "tsx": "^4.19.2",
-    "typescript": "^5.6.3",
-    "vite-tsconfig-paths": "^5.0.0",
-    "vitest": "^2.1.5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   }
 }

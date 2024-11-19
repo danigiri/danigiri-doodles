@@ -18,3 +18,8 @@ let foo:string = 'bar'
 })
 
 */
+
+const assert = require('chai').assert
+const foo:string = 'foo';
+
+assert.equal(foo, 'foo');
