@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 /**
@@ -1185,6 +1186,94 @@ private static boolean isPrime(int number) {
 		}
 	}
 	return true;
+}
+
+// given a max count that cannot reach 't'
+// we need to step through a list of integers containing counts that cannot add to 't'
+// we need to do choose exactly 'k' elements
+// return null if there is no combination possible, or the maximum sum possible with those k elems
+
+// approach 1: (brute force)
+// for each element, go through k-1, accumulate
+// app 2:
+// get elements into a sorted heap
+// app 3:
+// turn this into a tree of all possible choices with pruning, keep a list of visited
+// [1,2,3], k=2
+// [f,f,f]
+// 1:
+// [t,f,f]
+// 2:
+// [t,t,f]
+// 3:
+// [t,f,t]
+// 2:
+// [f,t,f]
+
+
+//
+// app 4:
+// sort the list?
+// create all possible k permutations keeping a sum of the permutation, discard permutations that go
+// over limit
+// create a list of permutations,
+// just recurse and return the max that does not go over the limit, try all possible branches
+// note there can be duplicates in the list
+public static Integer chooseBestSum(int t,
+									int k,
+									List<Integer> ls) {
+	var visited = new ArrayList<Boolean>(ls.size());
+	for (var i = 0; i < ls.size(); i++) {
+		visited.add(false);
+	}
+	return chooseBestSumR(0, t, 0, k, visited, visited.size(), ls).orElse(null);
+}
+
+
+private static Optional<Integer> chooseBestSumR(int count,
+												int max,
+												int steps,
+												int maxSteps,
+												List<Boolean> visited,
+												int remaining,
+												List<Integer> pool) {
+
+	// base cases
+	if (count > max) {
+		return Optional.empty();
+	}
+	if (remaining < (maxSteps - steps)) {
+		return Optional.empty();
+	}
+	if (steps == maxSteps) {
+		return Optional.of(count);
+	}
+
+	// recursive cases, we have at least one step left and enough remaining candidates in the pool
+	var candidates = new ArrayList<Integer>();
+	for (var i = 0; i < pool.size(); i++) {
+		if (!visited.get(i)) {
+			visited.set(i, true);
+			var candidate = chooseBestSumR(
+					count + pool.get(i),
+					max,
+					steps + 1,
+					maxSteps,
+					visited,
+					remaining - 1,
+					pool);
+			if (candidate.isPresent()) {
+				candidates.add(candidate.get());
+			}
+			visited.set(i, false); // reset visited so the other candidates in the current
+		}
+	}
+
+	if (candidates.size() > 0) {
+		return Optional.of(candidates.stream().reduce(candidates.get(0), Integer::max));
+	} else {
+		return Optional.empty();
+	}
 }
 
 

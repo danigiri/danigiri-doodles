@@ -2,6 +2,7 @@ package cat.calidos.doodles;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -546,7 +547,6 @@ public static <X> Set<List<X>> getSublists(List<X> l) {
 	}
 	return p;
 }
-
 
 }
 

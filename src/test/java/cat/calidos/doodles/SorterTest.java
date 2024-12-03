@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import cat.calidos.doodles.builders.ListFrom;
 
@@ -530,10 +531,19 @@ public void recursiveStackSorterTest() {
 }
 
 
+
+@Test @DisplayName("Sort by frequency")
+public void sortByFrequencyTest() {
+	assertArrayEquals(
+			new int[] { 3, 3, 3, 5, 5, 7, 7, 2, 9 },
+			Sorter.sortByFrequency(new int[] { 2, 3, 5, 3, 7, 9, 5, 3, 7 }));
+
+}
+
 }
 
 /**
-Copyright 2016 Daniel Giribet <dani - calidos.cat>
+Copyright 2024 Daniel Giribet <dani - calidos.cat>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -3,6 +3,7 @@ package cat.calidos.doodles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -521,6 +522,20 @@ public void test_0_10() {
 private void test(int skip, int limit, int... expect) {
 	int[] found = Maths.primeStream().skip(skip).limit(limit).toArray();
 	assertArrayEquals(expect, found);
+}
+
+
+@Test
+public void testChooseBestSum() {
+	var ts = new ArrayList<>(java.util.Arrays.asList(50, 55, 56, 57, 58));
+	int n = Maths.chooseBestSum(163, 3, ts);
+	assertEquals(163, n);
+	ts = new ArrayList<>(java.util.Arrays.asList(50));
+	Integer m = Maths.chooseBestSum(163, 3, ts);
+	assertEquals(null, m);
+	ts = new ArrayList<>(java.util.Arrays.asList(91, 74, 73, 85, 73, 81, 87));
+	n = Maths.chooseBestSum(230, 3, ts);
+	assertEquals(228, n);
 }
 
 }

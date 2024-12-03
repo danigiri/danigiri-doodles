@@ -39,4 +39,3 @@ Structures created
 * Binary Tree
 * Binary Search Tree
 * (Max)Heap
-

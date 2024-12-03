@@ -720,6 +720,46 @@ public class Sorter {
 
 	}
 
+
+	// we sort elements given their frequency in the array
+	// if same frequency, we sort by increasing value
+	// In: {2, 3, 5, 3, 7, 9, 5, 3, 7}
+	// Out: {3, 3, 3, 5, 5, 7, 7, 2, 9}
+	// we go over elements into a map of id -> freq
+	// we sort using a lambda
+	public static int[] sortByFrequency(int[] array) {
+
+		var n = array.length;
+		var freq = new HashMap<Integer, Integer>();
+		for (var i = 0; i < n; i++) {
+			var v = array[i];
+			var count = freq.get(v);
+			freq.put(v, count == null ? 1 : count + 1);
+		}
+		var sorted = freq
+				.entrySet()
+				.stream()
+				.sorted(
+						(	e0,
+							e1) -> {
+							Integer e0f = e0.getValue();
+							Integer e1f = e1.getValue();
+							return (e0f.equals(e1f)) ? e0.getKey().compareTo(e1.getKey())
+									: e1f.compareTo(e0f);
+						})
+				.map(entry -> entry.getKey())
+				.collect(Collectors.toUnmodifiableList());
+		var out = new int[n];
+		var index = 0;
+		for (var i = 0;i<sorted.size();i++) {
+			var v = sorted.get(i);
+			for (var j=0;j<freq.get(v);j++) {
+				out[index++] = v;
+			}
+		}
+		return out;
+	}
+	
 }
 
 /*
