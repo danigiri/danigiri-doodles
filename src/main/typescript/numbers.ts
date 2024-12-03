@@ -31,6 +31,28 @@ export class Numbers {
 		return out.toFixed(2);
 	}
 
+
+	// given n, return the multiplication table 
+	// n=3
+	// 1 2 3
+	// 2 4 6
+	// 3 6 9
+	// 
+	public static multiplicationTable(n: number): number[][] {
+		const table: number[][] = [];
+		for (let j = 1; j <= n; j++) {
+			table.push(this.multiplicationRow(j, n));
+		}
+		return table;
+	}
+
+	private static multiplicationRow(j: number, n: number): number[] {
+		const r: number[] = [];
+		for (let i = 1; i <= n; i++) {
+			r.push(j * i);
+		}
+		return r;
+	}
 }
 
 /*

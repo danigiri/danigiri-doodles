@@ -1,30 +1,20 @@
-export class Lists<T> {
 
-	public substractFromList(a: T[], b: T[]): T[] {
-		// given a, output a and skip any elements in b
-		const elements = b.reduce((set: Set<T>, e: T) => set.add(e), new Set<T>());
-		return a.filter(e => !elements.has(e));
-	}
 
-	public uniqueInOrder(values:  T[]): T[] {
-		// aaabbc -->abc
-		if (values.length === 0) {
-			return [];
-		}
-		let prev = values[0];
-		const result: T[] = [];
-		result.push(prev);
-		for (let i = 1; i < values.length; i++) {
-			const c = values[i];
-			if (c !== prev) {
-				result.push(c);
-				prev = c;
-			}
-		}
-		return result;
-	}
 
-}
+import { assert } from 'chai';
+
+import {PathFilter} from '../filter';
+
+const filter = new PathFilter(["/a/b","/a/c","/d"]);
+assert.isTrue(filter.hasFile("/a/b"));
+assert.isTrue(filter.hasFile("/a/c"));
+assert.isTrue(filter.hasFile("/d"));
+assert.isFalse(filter.hasFile("/x"))
+assert.isFalse(filter.hasFile("/a/b/c"))
+assert.isTrue(filter.hasPath("/a/b"));
+assert.isTrue(filter.hasPath("/a"));
+
+console.log('Tests finished')
 
 /*
  * Copyright 2024 Daniel Giribet
