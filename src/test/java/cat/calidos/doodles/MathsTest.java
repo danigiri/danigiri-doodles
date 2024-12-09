@@ -539,6 +539,7 @@ public void testChooseBestSum() {
 }
 
 }
+
 /*
  * Copyright 2024 Daniel Giribet <dani - calidos.cat>
  * 
