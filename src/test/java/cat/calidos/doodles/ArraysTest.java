@@ -253,16 +253,25 @@ public void getSublistsTest() {
 
 @Test
 @DisplayName("Find largest contiguous sum over an integer array")
-public void findLargestSum() {
+public void findLargestSumTest() {
 	List<Integer> a = ArrayFrom.ints(2, -8, 3, -2, 4, -10);
 	assertEquals(5, Arrays.largestSum(a));
 }
+
+@Test
+@DisplayName("Find first n multiples of x")
+public void firstMultiplesTest() {
+	List<Integer> exp = ArrayFrom.ints(2, 4, 6, 8);
+	assertEquals(exp, Arrays.firstMultiples(4, 2 ));
+}
+
+
 
 
 }
 
 /*
- * Copyright 2024 Daniel Giribet
+ * Copyright 2026 Daniel Giribet
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at

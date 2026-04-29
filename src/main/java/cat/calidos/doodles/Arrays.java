@@ -548,10 +548,29 @@ public static <X> Set<List<X>> getSublists(List<X> l) {
 	return p;
 }
 
+/*
+Create a function with two arguments that will return an array of the first n multiples of x.
+Assume both the given number and the number of times to count will be positive numbers greater than 0.
+*/
+public static List<Integer> firstMultiples(int n, int x) {
+	var multiples = new ArrayList<Integer>();
+	var remaining = n;
+	int i = 1;
+	while (remaining>0) {
+		if (i % x == 0) {
+			multiples.add(i);
+			remaining--;
+		}
+		i++;
+	}
+	return multiples;
+}
+
+
 }
 
 /*
- * Copyright 2024 Daniel Giribet
+ * Copyright 2026 Daniel Giribet
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
