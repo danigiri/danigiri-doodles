@@ -225,7 +225,6 @@ public void findPairsOfSumTest() {
 	expected.add(new Pair<Integer, Integer>(1, 3));
 	expected.add(new Pair<Integer, Integer>(2, 2));
 	expected.add(new Pair<Integer, Integer>(5, -1));
-
 	Set<Pair<Integer, Integer>> out = Arrays.findPairsOfSum(a, 4);
 	assertTrue(out.stream().filter(e -> !out.contains(e) && !out.contains(new Pair<Integer, Integer>(e.right, e.left)))
 			.findAny().isEmpty());
@@ -265,6 +264,19 @@ public void firstMultiplesTest() {
 	assertEquals(exp, Arrays.firstMultiples(4, 2 ));
 }
 
+
+@Test
+@DisplayName("DNA to RNA test")
+public void dnaToRnaTest() {
+	assertEquals("GCAU", Arrays.dnaToRna("GCAT"));
+}
+
+@Test
+@DisplayName("Reverse integer to list")
+public void intToListReverseTest() {
+		List<Integer> exp = ArrayFrom.ints(1, 3, 2, 5, 3);
+	assertEquals(exp, Arrays.intToListReverse(13253));
+}
 
 
 

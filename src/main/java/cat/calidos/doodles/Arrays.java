@@ -566,6 +566,40 @@ public static List<Integer> firstMultiples(int n, int x) {
 	return multiples;
 }
 
+/*
+Deoxyribonucleic acid, DNA is the primary information storage molecule in biological systems. It is composed of four 
+nucleic acid bases Guanine ('G'), Cytosine ('C'), Adenine ('A'), and Thymine ('T').
+
+Ribonucleic acid, RNA, is the primary messenger molecule in cells. RNA differs slightly from DNA its chemical structure
+and contains no Thymine. In RNA Thymine is replaced by another nucleic acid Uracil ('U').
+
+Create a function which translates a given DNA string into RNA.
+
+For example:
+
+"GCAT"  =>  "GCAU"
+The input string can be of arbitrary length - in particular, it may be empty. All input is guaranteed to be valid, i.e. 
+each input string will only ever consist of 'G', 'C', 'A' and/or 'T'.
+*/
+public static String dnaToRna(String s) {
+	return s.chars().map(c -> c == 'T' ? 'U' : c).mapToObj(c -> String.valueOf((char)c)).collect(Collectors.joining());
+}
+
+/*
+Given a random non-negative number, you have to return the digits of this number within an array in reverse order.
+
+Example (Input => Output):
+35231 => [1,3,2,5,3]
+0     => [0]
+*/
+public static List<Integer> intToListReverse(int v) {
+	var list = new ArrayList<Integer>();
+	while (v>0) {
+		list.addFirst(v % 10);
+		v = v / 10;
+	}
+	return list;
+}
 
 }
 
