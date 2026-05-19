@@ -274,10 +274,27 @@ public void dnaToRnaTest() {
 @Test
 @DisplayName("Reverse integer to list")
 public void intToListReverseTest() {
-		List<Integer> exp = ArrayFrom.ints(1, 3, 2, 5, 3);
-	assertEquals(exp, Arrays.intToListReverse(13253));
+	List<Integer> exp = ArrayFrom.ints(1, 3, 2, 5, 3);
+	assertEquals(exp, Arrays.intToListReverse(35231));
+	
+	exp = ArrayFrom.ints(0);
+    assertEquals(exp, Arrays.intToListReverse(0));
+	exp = ArrayFrom.ints(7,5,3,2,8,5,3,2);
+    assertEquals(exp, Arrays.intToListReverse(23582357));
 }
 
+@Test
+@DisplayName("String to char")
+public void replaceWithAlphabetNumberTest() {
+	var exp = "1";
+	assertEquals(exp, Arrays.replaceWithAlphabetNumber("A"));
+	exp = "26";
+	assertEquals(exp, Arrays.replaceWithAlphabetNumber("z"));
+
+	exp = "20 8 5 19 21 14 19 5 20 19 5 20 19 1 20 20 23 5 12 22 5 15 3 12 15 3 11";
+	assertEquals(exp, Arrays.replaceWithAlphabetNumber("The sunset sets at twelve o' clock."));
+	
+}
 
 
 }

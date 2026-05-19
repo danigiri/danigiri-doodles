@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -592,14 +593,40 @@ Example (Input => Output):
 35231 => [1,3,2,5,3]
 0     => [0]
 */
-public static List<Integer> intToListReverse(int v) {
+public static List<Integer> intToListReverse(long v) {
 	var list = new ArrayList<Integer>();
+	if (v == 0) {
+		list.add(0);
+		return list;
+	}
 	while (v>0) {
-		list.addFirst(v % 10);
+		list.add((int)(v % 10));
 		v = v / 10;
 	}
 	return list;
 }
+
+/*
+replace every letter with its position in the alphabet.
+
+If anything in the text isn't a letter, ignore it and don't return it.
+
+"a" = 1, "b" = 2, etc.
+
+*/
+public static String replaceWithAlphabetNumber(String s) {
+	var a = 'a';
+	var z = 'z' - a + 1;
+	var r = s
+		.toLowerCase()
+		.chars()
+		.map(c -> (c-a)+1)
+		.filter(c -> c>=1 && c<=z)
+		.mapToObj(c -> String.valueOf(c))
+		.collect(Collectors.joining(" "));
+	return r;
+}
+
 
 }
 
