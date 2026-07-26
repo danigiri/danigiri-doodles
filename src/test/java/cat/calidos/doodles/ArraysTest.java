@@ -297,6 +297,19 @@ public void replaceWithAlphabetNumberTest() {
 }
 
 
+
+@Test
+@DisplayName("Merge sort: helper for sortOddNumbers")
+public void mergeSortTest() {
+	List<Integer> list = ArrayFrom.ints(1, 3, 2, 5, 3);
+	List<Integer> exp = ArrayFrom.ints(1, 2, 3, 3, 5);
+	assertEquals(exp, Arrays.mergeSort(list));
+
+	List<Integer> list1 = ArrayFrom.ints(1,2,3,4);
+	List<Integer> exp1 = ArrayFrom.ints(1, 2, 3, 4);
+	assertEquals(exp1, Arrays.mergeSort(list1));
+	
+}
 }
 
 /*

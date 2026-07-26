@@ -607,6 +607,84 @@ public static List<Integer> intToListReverse(long v) {
 }
 
 /*
+You will be given an array of numbers. You have to sort the odd numbers in ascending order while leaving the even 
+numbers at their original positions.
+
+Examples
+[7, 1]  =>  [1, 7]
+[5, 8, 6, 3, 4]  =>  [3, 8, 6, 5, 4]
+[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]  =>  [1, 8, 3, 6, 5, 4, 7, 2, 9, 0]
+
+*/
+
+public static List<Integer> sortOddNumbers(List<Integer> l) {
+	var list = new ArrayList<Integer>(l.size());
+	var unsorted = new ArrayList<Integer>();
+	
+	// add even to output, add odd to unsorted, placing null
+	for (int e : l) {
+		if (e%2==0) {
+			list.add(e);
+		} else {
+			list.add(null);
+			unsorted.add(e);
+		}
+	}
+	// do some basic sorting
+	
+	// zip both lists
+	var sorted = unsorted;
+	var i = 0;
+	for (int odd : sorted) {
+		while (list.get(i)!=null) {
+			i++;
+		}
+		list.set(i, odd);
+	}
+	return list;
+}
+
+public static List<Integer> mergeSort(List<Integer> l) {
+	if (l == null) {
+		return null;
+	}
+	var n = l.size();
+	if (n==1) {
+		return l;
+	}
+	// size is guaranteed to be at least 2
+	var half = n / 2;
+	List<Integer> left = new ArrayList<Integer>(half);
+	List<Integer>  right = new ArrayList<Integer>(n-half);
+	for (int i = 0; i<half; i++) {
+		left.add(l.removeFirst());
+	}
+	for (int i=half; i<n; i++) {
+		right.add(l.removeFirst());
+	}
+	left = Arrays.mergeSort(left);
+	right = Arrays.mergeSort(right);
+	var sorted = new ArrayList<Integer>(n);
+	while (!left.isEmpty() && !right.isEmpty()) {
+		var firstLeft = left.removeFirst();
+		var firstRight = right.removeFirst();
+		if (firstLeft < firstRight) {
+			sorted.add(firstLeft);
+			sorted.add(firstRight);
+		} else {
+			sorted.add(firstRight);
+			sorted.add(firstLeft);
+		}
+	}
+	// add if any are left, one or both will be empty
+	sorted.addAll(left);
+	sorted.addAll(right);
+
+	return sorted;
+}
+
+
+/*
 replace every letter with its position in the alphabet.
 
 If anything in the text isn't a letter, ignore it and don't return it.

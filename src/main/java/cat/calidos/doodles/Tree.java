@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import cat.calidos.doodles.Stack;
-
-
 public class Tree<T extends Comparable<? super T>> {
 
 public T						data;
